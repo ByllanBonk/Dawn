@@ -294,6 +294,14 @@
             "url": "https://tidal.com/artist/4515825"
           }
         },
+        "platform_link_jtx7X4": {
+          "type": "platform_link",
+          "settings": {
+            "column": "stream_greg",
+            "label": "Amazon Music",
+            "url": "https://www.amazon.com/music/player/artists/B0013QS4NU/greg-koch?shoppingPortalEnabled=true"
+          }
+        },
         "follow_link_DkFUcd": {
           "type": "follow_link",
           "settings": {
@@ -316,6 +324,7 @@
         "platform_link_ytJhCB",
         "platform_link_BpyBqF",
         "platform_link_iJMtQK",
+        "platform_link_jtx7X4",
         "follow_link_DkFUcd",
         "follow_link_FNhrbc"
       ],
