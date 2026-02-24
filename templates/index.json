@@ -258,8 +258,8 @@
           "type": "platform_link",
           "settings": {
             "column": "stream_greg",
-            "label": "Spotify",
-            "url": ""
+            "label": "Apple Music",
+            "url": "https://music.apple.com/us/artist/greg-koch/5517890"
           }
         },
         "platform_link_wR9JCm": {
