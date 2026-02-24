@@ -266,8 +266,8 @@
           "type": "platform_link",
           "settings": {
             "column": "stream_greg",
-            "label": "Spotify",
-            "url": ""
+            "label": "YouTube Music",
+            "url": "https://music.youtube.com/channel/UCX3rdX9oHrDLxb8Ql74Gwaw"
           }
         },
         "follow_link_DkFUcd": {
