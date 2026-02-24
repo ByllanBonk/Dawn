@@ -1,109 +1,73 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "gk_hero": {
+      "type": "gk-hero",
       "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "Guitar Fiend • Gristle King"
+          }
+        },
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Image banner",
-            "heading_size": "h0"
+            "heading": "GREG KOCH"
           }
         },
-        "text": {
-          "type": "text",
+        "subheading": {
+          "type": "subheading",
           "settings": {
-            "text": "Give customers details about the banner image(s) or content on the template.",
-            "text_style": "body"
+            "text": "Unleashing his own brand of musical mayhem from Milwaukee, WI."
           }
         },
-        "button": {
+        "buttons": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop all",
+            "button_label_1": "SHOP THE GRISTLE",
             "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "button_label_2": "TOUR DATES",
+            "button_link_2": ""
           }
         }
       },
       "block_order": [
+        "eyebrow",
         "heading",
-        "text",
-        "button"
+        "subheading",
+        "buttons"
       ],
       "settings": {
         "image": "shopify://shop_images/pic.jpg",
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "image_behavior": "none",
-        "desktop_content_position": "bottom-center",
-        "desktop_content_alignment": "center",
-        "show_text_box": false,
-        "color_scheme": "scheme-3",
-        "stack_images_on_mobile": false,
-        "mobile_content_alignment": "center",
-        "show_text_below": false
+        "image_position": "center center",
+        "hero_height": 100,
+        "mobile_height": 85,
+        "overlay_opacity": 30,
+        "overlay_end_opacity": 85,
+        "gradient_direction": "bottom",
+        "content_position": "flex-end",
+        "text_alignment": "left",
+        "content_width": 800,
+        "heading_size": 8
       }
     },
-    "rich_text": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Talk about your brand",
-            "heading_size": "h1"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "scheme-1",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 0
-      }
-    },
-    "featured_collection": {
+    "gk_featured_products": {
       "type": "featured-collection",
       "settings": {
         "collection": "all",
-        "products_to_show": 8,
-        "title": "Featured products",
+        "products_to_show": 3,
+        "title": "The Latest Gristle",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "columns_desktop": 4,
+        "columns_desktop": 3,
         "enable_desktop_slider": false,
         "full_width": false,
-        "show_view_all": false,
+        "show_view_all": true,
         "view_all_style": "solid",
         "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
+        "image_ratio": "portrait",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
@@ -111,123 +75,245 @@
         "quick_add": "none",
         "columns_mobile": "2",
         "swipe_on_mobile": false,
-        "padding_top": 28,
-        "padding_bottom": 36
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
-    "collage": {
-      "type": "collage",
+    "gk_tour_dates": {
+      "type": "gk-tour-dates",
       "blocks": {
-        "collection-0": {
-          "type": "collection",
+        "eyebrow": {
+          "type": "eyebrow",
           "settings": {
-            "collection": ""
+            "text": "On the Road"
           }
         },
-        "product": {
-          "type": "product",
+        "heading": {
+          "type": "heading",
           "settings": {
-            "product": "",
-            "second_image": false
+            "heading": "TOUR DATES"
           }
         },
-        "collection-1": {
-          "type": "collection",
+        "subtext": {
+          "type": "subtext",
           "settings": {
-            "collection": ""
+            "text": "Catch the Gristle live near you."
+          }
+        },
+        "bandsintown": {
+          "type": "bandsintown_embed",
+          "settings": {
+            "artist_name": "Greg Koch",
+            "display_limit": 15,
+            "show_past_dates": false,
+            "show_play_my_city": true
           }
         }
       },
       "block_order": [
-        "collection-0",
-        "product",
-        "collection-1"
+        "eyebrow",
+        "heading",
+        "subtext",
+        "bandsintown"
       ],
       "settings": {
-        "heading": "Multimedia collage",
-        "heading_size": "h2",
-        "desktop_layout": "left",
-        "mobile_layout": "collage",
-        "card_styles": "product-card-wrapper",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "bg_color": "#0D0D0D",
+        "text_alignment": "center",
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
-    "video": {
-      "type": "video",
+    "gk_stream_follow": {
+      "type": "gk-stream-follow",
+      "blocks": {
+        "spotify": {
+          "type": "platform_link",
+          "settings": {
+            "label": "Spotify"
+          }
+        },
+        "apple_music": {
+          "type": "platform_link",
+          "settings": {
+            "label": "Apple Music"
+          }
+        },
+        "youtube": {
+          "type": "platform_link",
+          "settings": {
+            "label": "YouTube"
+          }
+        },
+        "instagram": {
+          "type": "platform_link",
+          "settings": {
+            "label": "Instagram"
+          }
+        },
+        "facebook": {
+          "type": "platform_link",
+          "settings": {
+            "label": "Facebook"
+          }
+        },
+        "tiktok": {
+          "type": "platform_link",
+          "settings": {
+            "label": "TikTok"
+          }
+        }
+      },
+      "block_order": [
+        "spotify",
+        "apple_music",
+        "youtube",
+        "instagram",
+        "facebook",
+        "tiktok"
+      ],
       "settings": {
+        "bg_color": "#E8690A",
+        "eyebrow": "Listen & Connect",
+        "heading": "STREAM + FOLLOW",
+        "subtext": "Find Greg Koch on every platform.",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "gk_featured_gristle": {
+      "type": "gk-featured-gristle",
+      "blocks": {
+        "lessons": {
+          "type": "card",
+          "settings": {
+            "label": "Lessons",
+            "title": "Virtual Lessons",
+            "description": "One-on-one virtual guitar lessons with Greg Koch via Zoom.",
+            "button_label": "BOOK NOW"
+          }
+        },
+        "on_demand": {
+          "type": "card",
+          "settings": {
+            "label": "On Demand",
+            "title": "On-Demand Courses",
+            "description": "Self-paced video courses covering technique, tone, and more.",
+            "button_label": "BROWSE COURSES"
+          }
+        },
+        "truefire": {
+          "type": "card",
+          "settings": {
+            "label": "TrueFire",
+            "title": "TrueFire Courses",
+            "description": "Full-length instructional courses on the TrueFire platform.",
+            "button_label": "VIEW ON TRUEFIRE"
+          }
+        }
+      },
+      "block_order": [
+        "lessons",
+        "on_demand",
+        "truefire"
+      ],
+      "settings": {
+        "bg_color": "#0D0D0D",
+        "eyebrow": "Learn from the Gristleman",
+        "heading": "FEATURED GRISTLE",
+        "subtext": "Lessons, courses, and on-demand content from Greg Koch.",
+        "text_alignment": "center",
+        "columns_desktop": "3",
+        "image_ratio": "16/9",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "gk_sponsors": {
+      "type": "gk-sponsor-logos",
+      "blocks": {
+        "jam": {
+          "type": "logo",
+          "settings": {
+            "name": "JAM Pedals"
+          }
+        },
+        "fishman": {
+          "type": "logo",
+          "settings": {
+            "name": "Fishman"
+          }
+        },
+        "reverend": {
+          "type": "logo",
+          "settings": {
+            "name": "Reverend"
+          }
+        },
+        "toneking": {
+          "type": "logo",
+          "settings": {
+            "name": "Tone King"
+          }
+        },
+        "daddario": {
+          "type": "logo",
+          "settings": {
+            "name": "D'Addario"
+          }
+        },
+        "dunlop": {
+          "type": "logo",
+          "settings": {
+            "name": "Dunlop"
+          }
+        }
+      },
+      "block_order": [
+        "jam",
+        "fishman",
+        "reverend",
+        "toneking",
+        "daddario",
+        "dunlop"
+      ],
+      "settings": {
+        "bg_color": "#0D0D0D",
+        "eyebrow": "Proud Partners",
         "heading": "",
-        "heading_size": "h1",
-        "enable_video_looping": false,
-        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
-        "description": "",
-        "full_width": false,
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "orange_hover": true,
+        "logo_width": 150,
+        "logo_height": 70,
+        "logo_gap": 40,
+        "show_top_border": true,
+        "show_bottom_border": true,
+        "padding_top": 48,
+        "padding_bottom": 48
       }
     },
-    "multicolumn": {
-      "type": "multicolumn",
-      "blocks": {
-        "column1": {
-          "type": "column",
-          "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column2": {
-          "type": "column",
-          "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column3": {
-          "type": "column",
-          "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "column1",
-        "column2",
-        "column3"
-      ],
+    "gk_spotify": {
+      "type": "gk-spotify-embed",
       "settings": {
-        "title": "",
-        "heading_size": "h1",
-        "image_width": "third",
-        "image_ratio": "adapt",
-        "button_label": "",
-        "button_link": "",
-        "columns_desktop": 3,
-        "column_alignment": "center",
-        "background_style": "none",
-        "color_scheme": "scheme-1",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "bg_color": "#E8690A",
+        "eyebrow": "Now Streaming",
+        "heading": "LISTEN NOW",
+        "eyebrow_color": "#FFFFFF",
+        "heading_color": "#FFFFFF",
+        "spotify_uri": "",
+        "spotify_type": "artist",
+        "embed_height": 352,
+        "max_width": 800,
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     }
   },
   "order": [
-    "image_banner",
-    "rich_text",
-    "featured_collection",
-    "collage",
-    "video",
-    "multicolumn"
+    "gk_hero",
+    "gk_featured_products",
+    "gk_tour_dates",
+    "gk_stream_follow",
+    "gk_featured_gristle",
+    "gk_sponsors",
+    "gk_spotify"
   ]
 }

@@ -1,0 +1,59 @@
+{
+  "sections": {
+    "gk_lessons": {
+      "type": "gk-lessons-page",
+      "blocks": {
+        "virtual": {
+          "type": "lesson_card",
+          "settings": {
+            "label": "Private",
+            "title": "Virtual Lessons",
+            "description": "One-on-one virtual guitar lessons with Greg Koch via Zoom. All skill levels welcome — from fundamentals to advanced gristle techniques.",
+            "features": "60 minute sessions|All skill levels|Personalized instruction|Zoom video call",
+            "price": "",
+            "button_label": "BOOK A LESSON"
+          }
+        },
+        "on_demand": {
+          "type": "lesson_card",
+          "settings": {
+            "label": "On Demand",
+            "title": "On-Demand Courses",
+            "description": "Self-paced video courses covering technique, tone, and the gristle approach to guitar playing.",
+            "features": "Watch at your own pace|HD video lessons|Downloadable tabs|Lifetime access",
+            "price": "",
+            "button_label": "BROWSE COURSES"
+          }
+        },
+        "truefire": {
+          "type": "lesson_card",
+          "settings": {
+            "label": "TrueFire",
+            "title": "TrueFire Courses",
+            "description": "Full-length instructional courses available on the TrueFire platform with interactive tools.",
+            "features": "Professional production|Interactive tabs|Loop & slow down tools|Mobile app access",
+            "price": "",
+            "button_label": "VIEW ON TRUEFIRE"
+          }
+        }
+      },
+      "block_order": [
+        "virtual",
+        "on_demand",
+        "truefire"
+      ],
+      "settings": {
+        "bg_color": "#0D0D0D",
+        "eyebrow": "Learn from the Gristleman",
+        "heading": "LESSONS",
+        "subtext": "Level up your playing with virtual lessons, on-demand courses, and deep-dive instructional content from Greg Koch.",
+        "columns": "3",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "gk_lessons"
+  ]
+}

@@ -1,0 +1,203 @@
+{%- style -%}
+  .gk-spotify {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  .gk-spotify__inner {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gk-spotify__header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .gk-spotify__eyebrow {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.75rem;
+    color: {{ section.settings.eyebrow_color }};
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .gk-spotify__heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: {{ section.settings.heading_color }};
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+  }
+
+  .gk-spotify__embed {
+    width: 100%;
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .gk-spotify__embed iframe {
+    width: 100%;
+    border: none;
+    border-radius: 0 !important;
+  }
+
+  .gk-spotify__fallback {
+    text-align: center;
+    padding: 40px;
+    border: 1px solid #272727;
+    background-color: #141414;
+    color: #777777;
+    font-family: 'DM Sans', sans-serif;
+  }
+{%- endstyle -%}
+
+<section class="gk-spotify" id="section-{{ section.id }}">
+  <div class="gk-spotify__inner">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+      <div class="gk-spotify__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="gk-spotify__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="gk-spotify__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="gk-spotify__embed">
+      {%- if section.settings.spotify_uri != blank -%}
+        <iframe
+          src="https://open.spotify.com/embed/{{ section.settings.spotify_type }}/{{ section.settings.spotify_uri }}?utm_source=generator&theme=0"
+          width="100%"
+          height="{{ section.settings.embed_height }}"
+          frameborder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+          style="border-radius: 0;"
+        ></iframe>
+      {%- elsif section.settings.custom_embed != blank -%}
+        {{ section.settings.custom_embed }}
+      {%- else -%}
+        <div class="gk-spotify__fallback">
+          <p>Add a Spotify URI or custom embed code in the theme editor to display the player.</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GK Spotify Embed",
+  "tag": "section",
+  "class": "gk-spotify-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#E8690A"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Now Streaming"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "LISTEN NOW"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "spotify_uri",
+      "label": "Spotify URI",
+      "info": "The ID from a Spotify link. For example: 3OHrb1MIYHmfJTJpvLbMjx",
+      "default": ""
+    },
+    {
+      "type": "select",
+      "id": "spotify_type",
+      "label": "Spotify Content Type",
+      "default": "artist",
+      "options": [
+        { "value": "artist", "label": "Artist" },
+        { "value": "album", "label": "Album" },
+        { "value": "track", "label": "Track" },
+        { "value": "playlist", "label": "Playlist" }
+      ]
+    },
+    {
+      "type": "html",
+      "id": "custom_embed",
+      "label": "Custom Embed Code",
+      "info": "Alternative: paste the full Spotify embed HTML code here"
+    },
+    {
+      "type": "range",
+      "id": "embed_height",
+      "label": "Player Height",
+      "min": 152,
+      "max": 500,
+      "step": 10,
+      "default": 352,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max Width",
+      "min": 600,
+      "max": 1400,
+      "step": 50,
+      "default": 800,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Spotify Embed"
+    }
+  ]
+}
+{% endschema %}

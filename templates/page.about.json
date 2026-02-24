@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "gk_about": {
+      "type": "gk-about-page",
+      "blocks": {
+        "bio": {
+          "type": "editorial_block",
+          "settings": {
+            "eyebrow": "The Story",
+            "heading": "Meet Greg Koch",
+            "body": "<p>Greg Koch is a guitar fiend from Milwaukee, Wisconsin, frequently seen in various parts of the world clad in western finery, unleashing his own brand of musical mayhem.</p><p>Known for his unique blend of blues, rock, country, and jazz — often within the same solo — Koch has been wowing audiences and fellow musicians for decades with his jaw-dropping technique and irreverent humor.</p><p>A Reverend Guitars and Fishman artist, Koch is equally at home shredding on stage, recording in the studio, or teaching his trademark gristle techniques to students around the world.</p>",
+            "reverse_layout": false
+          }
+        },
+        "stats": {
+          "type": "stats_bar",
+          "settings": {
+            "stat_1_number": "30+",
+            "stat_1_label": "Years Playing",
+            "stat_2_number": "20+",
+            "stat_2_label": "Albums Released",
+            "stat_3_number": "1000+",
+            "stat_3_label": "Shows Played",
+            "stat_4_number": "50+",
+            "stat_4_label": "Courses Published"
+          }
+        },
+        "gear": {
+          "type": "editorial_block",
+          "settings": {
+            "eyebrow": "The Gear",
+            "heading": "Tone & Tools",
+            "body": "<p>Greg's signature sound comes from a carefully curated rig built around Reverend guitars, Fishman pickups, Tone King amplifiers, and an arsenal of JAM Pedals, D'Addario strings, and Dunlop accessories.</p><p>Whether playing his signature Reverend Gristlemaster or experimenting with new sounds, Koch is always pushing the boundaries of what's possible with six strings.</p>",
+            "reverse_layout": true
+          }
+        }
+      },
+      "block_order": [
+        "bio",
+        "stats",
+        "gear"
+      ],
+      "settings": {
+        "bg_color": "#0D0D0D",
+        "show_header": true,
+        "eyebrow": "The Gristleman",
+        "heading": "ABOUT GREG KOCH",
+        "image_width": "1",
+        "text_width": "1",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "gk_about"
+  ]
+}

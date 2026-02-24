@@ -1,0 +1,469 @@
+/* ============================================
+   GREG KOCH - CUSTOM DESIGN SYSTEM
+   ============================================
+   Colors:
+     Background:    #0D0D0D
+     Cards/surfaces: #141414
+     Borders:        #272727
+     Primary accent: #E8690A (orange)
+     Body text:      #E8E8E8
+     Muted text:     #777777
+   Fonts:
+     Headlines:      Bebas Neue
+     Body:           DM Sans
+     Labels/eyebrow: DM Mono
+   ============================================ */
+
+/* --- CSS Custom Properties --- */
+:root {
+  --gk-bg: #0D0D0D;
+  --gk-card: #141414;
+  --gk-border: #272727;
+  --gk-accent: #E8690A;
+  --gk-text: #E8E8E8;
+  --gk-muted: #777777;
+  --gk-white: #FFFFFF;
+  --gk-font-heading: 'Bebas Neue', sans-serif;
+  --gk-font-body: 'DM Sans', sans-serif;
+  --gk-font-label: 'DM Mono', monospace;
+}
+
+/* --- Global Font Overrides --- */
+body,
+.shopify-section,
+input,
+textarea,
+select {
+  font-family: var(--gk-font-body) !important;
+  color: var(--gk-text);
+}
+
+h1, h2, h3, h4, h5, h6,
+.h0, .h1, .h2, .h3, .h4, .h5,
+.hN,
+[class*="heading"],
+.banner__heading,
+.title,
+.featured-collection__title,
+.rich-text__heading {
+  font-family: var(--gk-font-heading) !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gk-text);
+}
+
+/* Eyebrow / Label text */
+.gk-eyebrow,
+.gk-label,
+.caption,
+.caption-with-letter-spacing {
+  font-family: var(--gk-font-label) !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.75rem;
+  color: var(--gk-accent);
+}
+
+/* --- Background Overrides --- */
+body,
+body.gradient {
+  background-color: var(--gk-bg) !important;
+  color: var(--gk-text) !important;
+}
+
+/* Override Dawn color scheme backgrounds */
+.color-scheme-1,
+.color-scheme--scheme-1,
+[class*="color-scheme-1"] {
+  background-color: var(--gk-bg) !important;
+  color: var(--gk-text) !important;
+}
+
+/* --- Button Overrides --- */
+.button,
+.shopify-challenge__button,
+.customer button,
+button.button,
+a.button,
+.btn,
+.shopify-payment-button .shopify-payment-button__button--unbranded {
+  font-family: var(--gk-font-body) !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 0 !important;
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 12px 32px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Primary Button */
+.button--primary,
+.button:not(.button--secondary):not(.button--tertiary),
+.shopify-payment-button .shopify-payment-button__button--unbranded {
+  background-color: var(--gk-accent) !important;
+  color: var(--gk-white) !important;
+  border: 2px solid var(--gk-accent) !important;
+}
+
+.button--primary:hover,
+.button:not(.button--secondary):not(.button--tertiary):hover,
+.shopify-payment-button .shopify-payment-button__button--unbranded:hover {
+  background-color: transparent !important;
+  color: var(--gk-accent) !important;
+  border-color: var(--gk-accent) !important;
+}
+
+/* Secondary Button */
+.button--secondary {
+  background-color: transparent !important;
+  color: var(--gk-accent) !important;
+  border: 2px solid var(--gk-accent) !important;
+}
+
+.button--secondary:hover {
+  background-color: var(--gk-accent) !important;
+  color: var(--gk-white) !important;
+}
+
+/* Tertiary / Text Button */
+.button--tertiary {
+  color: var(--gk-accent) !important;
+  text-decoration-color: var(--gk-accent) !important;
+  padding: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: var(--gk-font-body) !important;
+}
+
+/* Remove Dawn's default button border-radius */
+.button,
+.button::after,
+.button::before {
+  border-radius: 0 !important;
+}
+
+/* --- Card Styles --- */
+.card,
+.card-wrapper,
+.product-card-wrapper .card,
+.card--card,
+.card--standard {
+  background-color: var(--gk-card) !important;
+  border: 1px solid var(--gk-border) !important;
+  border-radius: 0 !important;
+}
+
+.card__content,
+.card__information {
+  color: var(--gk-text);
+}
+
+.card__heading,
+.card__heading a {
+  color: var(--gk-text) !important;
+  font-family: var(--gk-font-heading) !important;
+}
+
+/* Product prices in Bebas Neue orange */
+.price-item,
+.price-item--regular,
+.price-item--sale,
+.price .money,
+.card .price {
+  font-family: var(--gk-font-heading) !important;
+  color: var(--gk-accent) !important;
+  font-size: 1.2rem;
+}
+
+/* --- Header Styles --- */
+.section-header,
+.header-wrapper,
+.header {
+  background-color: var(--gk-bg) !important;
+  border-bottom: 1px solid var(--gk-border) !important;
+}
+
+.header__heading-link,
+.header__heading a {
+  color: var(--gk-text) !important;
+}
+
+/* Navigation links */
+.header__menu-item,
+.header__menu-item span,
+.list-menu__item--link,
+.header__active-menu-item {
+  font-family: var(--gk-font-body) !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--gk-text) !important;
+  transition: color 0.3s ease;
+}
+
+.header__menu-item:hover,
+.header__menu-item:hover span,
+.list-menu__item--link:hover {
+  color: var(--gk-accent) !important;
+}
+
+/* Header icons */
+.header__icon,
+.header__icon svg,
+.header__icon path {
+  color: var(--gk-text) !important;
+}
+
+.header__icon:hover {
+  color: var(--gk-accent) !important;
+}
+
+/* Mobile menu drawer */
+.menu-drawer,
+.menu-drawer__inner-container {
+  background-color: var(--gk-bg) !important;
+  color: var(--gk-text) !important;
+}
+
+.menu-drawer__menu-item,
+.menu-drawer__menu-item span {
+  color: var(--gk-text) !important;
+  font-family: var(--gk-font-body) !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* --- Footer Styles --- */
+.footer,
+.section-footer,
+.footer-block {
+  background-color: var(--gk-bg) !important;
+  border-top: 1px solid var(--gk-border) !important;
+  color: var(--gk-text) !important;
+}
+
+.footer-block__heading,
+.footer__content-top {
+  color: var(--gk-text) !important;
+  font-family: var(--gk-font-heading) !important;
+}
+
+.footer a,
+.footer-block a {
+  color: var(--gk-muted) !important;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover,
+.footer-block a:hover {
+  color: var(--gk-accent) !important;
+}
+
+/* Footer newsletter input */
+.footer .newsletter-form__field-wrapper input,
+.footer .field__input {
+  background-color: var(--gk-card) !important;
+  border: 1px solid var(--gk-border) !important;
+  color: var(--gk-text) !important;
+  border-radius: 0 !important;
+}
+
+.footer .newsletter-form__button,
+.footer .field__button {
+  background-color: var(--gk-accent) !important;
+  color: var(--gk-white) !important;
+  border-radius: 0 !important;
+}
+
+/* --- Announcement Bar --- */
+.announcement-bar {
+  background-color: var(--gk-accent) !important;
+  color: var(--gk-white) !important;
+}
+
+.announcement-bar__message,
+.announcement-bar__link {
+  color: var(--gk-white) !important;
+  font-family: var(--gk-font-label) !important;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+/* --- Form Inputs --- */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+textarea,
+select,
+.field__input {
+  background-color: var(--gk-card) !important;
+  border: 1px solid var(--gk-border) !important;
+  color: var(--gk-text) !important;
+  border-radius: 0 !important;
+  font-family: var(--gk-font-body) !important;
+}
+
+input::placeholder,
+textarea::placeholder,
+.field__input::placeholder {
+  color: var(--gk-muted) !important;
+}
+
+.field__label {
+  color: var(--gk-muted) !important;
+}
+
+/* --- Image Banner / Hero Overrides --- */
+.banner {
+  background-color: var(--gk-bg);
+}
+
+.banner__heading {
+  font-family: var(--gk-font-heading) !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.banner__text {
+  color: var(--gk-text);
+}
+
+/* --- Collection / Product Grid --- */
+.collection {
+  background-color: var(--gk-bg);
+}
+
+.collection__title {
+  font-family: var(--gk-font-heading) !important;
+  color: var(--gk-text) !important;
+}
+
+/* --- Rich Text Sections --- */
+.rich-text-wrapper,
+.rich-text {
+  background-color: var(--gk-bg);
+  color: var(--gk-text);
+}
+
+/* --- Muted Text --- */
+.gk-muted,
+.subtitle,
+.rte p,
+small {
+  color: var(--gk-muted);
+}
+
+/* --- Link Styles --- */
+a {
+  color: var(--gk-accent);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--gk-text);
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gk-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gk-border);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gk-accent);
+}
+
+/* --- Cart Drawer --- */
+.cart-drawer,
+.drawer {
+  background-color: var(--gk-bg) !important;
+  color: var(--gk-text) !important;
+  border-left: 1px solid var(--gk-border) !important;
+}
+
+/* --- Predictive Search --- */
+.predictive-search,
+.predictive-search__results-groups-wrapper {
+  background-color: var(--gk-card) !important;
+  border: 1px solid var(--gk-border) !important;
+  color: var(--gk-text) !important;
+}
+
+/* --- Badge Overrides --- */
+.badge {
+  background-color: var(--gk-accent) !important;
+  color: var(--gk-white) !important;
+  border-radius: 0 !important;
+  font-family: var(--gk-font-label) !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- Selection / Highlight --- */
+::selection {
+  background-color: var(--gk-accent);
+  color: var(--gk-white);
+}
+
+/* --- Global Section Spacing --- */
+.section-padding {
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+/* --- Responsive --- */
+@media screen and (max-width: 749px) {
+  .button,
+  .shopify-challenge__button {
+    padding: 10px 24px;
+    font-size: 0.8rem;
+  }
+
+  h1, .h0, .h1 {
+    font-size: 2.5rem;
+  }
+}
+
+/* --- Utility Classes --- */
+.gk-bg-accent {
+  background-color: var(--gk-accent) !important;
+}
+
+.gk-bg-card {
+  background-color: var(--gk-card) !important;
+}
+
+.gk-text-accent {
+  color: var(--gk-accent) !important;
+}
+
+.gk-text-muted {
+  color: var(--gk-muted) !important;
+}
+
+.gk-border {
+  border: 1px solid var(--gk-border) !important;
+}
+
+.gk-font-heading {
+  font-family: var(--gk-font-heading) !important;
+}
+
+.gk-font-label {
+  font-family: var(--gk-font-label) !important;
+}

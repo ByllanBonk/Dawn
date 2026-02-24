@@ -1,0 +1,406 @@
+{%- style -%}
+  .gk-lessons {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  .gk-lessons__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gk-lessons__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .gk-lessons__eyebrow {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.75rem;
+    color: #E8690A;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .gk-lessons__heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 12px 0;
+  }
+
+  .gk-lessons__subtext {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .gk-lessons__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+
+  .gk-lessons__card {
+    background-color: #141414;
+    border: 1px solid #272727;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gk-lessons__card:hover {
+    border-color: #E8690A;
+    transform: translateY(-4px);
+  }
+
+  .gk-lessons__card-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+
+  .gk-lessons__card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .gk-lessons__card:hover .gk-lessons__card-image img {
+    transform: scale(1.05);
+  }
+
+  .gk-lessons__card-content {
+    padding: 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gk-lessons__card-label {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.7rem;
+    color: #E8690A;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .gk-lessons__card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: #E8E8E8;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .gk-lessons__card-desc {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0 0 20px 0;
+    flex: 1;
+  }
+
+  .gk-lessons__card-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    color: #E8690A;
+    margin-bottom: 20px;
+  }
+
+  .gk-lessons__card-btn {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: 0;
+    text-decoration: none;
+    background-color: #E8690A;
+    color: #FFFFFF;
+    border: 2px solid #E8690A;
+    transition: all 0.3s ease;
+    text-align: center;
+    align-self: flex-start;
+  }
+
+  .gk-lessons__card-btn:hover {
+    background-color: transparent;
+    color: #E8690A;
+  }
+
+  /* Feature list within card */
+  .gk-lessons__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+  }
+
+  .gk-lessons__features li {
+    font-family: 'DM Sans', sans-serif;
+    color: #E8E8E8;
+    font-size: 0.9rem;
+    padding: 6px 0;
+    border-bottom: 1px solid #272727;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gk-lessons__features li:last-child {
+    border-bottom: none;
+  }
+
+  .gk-lessons__features li::before {
+    content: "→";
+    color: #E8690A;
+    font-weight: bold;
+  }
+
+  @media screen and (max-width: 989px) {
+    .gk-lessons__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .gk-lessons__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{%- endstyle -%}
+
+<section class="gk-lessons" id="section-{{ section.id }}">
+  <div class="gk-lessons__inner">
+    <div class="gk-lessons__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="gk-lessons__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h1 class="gk-lessons__heading">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+      {%- if section.settings.subtext != blank -%}
+        <p class="gk-lessons__subtext">{{ section.settings.subtext }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="gk-lessons__grid">
+        {%- for block in section.blocks -%}
+          <div class="gk-lessons__card" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <div class="gk-lessons__card-image">
+                {{ block.settings.image | image_url: width: 800 | image_tag:
+                  loading: 'lazy',
+                  sizes: '(max-width: 749px) 100vw, (max-width: 989px) 50vw, 33vw',
+                  widths: '375, 550, 750, 800'
+                }}
+              </div>
+            {%- endif -%}
+            <div class="gk-lessons__card-content">
+              {%- if block.settings.label != blank -%}
+                <span class="gk-lessons__card-label">{{ block.settings.label }}</span>
+              {%- endif -%}
+              {%- if block.settings.title != blank -%}
+                <h2 class="gk-lessons__card-title">{{ block.settings.title }}</h2>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <p class="gk-lessons__card-desc">{{ block.settings.description }}</p>
+              {%- endif -%}
+
+              {%- if block.settings.features != blank -%}
+                <ul class="gk-lessons__features">
+                  {%- assign features = block.settings.features | split: "|" -%}
+                  {%- for feature in features -%}
+                    <li>{{ feature | strip }}</li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+
+              {%- if block.settings.price != blank -%}
+                <div class="gk-lessons__card-price">{{ block.settings.price }}</div>
+              {%- endif -%}
+
+              {%- if block.settings.button_label != blank -%}
+                <a href="{{ block.settings.button_link }}" class="gk-lessons__card-btn">{{ block.settings.button_label }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GK Lessons Page",
+  "tag": "section",
+  "class": "gk-lessons-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0D0D0D"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Learn from the Gristleman"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "LESSONS"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Level up your playing with virtual lessons, on-demand courses, and deep-dive instructional content from Greg Koch."
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Desktop Columns",
+      "default": "3",
+      "options": [
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "lesson_card",
+      "name": "Lesson Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Category Label",
+          "default": "Lessons"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Virtual Lessons"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "One-on-one virtual guitar lessons with Greg Koch."
+        },
+        {
+          "type": "text",
+          "id": "features",
+          "label": "Feature List (pipe-separated)",
+          "info": "Separate features with | character, e.g. 60 min sessions|All skill levels|Zoom video call",
+          "default": "60 min sessions|All skill levels|Personalized instruction"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price Display",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "BOOK NOW"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Lessons Page",
+      "blocks": [
+        {
+          "type": "lesson_card",
+          "settings": {
+            "label": "Private",
+            "title": "Virtual Lessons",
+            "description": "One-on-one virtual guitar lessons with Greg Koch via Zoom. All skill levels welcome.",
+            "features": "60 minute sessions|All skill levels|Personalized instruction|Zoom video call",
+            "button_label": "BOOK A LESSON"
+          }
+        },
+        {
+          "type": "lesson_card",
+          "settings": {
+            "label": "On Demand",
+            "title": "On-Demand Courses",
+            "description": "Self-paced video courses covering technique, tone, and the gristle approach to guitar.",
+            "features": "Watch at your own pace|HD video lessons|Downloadable tabs|Lifetime access",
+            "button_label": "BROWSE COURSES"
+          }
+        },
+        {
+          "type": "lesson_card",
+          "settings": {
+            "label": "TrueFire",
+            "title": "TrueFire Courses",
+            "description": "Full-length instructional courses available on the TrueFire platform.",
+            "features": "Professional production|Interactive tabs|Loop & slow down tools|Mobile app access",
+            "button_label": "VIEW ON TRUEFIRE"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

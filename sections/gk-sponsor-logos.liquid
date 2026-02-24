@@ -1,0 +1,276 @@
+{%- style -%}
+  .gk-sponsors {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    {% if section.settings.show_top_border %}
+      border-top: 1px solid #272727;
+    {% endif %}
+    {% if section.settings.show_bottom_border %}
+      border-bottom: 1px solid #272727;
+    {% endif %}
+  }
+
+  .gk-sponsors__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gk-sponsors__header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .gk-sponsors__eyebrow {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.75rem;
+    color: #E8690A;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .gk-sponsors__heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+  }
+
+  .gk-sponsors__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: {{ section.settings.logo_gap }}px;
+  }
+
+  .gk-sponsors__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: {{ section.settings.logo_width }}px;
+    height: {{ section.settings.logo_height }}px;
+    padding: 16px;
+    transition: all 0.4s ease;
+  }
+
+  .gk-sponsors__item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(100%) brightness(0.6);
+    opacity: 0.5;
+    transition: all 0.4s ease;
+  }
+
+  .gk-sponsors__item:hover img {
+    filter: grayscale(0%) brightness(1);
+    opacity: 1;
+  }
+
+  /* Orange tint on hover variant */
+  .gk-sponsors--orange-hover .gk-sponsors__item:hover img {
+    filter: grayscale(0%) brightness(1) sepia(1) saturate(5) hue-rotate(-10deg);
+    opacity: 1;
+  }
+
+  .gk-sponsors__item a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media screen and (max-width: 749px) {
+    .gk-sponsors__grid {
+      gap: 24px;
+    }
+
+    .gk-sponsors__item {
+      width: calc(50% - 24px);
+      height: auto;
+      padding: 12px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="gk-sponsors{% if section.settings.orange_hover %} gk-sponsors--orange-hover{% endif %}" id="section-{{ section.id }}">
+  <div class="gk-sponsors__inner">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+      <div class="gk-sponsors__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="gk-sponsors__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="gk-sponsors__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="gk-sponsors__grid">
+        {%- for block in section.blocks -%}
+          <div class="gk-sponsors__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.logo != blank -%}
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}" target="_blank" rel="noopener" title="{{ block.settings.name }}">
+                  {{ block.settings.logo | image_url: width: 300 | image_tag:
+                    loading: 'lazy',
+                    alt: block.settings.name
+                  }}
+                </a>
+              {%- else -%}
+                {{ block.settings.logo | image_url: width: 300 | image_tag:
+                  loading: 'lazy',
+                  alt: block.settings.name
+                }}
+              {%- endif -%}
+            {%- else -%}
+              <span style="color: #777777; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">{{ block.settings.name }}</span>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GK Sponsor Logos",
+  "tag": "section",
+  "class": "gk-sponsors-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0D0D0D"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Proud Partners"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": ""
+    },
+    {
+      "type": "checkbox",
+      "id": "orange_hover",
+      "label": "Orange Tint on Hover",
+      "default": true,
+      "info": "Logos turn orange-tinted on hover instead of full color"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo Width",
+      "min": 80,
+      "max": 250,
+      "step": 10,
+      "default": 150,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo Height",
+      "min": 40,
+      "max": 150,
+      "step": 5,
+      "default": 70,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "logo_gap",
+      "label": "Gap Between Logos",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_top_border",
+      "label": "Show Top Border",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_border",
+      "label": "Show Bottom Border",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Sponsor Logo",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Sponsor Name",
+          "default": "Sponsor"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo Image",
+          "info": "Upload a white or transparent PNG logo"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Sponsor Website"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Sponsor Logos",
+      "blocks": [
+        { "type": "logo", "settings": { "name": "JAM Pedals" } },
+        { "type": "logo", "settings": { "name": "Fishman" } },
+        { "type": "logo", "settings": { "name": "Reverend" } },
+        { "type": "logo", "settings": { "name": "Tone King" } },
+        { "type": "logo", "settings": { "name": "D'Addario" } },
+        { "type": "logo", "settings": { "name": "Dunlop" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
