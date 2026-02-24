@@ -1,0 +1,365 @@
+{%- comment -%}
+  GK About Feature Section
+  - Old site layout: Title + large centered image + credit
+  - New site motion: depth slide image + staggered text reveal
+  - Self-contained CSS + JS, scoped to section.id
+{%- endcomment -%}
+
+<section id="GK-About-{{ section.id }}" class="gk-about">
+  <div class="page-width gk-about__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="gk-about__eyebrow">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="gk-about__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.image != blank -%}
+      <figure class="gk-about__figure" aria-label="{{ section.settings.heading | escape }}">
+        <div class="gk-about__media">
+          {%- liquid
+            assign img = section.settings.image
+            assign img_h = img.width | divided_by: img.aspect_ratio
+          -%}
+          {{
+            img
+            | image_url: width: 2400
+            | image_tag:
+              width: img.width,
+              height: img_h,
+              loading: 'lazy',
+              widths: '600, 900, 1200, 1600, 2000, 2400',
+              sizes: '(min-width: 990px) 1100px, (min-width: 750px) 90vw, 92vw',
+              class: 'gk-about__img'
+          }}
+        </div>
+
+        {%- if section.settings.photo_credit != blank -%}
+          <figcaption class="gk-about__credit">
+            {{ section.settings.photo_credit }}
+          </figcaption>
+        {%- endif -%}
+      </figure>
+    {%- endif -%}
+
+    <div class="gk-about__content">
+      {%- if section.settings.subheading != blank -%}
+        <h3 class="gk-about__subheading">{{ section.settings.subheading }}</h3>
+      {%- endif -%}
+
+      {%- if section.settings.body != blank -%}
+        <div class="gk-about__rte rte">
+          {{ section.settings.body }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <div class="gk-about__cta">
+          <a
+            class="button button--primary"
+            {% if section.settings.button_link != blank %}
+              href="{{ section.settings.button_link }}"
+            {% else %}
+              role="link" aria-disabled="true"
+            {% endif %}
+          >
+            {{ section.settings.button_label | escape }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <style>
+    /* ============================
+      GK About Feature (scoped)
+      ============================ */
+    #GK-About-{{ section.id }}.gk-about {
+      --accent: {{ section.settings.accent | default: '#E8690A' }};
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.66);
+      --line: rgba(255,255,255,0.10);
+      --card: rgba(255,255,255,0.06);
+
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    /* If your section sits on a light page, you can flip these later.
+       For now it assumes your darker premium styling. */
+    #GK-About-{{ section.id }} .gk-about__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Title area mimics old page simplicity */
+    #GK-About-{{ section.id }} .gk-about__eyebrow {
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    #GK-About-{{ section.id }} .gk-about__heading {
+      margin: 0 0 18px 0;
+      font-weight: 700;
+      line-height: 1.12;
+    }
+
+    /* Image block mimics old page size */
+    #GK-About-{{ section.id }} .gk-about__figure {
+      margin: 0;
+    }
+
+    #GK-About-{{ section.id }} .gk-about__media {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      /* subtle depth, no glow */
+      box-shadow: 0 14px 44px rgba(0,0,0,0.35);
+    }
+
+    #GK-About-{{ section.id }} .gk-about__img {
+      display: block;
+      width: 100%;
+      height: auto;
+      transform: translateZ(0);
+    }
+
+    /* Premium hover (subtle, matches your rules) */
+    @media (hover: hover) {
+      #GK-About-{{ section.id }} .gk-about__media {
+        transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      }
+      #GK-About-{{ section.id }} .gk-about__media:hover {
+        transform: translateY(-1px);
+        border-color: rgba(232,105,10,0.35);
+        box-shadow: 0 18px 54px rgba(0,0,0,0.45);
+      }
+    }
+
+    #GK-About-{{ section.id }} .gk-about__credit {
+      margin-top: 10px;
+      font-style: italic;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* Content below, clean like old page but with new typography */
+    #GK-About-{{ section.id }} .gk-about__content {
+      margin-top: 18px;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+
+    #GK-About-{{ section.id }} .gk-about__subheading {
+      margin: 0 0 10px 0;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    #GK-About-{{ section.id }} .gk-about__rte {
+      color: var(--text);
+    }
+
+    #GK-About-{{ section.id }} .gk-about__cta {
+      margin-top: 16px;
+    }
+
+    /* ============================
+      Motion: Depth Slide + Fly-in
+      ============================ */
+    #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__media,
+    #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__heading,
+    #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__content {
+      opacity: 0;
+      transform: translateY(18px);
+      will-change: transform, opacity;
+    }
+
+    /* more pronounced for image */
+    #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__media {
+      transform: translateY(14px) scale(1.04);
+    }
+
+    #GK-About-{{ section.id }}.gk-in .gk-about__media {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: opacity 650ms cubic-bezier(.16,.84,.44,1),
+                  transform 900ms cubic-bezier(.16,.84,.44,1);
+    }
+
+    /* Stagger heading then content */
+    #GK-About-{{ section.id }}.gk-in .gk-about__heading {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 650ms cubic-bezier(.16,.84,.44,1) 140ms,
+                  transform 650ms cubic-bezier(.16,.84,.44,1) 140ms;
+    }
+
+    #GK-About-{{ section.id }}.gk-in .gk-about__content {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 650ms cubic-bezier(.16,.84,.44,1) 220ms,
+                  transform 650ms cubic-bezier(.16,.84,.44,1) 220ms;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__media,
+      #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__heading,
+      #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__content {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+
+  <script>
+    (function() {
+      var root = document.getElementById('GK-About-{{ section.id }}');
+      if (!root) return;
+
+      var animEnabled = root.getAttribute('data-gk-anim') === 'true';
+      if (!animEnabled) return;
+
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        root.classList.add('gk-in');
+        return;
+      }
+
+      var revealed = false;
+      var reveal = function() {
+        if (revealed) return;
+        revealed = true;
+        root.classList.add('gk-in');
+      };
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              reveal();
+              io.disconnect();
+            }
+          });
+        }, { threshold: 0.25 });
+
+        io.observe(root);
+      } else {
+        requestAnimationFrame(reveal);
+      }
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "GK About Feature",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_animation",
+      "default": true,
+      "label": "Enable fly-in animation"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow (optional)",
+      "default": "."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About Greg"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Main image"
+    },
+    {
+      "type": "text",
+      "id": "photo_credit",
+      "label": "Photo credit (optional)",
+      "default": "above photo credit: ©2025CJFoeckler"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading (optional)",
+      "default": "."
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body text",
+      "default": "<p>Add your updated About copy here. This is editable in the theme editor.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label (optional)",
+      "default": "."
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent color",
+      "default": "#E8690A"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 52
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK About Feature"
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+{% endjavascript %}
+
+{%- comment -%}
+  Set animation attribute after schema so it stays editable.
+{%- endcomment -%}
+<script>
+  (function(){
+    var el = document.getElementById('GK-About-{{ section.id }}');
+    if (!el) return;
+    el.setAttribute('data-gk-anim', {{ section.settings.enable_animation | json }});
+  })();
+</script>
