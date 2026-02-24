@@ -44,7 +44,7 @@
         "button"
       ],
       "settings": {
-        "image": "shopify://shop_images/pic.jpg",
+        "image": "shopify://shop_images/8059526f-19c9-4901-a9d8-9059596f1446.png",
         "image_overlay_opacity": 40,
         "image_height": "large",
         "image_behavior": "none",
@@ -194,7 +194,7 @@
       ],
       "name": "GK Featured Gristle",
       "settings": {
-        "bg_color": "#0D0D0D",
+        "bg_color": "#0d0d0d",
         "eyebrow": "Learn from the Gristleman",
         "heading": "FEATURED GRISTLE",
         "subtext": "Lessons, courses, and on-demand content from Greg Koch.",
