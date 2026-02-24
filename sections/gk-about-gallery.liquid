@@ -1,10 +1,10 @@
 {%- comment -%}
   GK About Gallery Section
-  - Mimics old site: big heading + main image + credit + 4 thumbnails
-  - Main image + thumbnails open fullscreen modal (lightbox)
+  - Old site layout: heading + main image + credit + 4 small thumbnails directly under hero
+  - Thumbnails + hero open fullscreen modal (lightbox)
   - Premium motion: depth slide + stagger
-  - Self-contained CSS + JS, scoped to section.id
-  NOTE: We treat "." as “empty” for optional text fields (Shopify schema won’t allow blank defaults).
+  - Scoped CSS/JS
+  NOTE: We treat "." as empty for optional text fields.
 {%- endcomment -%}
 
 {%- liquid
@@ -65,7 +65,7 @@
       </figure>
     {%- endif -%}
 
-    {%- comment -%} Thumbnails should be directly under the hero (OLD SITE ORDER) {%- endcomment -%}
+    {%- comment -%} Thumbnails (directly under hero, before body) {%- endcomment -%}
     {%- liquid
       assign has_thumbs = false
       if section.settings.thumb_1 != blank or section.settings.thumb_2 != blank or section.settings.thumb_3 != blank or section.settings.thumb_4 != blank
@@ -89,7 +89,6 @@
               if alt_override != blank and alt_override != '.'
                 assign alt = alt_override
               endif
-              assign t_h = t.width | divided_by: t.aspect_ratio
             endif
           -%}
 
@@ -107,8 +106,6 @@
                 t
                 | image_url: width: 900
                 | image_tag:
-                  width: t.width,
-                  height: t_h,
                   loading: 'lazy',
                   widths: '300, 450, 600, 750, 900',
                   sizes: '(min-width: 990px) 260px, (min-width: 750px) 22vw, 42vw',
@@ -120,7 +117,6 @@
       </div>
     {%- endif -%}
 
-    {%- comment -%} Body copy comes AFTER thumbnails (OLD SITE ORDER) {%- endcomment -%}
     {%- if body_val != blank -%}
       <div class="gk-aboutGallery__rte rte">
         {{ section.settings.body }}
@@ -140,9 +136,7 @@
       aria-label="Image preview"
       tabindex="-1"
     >
-      <button type="button" class="gk-aboutGallery__close" data-gk-close aria-label="Close">
-        ×
-      </button>
+      <button type="button" class="gk-aboutGallery__close" data-gk-close aria-label="Close">×</button>
 
       <div class="gk-aboutGallery__modalMedia">
         <img class="gk-aboutGallery__modalImg" alt="" loading="eager" />
@@ -151,11 +145,309 @@
   </div>
 
   <style>
-    /* (UNCHANGED) — keep your existing CSS exactly as-is */
+    #GK-AboutGallery-{{ section.id }}.gk-aboutGallery{
+      --accent: {{ section.settings.accent | default: '#E8690A' }};
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.66);
+      --line: rgba(255,255,255,0.10);
+      --card: rgba(255,255,255,0.06);
+      --shadow: 0 14px 44px rgba(0,0,0,0.35);
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__inner{
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__eyebrow{
+      font-size:12px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heading{
+      margin:0 0 18px 0;
+      font-weight:800;
+      line-height:1.05;
+      letter-spacing:.01em;
+      font-size:clamp(34px,4.5vw,56px);
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroFigure{ margin:0; }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroBtn{
+      display:block;width:100%;
+      padding:0;border:0;background:transparent;
+      cursor:pointer;text-align:inherit;color:inherit;
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroBtn:focus,
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroBtn:focus-visible,
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumb:focus,
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumb:focus-visible{
+      outline:none!important; box-shadow:none!important;
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroMedia{
+      position:relative;overflow:hidden;
+      border-radius:14px;border:1px solid var(--line);
+      background:var(--card);
+      box-shadow:var(--shadow);
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroImg{
+      display:block;width:100%;height:auto;
+      transform:translateZ(0);
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__credit{
+      margin-top:10px;
+      font-style:italic;
+      color:var(--muted);
+      text-align:right;
+    }
+
+    /* ✅ Thumbnails: SMALL + uniform (like old site) */
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumbGrid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+    }
+
+    @media (max-width: 749px){
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumbGrid{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+      }
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumb{
+      appearance:none;
+      width:100%;
+      padding:0;
+      border:1px solid var(--line);
+      background:var(--card);
+      border-radius:12px;
+      overflow:hidden;
+      cursor:pointer;
+      box-shadow:0 10px 28px rgba(0,0,0,0.28);
+      transform:translateZ(0);
+
+      /* Force a consistent “small strip” look */
+      aspect-ratio: 16 / 9;
+      max-height: 140px;
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumbImg{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover; /* key: keeps them uniform like the old row */
+    }
+
+    @media (hover:hover){
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumb,
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroMedia{
+        transition:transform 160ms ease,border-color 160ms ease,box-shadow 160ms ease;
+      }
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumb:hover{
+        transform:translateY(-1px);
+        border-color:rgba(232,105,10,0.35);
+        box-shadow:0 16px 40px rgba(0,0,0,0.38);
+      }
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroMedia:hover{
+        transform:translateY(-1px);
+        border-color:rgba(232,105,10,0.35);
+        box-shadow:0 18px 54px rgba(0,0,0,0.45);
+      }
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__rte{
+      margin-top:18px;
+      color:var(--text);
+    }
+
+    /* Animation */
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__heroMedia,
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__heading,
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__rte,
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__thumbGrid,
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__eyebrow{
+      opacity:0;
+      transform:translateY(18px);
+      will-change:transform,opacity;
+    }
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__heroMedia{
+      transform:translateY(14px) scale(1.03);
+    }
+    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutGallery__heroMedia{
+      opacity:1; transform:translateY(0) scale(1);
+      transition:opacity 650ms cubic-bezier(.16,.84,.44,1),
+                 transform 900ms cubic-bezier(.16,.84,.44,1);
+    }
+    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutGallery__eyebrow{
+      opacity:1; transform:translateY(0);
+      transition:opacity 650ms cubic-bezier(.16,.84,.44,1) 80ms,
+                 transform 650ms cubic-bezier(.16,.84,.44,1) 80ms;
+    }
+    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutGallery__heading{
+      opacity:1; transform:translateY(0);
+      transition:opacity 650ms cubic-bezier(.16,.84,.44,1) 120ms,
+                 transform 650ms cubic-bezier(.16,.84,.44,1) 120ms;
+    }
+    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutGallery__thumbGrid{
+      opacity:1; transform:translateY(0);
+      transition:opacity 650ms cubic-bezier(.16,.84,.44,1) 200ms,
+                 transform 650ms cubic-bezier(.16,.84,.44,1) 200ms;
+    }
+    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutGallery__rte{
+      opacity:1; transform:translateY(0);
+      transition:opacity 650ms cubic-bezier(.16,.84,.44,1) 260ms,
+                 transform 650ms cubic-bezier(.16,.84,.44,1) 260ms;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__heroMedia,
+      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__heading,
+      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__rte,
+      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__thumbGrid,
+      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__eyebrow{
+        opacity:1!important; transform:none!important; transition:none!important;
+      }
+    }
+
+    /* Modal */
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__modal[hidden]{display:none!important;}
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__modal{position:fixed;inset:0;z-index:9999;}
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__backdrop{
+      position:absolute;inset:0;
+      background:rgba(0,0,0,0.75);
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+    }
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__dialog{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+      padding:22px;outline:none;
+    }
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__modalMedia{
+      position:relative;
+      width:min(1100px,96vw);
+      max-height:92vh;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(0,0,0,0.25);
+      box-shadow:0 22px 80px rgba(0,0,0,0.55);
+      overflow:hidden;
+    }
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__modalImg{
+      display:block;width:100%;
+      max-height:92vh;
+      object-fit:contain;
+      background:rgba(0,0,0,0.15);
+    }
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__close{
+      position:absolute;top:16px;right:18px;
+      width:44px;height:44px;border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.30);
+      color:rgba(255,255,255,0.92);
+      font-size:26px;line-height:1;
+      cursor:pointer;display:grid;place-items:center;
+      transition:transform 160ms ease,border-color 160ms ease,background 160ms ease;
+    }
+    @media (hover:hover){
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__close:hover{
+        transform:translateY(-1px);
+        border-color:rgba(232,105,10,0.35);
+        background:rgba(0,0,0,0.45);
+      }
+    }
   </style>
 
   <script>
-    /* (UNCHANGED) — keep your existing JS exactly as-is */
+    (function() {
+      var root = document.getElementById('GK-AboutGallery-{{ section.id }}');
+      if (!root) return;
+
+      var animEnabled = root.getAttribute('data-gk-anim') === 'true';
+      if (animEnabled && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+        var revealed = false;
+        var reveal = function() {
+          if (revealed) return;
+          revealed = true;
+          root.classList.add('gk-in');
+        };
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) { reveal(); io.disconnect(); }
+            });
+          }, { threshold: 0.22 });
+          io.observe(root);
+        } else {
+          requestAnimationFrame(reveal);
+        }
+      } else {
+        root.classList.add('gk-in');
+      }
+
+      var modal = root.querySelector('.gk-aboutGallery__modal');
+      var modalImg = root.querySelector('.gk-aboutGallery__modalImg');
+      var dialog = root.querySelector('.gk-aboutGallery__dialog');
+      if (!modal || !modalImg || !dialog) return;
+
+      var lastActive = null;
+
+      function openModal(src, alt) {
+        lastActive = document.activeElement;
+        modal.hidden = false;
+        modal.setAttribute('aria-hidden', 'false');
+        modalImg.src = src;
+        modalImg.alt = alt || '';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        dialog.focus();
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        modal.setAttribute('aria-hidden', 'true');
+        modalImg.removeAttribute('src');
+        modalImg.alt = '';
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        if (lastActive && lastActive.focus) lastActive.focus();
+      }
+
+      root.addEventListener('click', function(e) {
+        var opener = e.target.closest('[data-gk-open]');
+        if (opener) {
+          e.preventDefault();
+          var src = opener.getAttribute('data-gk-src');
+          var alt = opener.getAttribute('data-gk-alt') || '';
+          if (src) openModal(src, alt);
+          return;
+        }
+        if (e.target.closest('[data-gk-close]')) {
+          e.preventDefault();
+          closeModal();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (modal.hidden) return;
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeModal();
+        }
+      });
+    })();
   </script>
 </section>
 
@@ -165,120 +457,27 @@
   "tag": "section",
   "class": "section",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "enable_animation",
-      "default": true,
-      "label": "Enable fly-in animation"
-    },
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow (optional)",
-      "default": "."
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "About the Koch Marshall Trio"
-    },
-    {
-      "type": "image_picker",
-      "id": "main_image",
-      "label": "Main image"
-    },
-    {
-      "type": "text",
-      "id": "main_credit",
-      "label": "Main photo credit (optional)",
-      "default": "above photo credit: ©2025CJFoeckler"
-    },
-    {
-      "type": "header",
-      "content": "Thumbnail images (click to expand)"
-    },
-    {
-      "type": "image_picker",
-      "id": "thumb_1",
-      "label": "Thumbnail 1"
-    },
-    {
-      "type": "text",
-      "id": "thumb_alt_1",
-      "label": "Alt text override 1 (optional)",
-      "default": "."
-    },
-    {
-      "type": "image_picker",
-      "id": "thumb_2",
-      "label": "Thumbnail 2"
-    },
-    {
-      "type": "text",
-      "id": "thumb_alt_2",
-      "label": "Alt text override 2 (optional)",
-      "default": "."
-    },
-    {
-      "type": "image_picker",
-      "id": "thumb_3",
-      "label": "Thumbnail 3"
-    },
-    {
-      "type": "text",
-      "id": "thumb_alt_3",
-      "label": "Alt text override 3 (optional)",
-      "default": "."
-    },
-    {
-      "type": "image_picker",
-      "id": "thumb_4",
-      "label": "Thumbnail 4"
-    },
-    {
-      "type": "text",
-      "id": "thumb_alt_4",
-      "label": "Alt text override 4 (optional)",
-      "default": "."
-    },
-    {
-      "type": "richtext",
-      "id": "body",
-      "label": "Body text",
-      "default": "<p>Add your updated copy here. This is editable in the theme editor.</p>"
-    },
-    {
-      "type": "color",
-      "id": "accent",
-      "label": "Accent color",
-      "default": "#E8690A"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 140,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding top",
-      "default": 44
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 140,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding bottom",
-      "default": 52
-    }
+    { "type": "checkbox", "id": "enable_animation", "default": true, "label": "Enable fly-in animation" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow (optional)", "default": "." },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "About the Koch Marshall Trio" },
+    { "type": "image_picker", "id": "main_image", "label": "Main image" },
+    { "type": "text", "id": "main_credit", "label": "Main photo credit (optional)", "default": "above photo credit: ©2025CJFoeckler" },
+
+    { "type": "header", "content": "Thumbnail images (click to expand)" },
+    { "type": "image_picker", "id": "thumb_1", "label": "Thumbnail 1" },
+    { "type": "text", "id": "thumb_alt_1", "label": "Alt text override 1 (optional)", "default": "." },
+    { "type": "image_picker", "id": "thumb_2", "label": "Thumbnail 2" },
+    { "type": "text", "id": "thumb_alt_2", "label": "Alt text override 2 (optional)", "default": "." },
+    { "type": "image_picker", "id": "thumb_3", "label": "Thumbnail 3" },
+    { "type": "text", "id": "thumb_alt_3", "label": "Alt text override 3 (optional)", "default": "." },
+    { "type": "image_picker", "id": "thumb_4", "label": "Thumbnail 4" },
+    { "type": "text", "id": "thumb_alt_4", "label": "Alt text override 4 (optional)", "default": "." },
+
+    { "type": "richtext", "id": "body", "label": "Body text", "default": "<p>Add your updated copy here. This is editable in the theme editor.</p>" },
+    { "type": "color", "id": "accent", "label": "Accent color", "default": "#E8690A" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding top", "default": 44 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding bottom", "default": 52 }
   ],
-  "presets": [
-    {
-      "name": "GK About Gallery"
-    }
-  ]
+  "presets": [{ "name": "GK About Gallery" }]
 }
 {% endschema %}
