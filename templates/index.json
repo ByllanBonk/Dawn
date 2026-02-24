@@ -277,6 +277,14 @@
             "url": "https://www.deezer.com/us/show/1572042"
           }
         },
+        "platform_link_NYRx3L": {
+          "type": "platform_link",
+          "settings": {
+            "column": "watch_live",
+            "label": "YouTube",
+            "url": "https://www.youtube.com/@GregKochMusic/streams"
+          }
+        },
         "platform_link_GLRmRE": {
           "type": "platform_link",
           "settings": {
@@ -378,6 +386,7 @@
         "platform_link_mLmVKg",
         "platform_link_exYqQe",
         "platform_link_BQXf4F",
+        "platform_link_NYRx3L",
         "platform_link_GLRmRE",
         "platform_link_GjRh34",
         "platform_link_YwtxXf",
@@ -399,7 +408,7 @@
         "col_1_title": "STREAM GREG",
         "col_2_title": "STREAM KMT",
         "col_3_title": "PODCAST",
-        "col_4_title": "WATCH GREG LIVE",
+        "col_4_title": "LIVE STREAMS",
         "follow_heading": "FOLLOW",
         "show_icons": false,
         "show_dividers": true,
