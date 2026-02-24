@@ -1,0 +1,357 @@
+{%- style -%}
+  .gk-featured-gristle {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  .gk-featured-gristle__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gk-featured-gristle__header {
+    text-align: {{ section.settings.text_alignment }};
+    margin-bottom: 40px;
+  }
+
+  .gk-featured-gristle__eyebrow {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.75rem;
+    color: #E8690A;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .gk-featured-gristle__heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 8px 0;
+  }
+
+  .gk-featured-gristle__subtext {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 1rem;
+    max-width: 600px;
+    {% if section.settings.text_alignment == 'center' %}
+      margin-left: auto;
+      margin-right: auto;
+    {% endif %}
+  }
+
+  .gk-featured-gristle__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: 24px;
+  }
+
+  .gk-featured-gristle__card {
+    background-color: #141414;
+    border: 1px solid #272727;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+  }
+
+  .gk-featured-gristle__card:hover {
+    border-color: #E8690A;
+    transform: translateY(-4px);
+  }
+
+  .gk-featured-gristle__card-image {
+    width: 100%;
+    aspect-ratio: {{ section.settings.image_ratio }};
+    overflow: hidden;
+  }
+
+  .gk-featured-gristle__card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .gk-featured-gristle__card:hover .gk-featured-gristle__card-image img {
+    transform: scale(1.05);
+  }
+
+  .gk-featured-gristle__card-content {
+    padding: 24px;
+  }
+
+  .gk-featured-gristle__card-label {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.7rem;
+    color: #E8690A;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .gk-featured-gristle__card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    color: #E8E8E8;
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .gk-featured-gristle__card-desc {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0 0 16px 0;
+  }
+
+  .gk-featured-gristle__card-btn {
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #E8690A;
+    text-decoration: none;
+    border-bottom: 1px solid #E8690A;
+    padding-bottom: 2px;
+    transition: color 0.3s ease;
+  }
+
+  .gk-featured-gristle__card-btn:hover {
+    color: #E8E8E8;
+    border-color: #E8E8E8;
+  }
+
+  @media screen and (max-width: 989px) {
+    .gk-featured-gristle__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .gk-featured-gristle__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{%- endstyle -%}
+
+<section class="gk-featured-gristle" id="section-{{ section.id }}">
+  <div class="gk-featured-gristle__inner">
+    <div class="gk-featured-gristle__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="gk-featured-gristle__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="gk-featured-gristle__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtext != blank -%}
+        <p class="gk-featured-gristle__subtext">{{ section.settings.subtext }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="gk-featured-gristle__grid">
+        {%- for block in section.blocks -%}
+          <a href="{{ block.settings.link }}" class="gk-featured-gristle__card" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <div class="gk-featured-gristle__card-image">
+                {{ block.settings.image | image_url: width: 800 | image_tag:
+                  loading: 'lazy',
+                  sizes: '(max-width: 749px) 100vw, (max-width: 989px) 50vw, 33vw',
+                  widths: '375, 550, 750, 800'
+                }}
+              </div>
+            {%- endif -%}
+            <div class="gk-featured-gristle__card-content">
+              {%- if block.settings.label != blank -%}
+                <span class="gk-featured-gristle__card-label">{{ block.settings.label }}</span>
+              {%- endif -%}
+              {%- if block.settings.title != blank -%}
+                <h3 class="gk-featured-gristle__card-title">{{ block.settings.title }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <p class="gk-featured-gristle__card-desc">{{ block.settings.description }}</p>
+              {%- endif -%}
+              {%- if block.settings.button_label != blank -%}
+                <span class="gk-featured-gristle__card-btn">{{ block.settings.button_label }}</span>
+              {%- endif -%}
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GK Featured Gristle",
+  "tag": "section",
+  "class": "gk-featured-gristle-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0D0D0D"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Learn from the Gristleman"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "FEATURED GRISTLE"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Lessons, courses, and on-demand content from Greg Koch."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Desktop Columns",
+      "default": "3",
+      "options": [
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image Ratio",
+      "default": "16/9",
+      "options": [
+        { "value": "1/1", "label": "Square" },
+        { "value": "4/3", "label": "4:3" },
+        { "value": "16/9", "label": "16:9" },
+        { "value": "3/2", "label": "3:2" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Feature Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Category Label",
+          "default": "Lessons"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "default": "Virtual Lessons"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "One-on-one virtual guitar lessons with Greg Koch via Zoom."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "LEARN MORE"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Card Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Featured Gristle",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "label": "Lessons",
+            "title": "Virtual Lessons",
+            "description": "One-on-one virtual guitar lessons with Greg Koch via Zoom.",
+            "button_label": "BOOK NOW"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "label": "On Demand",
+            "title": "On-Demand Courses",
+            "description": "Self-paced video courses covering technique, tone, and more.",
+            "button_label": "BROWSE COURSES"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "label": "TrueFire",
+            "title": "TrueFire Courses",
+            "description": "Full-length instructional courses on the TrueFire platform.",
+            "button_label": "VIEW ON TRUEFIRE"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
