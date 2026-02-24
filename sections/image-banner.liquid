@@ -29,6 +29,79 @@
   }
 {%- endstyle -%}
 
+{%- style -%}
+/* ============================= */
+/* GK Cinematic Hero Bloom Intro */
+/* ============================= */
+
+#Banner-{{ section.id }}.gk-hero-bloom {
+  position: relative;
+}
+
+#Banner-{{ section.id }}.gk-hero-bloom .banner__media {
+  overflow: hidden;
+}
+
+/* Initial state */
+#Banner-{{ section.id }}.gk-hero-bloom.gk-hero--pre .banner__media img {
+  transform: scale(1.06);
+  filter: brightness(0.82) contrast(1.05) saturate(1.02);
+}
+
+/* Warm lamp bloom layer */
+#Banner-{{ section.id }}.gk-hero-bloom .banner__media::after {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.98);
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(700px 420px at 82% 30%, rgba(232,105,10,0.28), rgba(232,105,10,0) 70%),
+    radial-gradient(520px 340px at 78% 24%, rgba(232,105,10,0.18), rgba(232,105,10,0) 68%);
+  transition: opacity 900ms cubic-bezier(.16,.84,.44,1),
+              transform 900ms cubic-bezier(.16,.84,.44,1);
+}
+
+/* Reveal state */
+#Banner-{{ section.id }}.gk-hero-bloom.gk-hero--in .banner__media img {
+  transform: scale(1);
+  filter: brightness(1) contrast(1) saturate(1);
+  transition: transform 1000ms cubic-bezier(.16,.84,.44,1),
+              filter 1000ms cubic-bezier(.16,.84,.44,1);
+}
+
+#Banner-{{ section.id }}.gk-hero-bloom.gk-hero--in .banner__media::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Content reveal */
+#Banner-{{ section.id }}.gk-hero-bloom .banner__content {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+#Banner-{{ section.id }}.gk-hero-bloom.gk-hero--in .banner__content {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 700ms cubic-bezier(.16,.84,.44,1) 180ms,
+              transform 700ms cubic-bezier(.16,.84,.44,1) 180ms;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  #Banner-{{ section.id }}.gk-hero-bloom *,
+  #Banner-{{ section.id }}.gk-hero-bloom .banner__media::after {
+    transition: none !important;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}
+{%- endstyle -%}
+
 {%- liquid
   assign full_width = '100vw'
   assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
@@ -53,7 +126,8 @@
 
 <div
   id="Banner-{{ section.id }}"
-  class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} banner--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  data-gk-hero-bloom="{{ section.settings.gk_hero_bloom }}"
+  class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} banner--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}{% if section.settings.gk_hero_bloom %} gk-hero-bloom{% endif %}"
 >
   {%- if section.settings.image != blank -%}
     <div class="banner__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} banner__media-half{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
@@ -166,6 +240,46 @@
   </div>
 </div>
 
+<script>
+(function () {
+  var banner = document.getElementById('Banner-{{ section.id }}');
+  if (!banner) return;
+
+  var enabled = banner.getAttribute('data-gk-hero-bloom') === 'true';
+  if (!enabled) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    banner.classList.add('gk-hero--in');
+    return;
+  }
+
+  banner.classList.add('gk-hero--pre');
+
+  var revealed = false;
+  var reveal = function () {
+    if (revealed) return;
+    revealed = true;
+    banner.classList.add('gk-hero--in');
+    banner.classList.remove('gk-hero--pre');
+  };
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          reveal();
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.25 });
+
+    io.observe(banner);
+  } else {
+    requestAnimationFrame(reveal);
+  }
+})();
+</script>
+
 {% schema %}
 {
   "name": "t:sections.image-banner.name",
@@ -243,6 +357,14 @@
       "default": "none",
       "label": "t:sections.all.animation.image_behavior.label"
     },
+
+    {
+      "type": "checkbox",
+      "id": "gk_hero_bloom",
+      "default": true,
+      "label": "GK: Cinematic Hero Bloom Intro"
+    },
+
     {
       "type": "header",
       "content": "t:sections.image-banner.settings.content.content"
@@ -332,7 +454,7 @@
       "id": "stack_images_on_mobile",
       "default": true,
       "label": "t:sections.image-banner.settings.stack_images_on_mobile.label"
-    },    
+    },
     {
       "type": "select",
       "id": "mobile_content_alignment",
@@ -441,8 +563,8 @@
       "limit": 1,
       "settings": [
         {
-        "type": "header",
-        "content": "t:sections.image-banner.blocks.buttons.settings.header_1.content"
+          "type": "header",
+          "content": "t:sections.image-banner.blocks.buttons.settings.header_1.content"
         },
         {
           "type": "text",
@@ -463,8 +585,8 @@
           "label": "t:sections.image-banner.blocks.buttons.settings.button_style_secondary_1.label"
         },
         {
-        "type": "header",
-        "content": "t:sections.image-banner.blocks.buttons.settings.header_2.content"
+          "type": "header",
+          "content": "t:sections.image-banner.blocks.buttons.settings.header_2.content"
         },
         {
           "type": "text",
