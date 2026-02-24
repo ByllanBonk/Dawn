@@ -384,8 +384,29 @@
         "follow_link_FNhrbc": {
           "type": "follow_link",
           "settings": {
-            "label": "Instagram",
-            "url": ""
+            "label": "FaceBook",
+            "url": "https://www.facebook.com/GregKochMusic"
+          }
+        },
+        "follow_link_wEcgbq": {
+          "type": "follow_link",
+          "settings": {
+            "label": "Youtube",
+            "url": "https://www.youtube.com/c/GregKochMusic"
+          }
+        },
+        "follow_link_jhpL4B": {
+          "type": "follow_link",
+          "settings": {
+            "label": "X",
+            "url": "https://x.com/Mansqwatch"
+          }
+        },
+        "follow_link_pbGjwr": {
+          "type": "follow_link",
+          "settings": {
+            "label": "Tiktok",
+            "url": "https://www.tiktok.com/@gregkochofficial"
           }
         }
       },
@@ -407,7 +428,10 @@
         "platform_link_iJMtQK",
         "platform_link_jtx7X4",
         "follow_link_DkFUcd",
-        "follow_link_FNhrbc"
+        "follow_link_FNhrbc",
+        "follow_link_wEcgbq",
+        "follow_link_jhpL4B",
+        "follow_link_pbGjwr"
       ],
       "name": "GK Stream + Follow",
       "settings": {
