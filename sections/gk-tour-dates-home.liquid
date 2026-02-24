@@ -1,0 +1,363 @@
+{% comment %}
+  GK Tour Dates Section
+  - Editable show blocks (date, venue, city, button URL, sold out)
+  - Hides past shows (before today's midnight)
+{% endcomment %}
+
+{% liquid
+  assign today_ymd = 'now' | date: '%Y-%m-%d'
+  assign today_midnight_ts = today_ymd | date: '%s' | plus: 0
+  assign upcoming_count = 0
+%}
+
+<section class="gk-tour-dates" data-section-id="{{ section.id }}">
+  <div class="gk-tour-dates__inner">
+
+    {% if section.settings.eyebrow != blank %}
+      <div class="gk-tour-dates__eyebrow">{{ section.settings.eyebrow }}</div>
+    {% endif %}
+
+    {% if section.settings.heading != blank %}
+      <h1 class="gk-tour-dates__heading">{{ section.settings.heading }}</h1>
+    {% endif %}
+
+    {% if section.settings.subtext != blank %}
+      <div class="gk-tour-dates__subtext">{{ section.settings.subtext }}</div>
+    {% endif %}
+
+    <div class="gk-tour-dates__list" role="list">
+      {% for block in section.blocks %}
+        {% liquid
+          assign raw_date = block.settings.show_date | strip
+          assign show_ts = raw_date | date: '%s' | plus: 0
+        %}
+
+        {% if raw_date != blank and show_ts >= today_midnight_ts %}
+          {% assign upcoming_count = upcoming_count | plus: 1 %}
+
+          <div class="gk-date-row" role="listitem" {{ block.shopify_attributes }}>
+            <div class="gk-date-row__date">
+              {{ raw_date }}
+            </div>
+
+            <div class="gk-date-row__details">
+              {% if block.settings.venue_name != blank %}
+                <div class="gk-date-row__venue">{{ block.settings.venue_name }}</div>
+              {% endif %}
+
+              {% if block.settings.city_state != blank %}
+                <div class="gk-date-row__city">{{ block.settings.city_state }}</div>
+              {% endif %}
+            </div>
+
+            <div class="gk-date-row__cta">
+              {% if block.settings.is_sold_out %}
+                <span class="gk-date-row__soldout" aria-label="Sold out">SOLD OUT</span>
+              {% else %}
+                {% if block.settings.ticket_url != blank %}
+                  <a class="gk-date-row__btn" href="{{ block.settings.ticket_url }}" target="_blank" rel="noopener">
+                    GET TICKETS
+                  </a>
+                {% else %}
+                  <span class="gk-date-row__soldout" aria-label="Tickets unavailable">TBA</span>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if upcoming_count == 0 %}
+      <div class="gk-tour-dates__empty">
+        {{ section.settings.empty_text }}
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% style %}
+.gk-tour-dates {
+  background: {{ section.settings.bg_color }};
+  color: #FFFFFF;
+  padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+}
+
+.gk-tour-dates__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.gk-tour-dates__eyebrow {
+  font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.75rem;
+  color: #E8690A;
+  margin-bottom: 12px;
+  text-align: {{ section.settings.text_align }};
+  display: block;
+}
+
+.gk-tour-dates__heading {
+  margin: 0 0 8px 0;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  font-size: clamp(44px, 6vw, 76px);
+  color: #FFFFFF;
+  text-align: {{ section.settings.text_align }};
+}
+
+.gk-tour-dates__subtext {
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 16px;
+  color: rgba(255,255,255,0.72);
+  margin-bottom: 28px;
+  text-align: {{ section.settings.text_align }};
+}
+
+.gk-tour-dates__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gk-date-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+.gk-date-row:last-child {
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.gk-date-row__date {
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #E8690A;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.gk-date-row__details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.gk-date-row__venue {
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 18px;
+  line-height: 1.2;
+  color: #FFFFFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gk-date-row__city {
+  font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gk-date-row__cta {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.gk-date-row__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  background: #E8690A;
+  color: #0D0D0D;
+  text-decoration: none;
+  font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  border: 1px solid #E8690A;
+  border-radius: 0;
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.gk-date-row__btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.gk-date-row__btn:active {
+  transform: translateY(0);
+}
+
+.gk-date-row__soldout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 0;
+  background: transparent;
+}
+
+.gk-tour-dates__empty {
+  margin-top: 20px;
+  padding: 18px 0;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 16px;
+  color: rgba(255,255,255,0.72);
+}
+
+@media (max-width: 720px) {
+  .gk-date-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 16px 0;
+  }
+
+  .gk-date-row__cta {
+    justify-content: flex-start;
+  }
+
+  .gk-date-row__date {
+    font-size: 30px;
+  }
+}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "GK Tour Dates",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Tour Dates"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "GREG KOCH DATES"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "See upcoming dates below."
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty state text",
+      "default": "No upcoming dates. Check back soon."
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#0D0D0D"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "show",
+      "name": "Show",
+      "settings": [
+        {
+          "type": "text",
+          "id": "show_date",
+          "label": "Date (example: March 15, 2026)",
+          "default": "March 15, 2026"
+        },
+        {
+          "type": "text",
+          "id": "venue_name",
+          "label": "Venue name",
+          "default": "The Big Room"
+        },
+        {
+          "type": "text",
+          "id": "city_state",
+          "label": "City and State",
+          "default": "Milwaukee, WI"
+        },
+        {
+          "type": "url",
+          "id": "ticket_url",
+          "label": "Ticket / RSVP URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_sold_out",
+          "label": "Sold out",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "max_blocks": 100,
+  "presets": [
+    {
+      "name": "GK Tour Dates",
+      "blocks": [
+        { "type": "show" },
+        { "type": "show" },
+        { "type": "show" }
+      ]
+    }
+  ]
+}
+{% endschema %}
