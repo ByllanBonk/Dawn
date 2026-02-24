@@ -1,133 +1,150 @@
 {%- comment -%}
   GK About Gallery Section
-  - Old site layout: Big title + large centered main image + credit
-  - Adds 4 thumbnail images that open fullscreen lightbox (like old site)
-  - New site motion: depth slide image + staggered text reveal
+  - Mimics old site: big heading + main image + credit + 4 thumbnails
+  - Main image + thumbnails open fullscreen modal (lightbox)
+  - Premium motion: depth slide + stagger
   - Self-contained CSS + JS, scoped to section.id
+  NOTE: We treat "." as “empty” for optional text fields (Shopify schema won’t allow blank defaults).
 {%- endcomment -%}
 
 {%- liquid
-  assign eyebrow = section.settings.eyebrow | strip
-  assign heading = section.settings.heading | strip
-  assign body = section.settings.body
-  assign credit = section.settings.photo_credit | strip
-
-  assign t1c = section.settings.thumb_1_credit | strip
-  assign t2c = section.settings.thumb_2_credit | strip
-  assign t3c = section.settings.thumb_3_credit | strip
-  assign t4c = section.settings.thumb_4_credit | strip
+  assign eyebrow_val = section.settings.eyebrow | strip
+  assign credit_val = section.settings.main_credit | strip
+  assign body_val = section.settings.body
 -%}
 
 <section
   id="GK-AboutGallery-{{ section.id }}"
-  class="gk-aboutg"
-  data-gk-anim="{{ section.settings.enable_animation }}"
+  class="gk-aboutGallery"
+  data-gk-anim="{{ section.settings.enable_animation | json }}"
 >
-  <div class="page-width gk-aboutg__inner">
+  <div class="page-width gk-aboutGallery__inner">
 
-    {%- if eyebrow != blank and eyebrow != '.' -%}
-      <div class="gk-aboutg__eyebrow">{{ eyebrow }}</div>
+    {%- if eyebrow_val != blank and eyebrow_val != '.' -%}
+      <div class="gk-aboutGallery__eyebrow">{{ section.settings.eyebrow }}</div>
     {%- endif -%}
 
-    {%- if heading != blank and heading != '.' -%}
-      <h2 class="gk-aboutg__heading">{{ heading }}</h2>
+    {%- if section.settings.heading != blank -%}
+      <h2 class="gk-aboutGallery__heading">{{ section.settings.heading }}</h2>
     {%- endif -%}
 
     {%- if section.settings.main_image != blank -%}
-      {%- liquid
-        assign img = section.settings.main_image
-        assign img_h = img.width | divided_by: img.aspect_ratio
-        assign main_full = img | image_url: width: 2400
-      -%}
-
-      <figure class="gk-aboutg__figure" aria-label="{{ heading | escape }}">
+      <figure class="gk-aboutGallery__heroFigure">
         <button
           type="button"
-          class="gk-aboutg__media gk-aboutg__open"
-          data-gk-full="{{ main_full }}"
-          data-gk-alt="{{ heading | escape }}"
+          class="gk-aboutGallery__heroBtn"
+          data-gk-open
+          data-gk-src="{{ section.settings.main_image | image_url: width: 2800 }}"
+          data-gk-alt="{{ section.settings.main_image.alt | escape }}"
           aria-label="Open image"
         >
-          {{
-            img
-            | image_url: width: 2400
-            | image_tag:
-              width: img.width,
-              height: img_h,
-              loading: 'lazy',
-              widths: '600, 900, 1200, 1600, 2000, 2400',
-              sizes: '(min-width: 990px) 1100px, (min-width: 750px) 90vw, 92vw',
-              class: 'gk-aboutg__img'
-          }}
+          <div class="gk-aboutGallery__heroMedia">
+            {%- liquid
+              assign img = section.settings.main_image
+              assign img_h = img.width | divided_by: img.aspect_ratio
+            -%}
+            {{
+              img
+              | image_url: width: 2400
+              | image_tag:
+                width: img.width,
+                height: img_h,
+                loading: 'lazy',
+                widths: '700, 1000, 1400, 1800, 2200, 2400',
+                sizes: '(min-width: 990px) 1100px, (min-width: 750px) 92vw, 94vw',
+                class: 'gk-aboutGallery__heroImg'
+            }}
+          </div>
         </button>
 
-        {%- if credit != blank and credit != '.' -%}
-          <figcaption class="gk-aboutg__credit">
-            {{ credit }}
+        {%- if credit_val != blank and credit_val != '.' -%}
+          <figcaption class="gk-aboutGallery__credit">
+            {{ section.settings.main_credit }}
           </figcaption>
         {%- endif -%}
       </figure>
     {%- endif -%}
 
-    {%- comment -%} Thumbnail row (4 images) {%- endcomment -%}
-    {%- assign thumbs_exist = false -%}
-    {%- if section.settings.thumb_1 != blank or section.settings.thumb_2 != blank or section.settings.thumb_3 != blank or section.settings.thumb_4 != blank -%}
-      {%- assign thumbs_exist = true -%}
+    {%- if body_val != blank -%}
+      <div class="gk-aboutGallery__rte rte">
+        {{ section.settings.body }}
+      </div>
     {%- endif -%}
 
-    {%- if thumbs_exist -%}
-      <div class="gk-aboutg__thumbs" aria-label="Gallery thumbnails">
+    {%- comment -%} Thumbnails (4 settings, like your editor UI) {%- endcomment -%}
+    {%- liquid
+      assign has_thumbs = false
+      if section.settings.thumb_1 != blank or section.settings.thumb_2 != blank or section.settings.thumb_3 != blank or section.settings.thumb_4 != blank
+        assign has_thumbs = true
+      endif
+    -%}
+
+    {%- if has_thumbs -%}
+      <div class="gk-aboutGallery__thumbGrid" role="list" aria-label="Gallery thumbnails">
         {%- for i in (1..4) -%}
           {%- liquid
-            assign key = 'thumb_' | append: i
-            assign img_t = section.settings[key]
+            assign img_key = 'thumb_' | append: i
+            assign alt_key = 'thumb_alt_' | append: i
+
+            assign t = section.settings[img_key]
+            assign alt_override = section.settings[alt_key] | strip
+
+            if t != blank
+              assign full = t | image_url: width: 2800
+              assign alt = t.alt
+              if alt_override != blank and alt_override != '.'
+                assign alt = alt_override
+              endif
+              assign t_h = t.width | divided_by: t.aspect_ratio
+            endif
           -%}
 
-          {%- if img_t != blank -%}
-            {%- liquid
-              assign full = img_t | image_url: width: 2400
-              assign alt = section.settings.heading | default: 'Gallery image'
-              assign th = img_t.width | divided_by: img_t.aspect_ratio
-            -%}
+          {%- if t != blank -%}
             <button
               type="button"
-              class="gk-aboutg__thumb gk-aboutg__open"
-              data-gk-full="{{ full }}"
+              class="gk-aboutGallery__thumb"
+              role="listitem"
+              data-gk-open
+              data-gk-src="{{ full }}"
               data-gk-alt="{{ alt | escape }}"
-              aria-label="Open gallery image {{ i }}"
+              aria-label="Open image"
             >
               {{
-                img_t
-                | image_url: width: 700
+                t
+                | image_url: width: 900
                 | image_tag:
-                  width: img_t.width,
-                  height: th,
+                  width: t.width,
+                  height: t_h,
                   loading: 'lazy',
-                  widths: '240, 360, 480, 600, 700',
-                  sizes: '(min-width: 990px) 250px, (min-width: 750px) 22vw, 42vw',
-                  class: 'gk-aboutg__thumbimg'
+                  widths: '300, 450, 600, 750, 900',
+                  sizes: '(min-width: 990px) 260px, (min-width: 750px) 22vw, 42vw',
+                  class: 'gk-aboutGallery__thumbImg'
               }}
             </button>
           {%- endif -%}
         {%- endfor -%}
       </div>
     {%- endif -%}
-
-    {%- if body != blank -%}
-      <div class="gk-aboutg__content rte">
-        {{ body }}
-      </div>
-    {%- endif -%}
-
   </div>
 
-  {%- comment -%} Lightbox (scoped, injected once per section) {%- endcomment -%}
-  <div class="gk-aboutg__lightbox" hidden aria-hidden="true">
-    <div class="gk-aboutg__lb-backdrop" data-gk-close></div>
-    <div class="gk-aboutg__lb-panel" role="dialog" aria-modal="true" aria-label="Image viewer">
-      <button type="button" class="gk-aboutg__lb-close" aria-label="Close" data-gk-close>×</button>
-      <img class="gk-aboutg__lb-img" alt="" />
-      <div class="gk-aboutg__lb-credit" hidden></div>
+  {%- comment -%} Modal (scoped) {%- endcomment -%}
+  <div class="gk-aboutGallery__modal" hidden aria-hidden="true">
+    <div class="gk-aboutGallery__backdrop" data-gk-close></div>
+
+    <div
+      class="gk-aboutGallery__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image preview"
+      tabindex="-1"
+    >
+      <button type="button" class="gk-aboutGallery__close" data-gk-close aria-label="Close">
+        ×
+      </button>
+
+      <div class="gk-aboutGallery__modalMedia">
+        <img class="gk-aboutGallery__modalImg" alt="" loading="eager" />
+      </div>
     </div>
   </div>
 
@@ -135,33 +152,24 @@
     /* ============================
       GK About Gallery (scoped)
       ============================ */
-    #GK-AboutGallery-{{ section.id }}.gk-aboutg {
-      --accent: {{ section.settings.accent }};
+    #GK-AboutGallery-{{ section.id }}.gk-aboutGallery {
+      --accent: {{ section.settings.accent | default: '#E8690A' }};
       --text: rgba(255,255,255,0.92);
       --muted: rgba(255,255,255,0.66);
       --line: rgba(255,255,255,0.10);
       --card: rgba(255,255,255,0.06);
+      --shadow: 0 14px 44px rgba(0,0,0,0.35);
 
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
 
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__inner {
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__inner {
       max-width: 1100px;
       margin: 0 auto;
     }
 
-    /* Title styling (make it match the big “GREG KOCH DATES” vibe) */
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__heading {
-      margin: 0 0 18px 0;
-      font-weight: 800;
-      line-height: 1.02;
-      letter-spacing: .02em;
-      text-transform: uppercase;
-      font-size: clamp(34px, 5.2vw, 64px);
-    }
-
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__eyebrow {
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__eyebrow {
       font-size: 12px;
       letter-spacing: .14em;
       text-transform: uppercase;
@@ -169,136 +177,165 @@
       margin-bottom: 10px;
     }
 
-    /* Main image */
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__figure { margin: 0; }
-
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__media {
-      display: block;
-      width: 100%;
-      border: 0;
-      padding: 0;
-      background: transparent;
-      cursor: zoom-in;
-      position: relative;
-      overflow: hidden;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      background: var(--card);
-      box-shadow: 0 14px 44px rgba(0,0,0,0.35);
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heading {
+      margin: 0 0 18px 0;
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: 0.01em;
+      font-size: clamp(34px, 4.5vw, 56px);
     }
 
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__img {
+    /* Hero image */
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroFigure { margin: 0; }
+
+    /* Use a button so we don't get any link underline / weird "line" artifacts */
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroBtn {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      text-align: inherit;
+      color: inherit;
+    }
+
+    /* Prevent focus styles turning into odd lines */
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroBtn:focus,
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroBtn:focus-visible,
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumb:focus,
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumb:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroMedia {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroImg {
       display: block;
       width: 100%;
       height: auto;
       transform: translateZ(0);
     }
 
-    @media (hover: hover) {
-      #GK-AboutGallery-{{ section.id }} .gk-aboutg__media {
-        transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-      }
-      #GK-AboutGallery-{{ section.id }} .gk-aboutg__media:hover {
-        transform: translateY(-1px);
-        border-color: rgba(232,105,10,0.35);
-        box-shadow: 0 18px 54px rgba(0,0,0,0.45);
-      }
-    }
-
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__credit {
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__credit {
       margin-top: 10px;
       font-style: italic;
       color: var(--muted);
       text-align: right;
     }
 
-    /* Thumbnails row */
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__thumbs {
+    /* Body copy */
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__rte {
+      margin-top: 18px;
+      color: var(--text);
+    }
+
+    /* Thumbnails */
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumbGrid {
       margin-top: 16px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 14px;
     }
 
     @media (max-width: 749px) {
-      #GK-AboutGallery-{{ section.id }} .gk-aboutg__thumbs {
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumbGrid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__thumb {
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumb {
+      appearance: none;
       border: 1px solid var(--line);
+      background: var(--card);
       border-radius: 12px;
-      overflow: hidden;
       padding: 0;
-      background: rgba(0,0,0,0.22);
-      cursor: zoom-in;
+      cursor: pointer;
+      overflow: hidden;
       box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+      transform: translateZ(0);
     }
 
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__thumbimg {
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumbImg {
       display: block;
       width: 100%;
       height: auto;
     }
 
+    /* Hover rules (subtle 1px lift, orange tint, crisp) */
     @media (hover: hover) {
-      #GK-AboutGallery-{{ section.id }} .gk-aboutg__thumb {
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumb,
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroMedia {
         transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
       }
-      #GK-AboutGallery-{{ section.id }} .gk-aboutg__thumb:hover {
-        transform: translateY(-1px);
-        border-color: rgba(232,105,10,0.32);
-        box-shadow: 0 14px 36px rgba(0,0,0,0.35);
-      }
-    }
 
-    /* Body copy */
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__content {
-      margin-top: 18px;
-      border-top: 1px solid var(--line);
-      padding-top: 18px;
-      color: var(--text);
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__thumb:hover {
+        transform: translateY(-1px);
+        border-color: rgba(232,105,10,0.35);
+        box-shadow: 0 16px 40px rgba(0,0,0,0.38);
+      }
+
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__heroMedia:hover {
+        transform: translateY(-1px);
+        border-color: rgba(232,105,10,0.35);
+        box-shadow: 0 18px 54px rgba(0,0,0,0.45);
+      }
     }
 
     /* ============================
-      Motion: Depth Slide + Fly-in
+      Motion: Depth Slide + Text Fly
       ============================ */
-    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutg__media,
-    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutg__thumbs,
-    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutg__heading,
-    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutg__content {
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__heroMedia,
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__heading,
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__rte,
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__thumbGrid,
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__eyebrow {
       opacity: 0;
       transform: translateY(18px);
       will-change: transform, opacity;
     }
 
-    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutg__media {
-      transform: translateY(14px) scale(1.04);
+    #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__heroMedia {
+      transform: translateY(14px) scale(1.03);
     }
 
-    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutg__media {
+    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutGallery__heroMedia {
       opacity: 1;
       transform: translateY(0) scale(1);
       transition: opacity 650ms cubic-bezier(.16,.84,.44,1),
                   transform 900ms cubic-bezier(.16,.84,.44,1);
     }
 
-    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutg__heading {
+    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutGallery__eyebrow {
       opacity: 1;
       transform: translateY(0);
-      transition: opacity 650ms cubic-bezier(.16,.84,.44,1) 140ms,
-                  transform 650ms cubic-bezier(.16,.84,.44,1) 140ms;
+      transition: opacity 650ms cubic-bezier(.16,.84,.44,1) 80ms,
+                  transform 650ms cubic-bezier(.16,.84,.44,1) 80ms;
     }
 
-    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutg__thumbs {
+    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutGallery__heading {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 650ms cubic-bezier(.16,.84,.44,1) 120ms,
+                  transform 650ms cubic-bezier(.16,.84,.44,1) 120ms;
+    }
+
+    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutGallery__rte {
       opacity: 1;
       transform: translateY(0);
       transition: opacity 650ms cubic-bezier(.16,.84,.44,1) 200ms,
                   transform 650ms cubic-bezier(.16,.84,.44,1) 200ms;
     }
 
-    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutg__content {
+    #GK-AboutGallery-{{ section.id }}.gk-in .gk-aboutGallery__thumbGrid {
       opacity: 1;
       transform: translateY(0);
       transition: opacity 650ms cubic-bezier(.16,.84,.44,1) 260ms,
@@ -306,10 +343,11 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutg__media,
-      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutg__thumbs,
-      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutg__heading,
-      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutg__content {
+      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__heroMedia,
+      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__heading,
+      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__rte,
+      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__thumbGrid,
+      #GK-AboutGallery-{{ section.id }}[data-gk-anim="true"] .gk-aboutGallery__eyebrow {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
@@ -317,62 +355,77 @@
     }
 
     /* ============================
-      Lightbox
+      Modal (fullscreen)
       ============================ */
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__lightbox {
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__modal[hidden] { display: none !important; }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__modal {
       position: fixed;
       inset: 0;
       z-index: 9999;
-      display: grid;
-      place-items: center;
     }
 
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__lb-backdrop {
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__backdrop {
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,0.82);
+      background: rgba(0,0,0,0.75);
       backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
 
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__lb-panel {
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__dialog {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      outline: none;
+    }
+
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__modalMedia {
       position: relative;
-      width: min(92vw, 1100px);
-      max-height: 86vh;
+      width: min(1100px, 96vw);
+      max-height: 92vh;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 16px;
+      background: rgba(0,0,0,0.25);
+      box-shadow: 0 22px 80px rgba(0,0,0,0.55);
       overflow: hidden;
-      background: rgba(10,10,10,0.75);
-      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
     }
 
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__lb-img {
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__modalImg {
       display: block;
       width: 100%;
       height: auto;
-      max-height: 86vh;
+      max-height: 92vh;
       object-fit: contain;
-      background: #000;
+      background: rgba(0,0,0,0.15);
     }
 
-    #GK-AboutGallery-{{ section.id }} .gk-aboutg__lb-close {
+    #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__close {
       position: absolute;
-      top: 10px;
-      right: 12px;
-      width: 40px;
-      height: 40px;
+      top: 16px;
+      right: 18px;
+      width: 44px;
+      height: 44px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(0,0,0,0.35);
-      color: rgba(255,255,255,0.9);
+      background: rgba(0,0,0,0.30);
+      color: rgba(255,255,255,0.92);
       font-size: 26px;
       line-height: 1;
       cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
     }
 
     @media (hover:hover) {
-      #GK-AboutGallery-{{ section.id }} .gk-aboutg__lb-close:hover {
+      #GK-AboutGallery-{{ section.id }} .gk-aboutGallery__close:hover {
+        transform: translateY(-1px);
         border-color: rgba(232,105,10,0.35);
-        box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+        background: rgba(0,0,0,0.45);
       }
     }
   </style>
@@ -382,67 +435,86 @@
       var root = document.getElementById('GK-AboutGallery-{{ section.id }}');
       if (!root) return;
 
-      // Fly-in reveal
+      // Animation reveal
       var animEnabled = root.getAttribute('data-gk-anim') === 'true';
-      if (animEnabled) {
-        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (animEnabled && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+        var revealed = false;
+        var reveal = function() {
+          if (revealed) return;
+          revealed = true;
           root.classList.add('gk-in');
-        } else if ('IntersectionObserver' in window) {
-          var revealed = false;
-          var reveal = function() {
-            if (revealed) return;
-            revealed = true;
-            root.classList.add('gk-in');
-          };
+        };
+        if ('IntersectionObserver' in window) {
           var io = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
-              if (entry.isIntersecting) {
-                reveal();
-                io.disconnect();
-              }
+              if (entry.isIntersecting) { reveal(); io.disconnect(); }
             });
-          }, { threshold: 0.25 });
+          }, { threshold: 0.22 });
           io.observe(root);
         } else {
-          root.classList.add('gk-in');
+          requestAnimationFrame(reveal);
         }
+      } else {
+        root.classList.add('gk-in');
       }
 
-      // Lightbox
-      var lb = root.querySelector('.gk-aboutg__lightbox');
-      var lbImg = root.querySelector('.gk-aboutg__lb-img');
-      var openers = root.querySelectorAll('.gk-aboutg__open');
-      if (!lb || !lbImg || !openers.length) return;
+      // Modal lightbox
+      var modal = root.querySelector('.gk-aboutGallery__modal');
+      var modalImg = root.querySelector('.gk-aboutGallery__modalImg');
+      var dialog = root.querySelector('.gk-aboutGallery__dialog');
+      if (!modal || !modalImg || !dialog) return;
 
-      var open = function(src, alt) {
-        lbImg.src = src;
-        lbImg.alt = alt || '';
-        lb.hidden = false;
-        lb.setAttribute('aria-hidden', 'false');
+      var lastActive = null;
+
+      function openModal(src, alt) {
+        lastActive = document.activeElement;
+
+        modal.hidden = false;
+        modal.setAttribute('aria-hidden', 'false');
+        modalImg.src = src;
+        modalImg.alt = alt || '';
+
         document.documentElement.style.overflow = 'hidden';
-      };
+        document.body.style.overflow = 'hidden';
 
-      var close = function() {
-        lb.hidden = true;
-        lb.setAttribute('aria-hidden', 'true');
-        lbImg.src = '';
+        dialog.focus();
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        modal.setAttribute('aria-hidden', 'true');
+
+        modalImg.removeAttribute('src');
+        modalImg.alt = '';
+
         document.documentElement.style.overflow = '';
-      };
+        document.body.style.overflow = '';
 
-      openers.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          var src = btn.getAttribute('data-gk-full');
-          var alt = btn.getAttribute('data-gk-alt');
-          if (src) open(src, alt);
-        });
-      });
+        if (lastActive && lastActive.focus) lastActive.focus();
+      }
 
-      lb.querySelectorAll('[data-gk-close]').forEach(function(el) {
-        el.addEventListener('click', close);
+      root.addEventListener('click', function(e) {
+        var opener = e.target.closest('[data-gk-open]');
+        if (opener) {
+          e.preventDefault();
+          var src = opener.getAttribute('data-gk-src');
+          var alt = opener.getAttribute('data-gk-alt') || '';
+          if (src) openModal(src, alt);
+          return;
+        }
+
+        if (e.target.closest('[data-gk-close]')) {
+          e.preventDefault();
+          closeModal();
+        }
       });
 
       document.addEventListener('keydown', function(e) {
-        if (!lb.hidden && (e.key === 'Escape' || e.key === 'Esc')) close();
+        if (modal.hidden) return;
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeModal();
+        }
       });
     })();
   </script>
@@ -479,11 +551,10 @@
     },
     {
       "type": "text",
-      "id": "photo_credit",
+      "id": "main_credit",
       "label": "Main photo credit (optional)",
       "default": "above photo credit: ©2025CJFoeckler"
     },
-
     {
       "type": "header",
       "content": "Thumbnail images (click to expand)"
@@ -494,9 +565,21 @@
       "label": "Thumbnail 1"
     },
     {
+      "type": "text",
+      "id": "thumb_alt_1",
+      "label": "Alt text override 1 (optional)",
+      "default": "."
+    },
+    {
       "type": "image_picker",
       "id": "thumb_2",
       "label": "Thumbnail 2"
+    },
+    {
+      "type": "text",
+      "id": "thumb_alt_2",
+      "label": "Alt text override 2 (optional)",
+      "default": "."
     },
     {
       "type": "image_picker",
@@ -504,11 +587,22 @@
       "label": "Thumbnail 3"
     },
     {
+      "type": "text",
+      "id": "thumb_alt_3",
+      "label": "Alt text override 3 (optional)",
+      "default": "."
+    },
+    {
       "type": "image_picker",
       "id": "thumb_4",
       "label": "Thumbnail 4"
     },
-
+    {
+      "type": "text",
+      "id": "thumb_alt_4",
+      "label": "Alt text override 4 (optional)",
+      "default": "."
+    },
     {
       "type": "richtext",
       "id": "body",
@@ -525,7 +619,7 @@
       "type": "range",
       "id": "padding_top",
       "min": 0,
-      "max": 120,
+      "max": 140,
       "step": 4,
       "unit": "px",
       "label": "Padding top",
@@ -535,7 +629,7 @@
       "type": "range",
       "id": "padding_bottom",
       "min": 0,
-      "max": 120,
+      "max": 140,
       "step": 4,
       "unit": "px",
       "label": "Padding bottom",
