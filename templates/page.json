@@ -9,20 +9,28 @@
  */
 {
   "sections": {
-    "gk_tour_dates_7fUzXw": {
-      "type": "gk-tour-dates-home",
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "gk_tour_dates_page_UVaKb4": {
+      "type": "gk-tour-dates-page",
       "blocks": {
-        "show_d3qnbz": {
+        "show_hjmyzW": {
           "type": "show",
           "settings": {
-            "show_date": "Feb 25, 2026",
+            "show_date": "March 15, 2026",
             "venue_name": "The Big Room",
             "city_state": "Milwaukee, WI",
-            "ticket_url": "https://bandsintown.com/t/107664965?affil_code=js_www.gregkoch.com&app_id=js_www.gregkoch.com&came_from=242&utm_campaign=ticket&utm_medium=web&utm_source=widget",
+            "ticket_url": "https://www.ticketmaster.com/devon-allmans-blues-summit-denver-colorado-02-26-2026/event/1E00633766570D61?utm_medium=affiliate&irgwc=1&afsrc=1&clickid=wlhV5Ex3exyZUiv3woxZjQiWUku2k0X9L0xKXE0&camefrom=CFC_BUYAT_219208&impradid=219208&REFERRAL_ID=tmfeedbuyat219208&wt.mc_id=aff_BUYAT_219208&utm_source=219208-Bandsintown&impradname=Bandsintown&ircid=4272",
             "is_sold_out": false
           }
         },
-        "show_VDFjUN": {
+        "show_YKykUd": {
           "type": "show",
           "settings": {
             "show_date": "March 15, 2026",
@@ -32,7 +40,7 @@
             "is_sold_out": false
           }
         },
-        "show_xmjyQt": {
+        "show_gVhy7C": {
           "type": "show",
           "settings": {
             "show_date": "March 15, 2026",
@@ -44,33 +52,28 @@
         }
       },
       "block_order": [
-        "show_d3qnbz",
-        "show_VDFjUN",
-        "show_xmjyQt"
+        "show_hjmyzW",
+        "show_YKykUd",
+        "show_gVhy7C"
       ],
-      "name": "GK Tour Dates",
+      "name": "GK Tour Dates Page",
       "settings": {
-        "eyebrow": "Tour Dates",
+        "eyebrow": "",
         "heading": "GREG KOCH DATES",
         "subtext": "See upcoming dates below.",
         "empty_text": "No upcoming dates. Check back soon.",
+        "more_label": "Show more dates",
+        "initial_visible": 10,
+        "reveal_step": 10,
         "text_align": "left",
         "bg_color": "#0D0D0D",
         "padding_top": 64,
         "padding_bottom": 64
       }
-    },
-    "main": {
-      "type": "main-page",
-      "disabled": true,
-      "settings": {
-        "padding_top": 28,
-        "padding_bottom": 28
-      }
     }
   },
   "order": [
-    "gk_tour_dates_7fUzXw",
-    "main"
+    "main",
+    "gk_tour_dates_page_UVaKb4"
   ]
 }

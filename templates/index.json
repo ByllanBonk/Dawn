@@ -133,7 +133,7 @@
             "show_date": "March 15, 2026",
             "venue_name": "The Big Room",
             "city_state": "Milwaukee, WI",
-            "ticket_url": "",
+            "ticket_url": "https://www.ticketmaster.com/devon-allmans-blues-summit-denver-colorado-02-26-2026/event/1E00633766570D61?utm_medium=affiliate&irgwc=1&afsrc=1&clickid=wlhV5Ex3exyZUiv3woxZjQiWUku2k0X9L0xKXE0&camefrom=CFC_BUYAT_219208&impradid=219208&REFERRAL_ID=tmfeedbuyat219208&wt.mc_id=aff_BUYAT_219208&utm_source=219208-Bandsintown&impradname=Bandsintown&ircid=4272",
             "is_sold_out": false
           }
         },
@@ -514,7 +514,7 @@
         "initial_visible": 3,
         "reveal_step": 3,
         "text_align": "left",
-        "bg_color": "#0D0D0D",
+        "bg_color": "#0d0d0d",
         "padding_top": 64,
         "padding_bottom": 64
       }
