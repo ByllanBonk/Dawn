@@ -245,6 +245,14 @@
     "gk_stream_follow_GVbNme": {
       "type": "gk-stream-follow",
       "blocks": {
+        "platform_link_q8HBBn": {
+          "type": "platform_link",
+          "settings": {
+            "column": "podcast",
+            "label": "Apple Podcasts",
+            "url": "https://podcasts.apple.com/us/podcast/chewing-the-gristle-with-greg-koch/id1525643497"
+          }
+        },
         "platform_link_GLRmRE": {
           "type": "platform_link",
           "settings": {
@@ -342,6 +350,7 @@
         }
       },
       "block_order": [
+        "platform_link_q8HBBn",
         "platform_link_GLRmRE",
         "platform_link_GjRh34",
         "platform_link_YwtxXf",
