@@ -1,0 +1,77 @@
+{
+  "sections": {
+    "gk_press": {
+      "type": "gk-press-page",
+      "blocks": {
+        "featured": {
+          "type": "featured_quote",
+          "settings": {
+            "quote": "Greg Koch is one of the most creative and entertaining guitarists on the planet.",
+            "source": "Guitar Player Magazine",
+            "author": ""
+          }
+        },
+        "quote_1": {
+          "type": "press_quote",
+          "settings": {
+            "quote": "A remarkable display of technique and feel that is entirely his own.",
+            "source": "Premier Guitar",
+            "author": ""
+          }
+        },
+        "quote_2": {
+          "type": "press_quote",
+          "settings": {
+            "quote": "Koch channels the spirit of Hendrix, SRV, and Danny Gatton through his own unique lens.",
+            "source": "Vintage Guitar Magazine",
+            "author": ""
+          }
+        },
+        "quote_3": {
+          "type": "press_quote",
+          "settings": {
+            "quote": "Milwaukee's best-kept secret, unleashing gristle on an unsuspecting world.",
+            "source": "Guitar World",
+            "author": ""
+          }
+        },
+        "quote_4": {
+          "type": "press_quote",
+          "settings": {
+            "quote": "If you haven't heard Greg Koch play guitar, you're missing out on one of the true originals.",
+            "source": "Music Radar",
+            "author": ""
+          }
+        },
+        "quote_5": {
+          "type": "press_quote",
+          "settings": {
+            "quote": "Koch delivers a masterclass in tone, technique, and pure musical joy every time he picks up a guitar.",
+            "source": "Tone Report",
+            "author": ""
+          }
+        }
+      },
+      "block_order": [
+        "featured",
+        "quote_1",
+        "quote_2",
+        "quote_3",
+        "quote_4",
+        "quote_5"
+      ],
+      "settings": {
+        "bg_color": "#0D0D0D",
+        "eyebrow": "In the Press",
+        "heading": "PRESS",
+        "subtext": "What they're saying about the Gristleman.",
+        "columns": "3",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "gk_press"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "gk_dates": {
+      "type": "gk-dates-page",
+      "settings": {
+        "bg_color": "#0D0D0D",
+        "eyebrow": "On the Road",
+        "heading": "TOUR DATES",
+        "subtext": "Catch the Gristle live. Check below for upcoming shows and grab your tickets.",
+        "artist_name": "Greg Koch",
+        "display_limit": 30,
+        "show_past_dates": false,
+        "show_play_my_city": true,
+        "cta_label": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "gk_dates"
+  ]
+}

@@ -1,0 +1,449 @@
+{%- style -%}
+  .gk-about {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  .gk-about__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gk-about__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .gk-about__eyebrow {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.75rem;
+    color: #E8690A;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .gk-about__heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+  }
+
+  /* Editorial Layout */
+  .gk-about__editorial {
+    display: grid;
+    grid-template-columns: {{ section.settings.image_width }}fr {{ section.settings.text_width }}fr;
+    gap: 48px;
+    align-items: start;
+    margin-bottom: 48px;
+  }
+
+  .gk-about__editorial--reversed {
+    direction: rtl;
+  }
+
+  .gk-about__editorial--reversed > * {
+    direction: ltr;
+  }
+
+  .gk-about__image {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .gk-about__image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gk-about__text {
+    padding-top: 16px;
+  }
+
+  .gk-about__text-eyebrow {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.7rem;
+    color: #E8690A;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .gk-about__text-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 20px 0;
+  }
+
+  .gk-about__text-body {
+    font-family: 'DM Sans', sans-serif;
+    color: #B0B0B0;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .gk-about__text-body p {
+    margin: 0 0 16px 0;
+  }
+
+  .gk-about__text-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Stat bar */
+  .gk-about__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 24px;
+    padding: 40px 0;
+    border-top: 1px solid #272727;
+    border-bottom: 1px solid #272727;
+    margin: 48px 0;
+  }
+
+  .gk-about__stat {
+    text-align: center;
+  }
+
+  .gk-about__stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: #E8690A;
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .gk-about__stat-label {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.65rem;
+    color: #777777;
+  }
+
+  @media screen and (max-width: 749px) {
+    .gk-about__editorial {
+      grid-template-columns: 1fr;
+    }
+
+    .gk-about__editorial--reversed {
+      direction: ltr;
+    }
+  }
+{%- endstyle -%}
+
+<section class="gk-about" id="section-{{ section.id }}">
+  <div class="gk-about__inner">
+    {%- if section.settings.show_header -%}
+      <div class="gk-about__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="gk-about__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h1 class="gk-about__heading">{{ section.settings.heading }}</h1>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'editorial_block' -%}
+          <div class="gk-about__editorial{% if block.settings.reverse_layout %} gk-about__editorial--reversed{% endif %}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <div class="gk-about__image">
+                {{ block.settings.image | image_url: width: 900 | image_tag:
+                  loading: 'lazy',
+                  sizes: '(max-width: 749px) 100vw, 50vw',
+                  widths: '375, 550, 750, 900'
+                }}
+              </div>
+            {%- endif -%}
+            <div class="gk-about__text">
+              {%- if block.settings.eyebrow != blank -%}
+                <span class="gk-about__text-eyebrow">{{ block.settings.eyebrow }}</span>
+              {%- endif -%}
+              {%- if block.settings.heading != blank -%}
+                <h2 class="gk-about__text-heading">{{ block.settings.heading }}</h2>
+              {%- endif -%}
+              {%- if block.settings.body != blank -%}
+                <div class="gk-about__text-body">{{ block.settings.body }}</div>
+              {%- endif -%}
+            </div>
+          </div>
+
+        {%- when 'stats_bar' -%}
+          <div class="gk-about__stats" {{ block.shopify_attributes }}>
+            {%- if block.settings.stat_1_number != blank -%}
+              <div class="gk-about__stat">
+                <span class="gk-about__stat-number">{{ block.settings.stat_1_number }}</span>
+                <span class="gk-about__stat-label">{{ block.settings.stat_1_label }}</span>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.stat_2_number != blank -%}
+              <div class="gk-about__stat">
+                <span class="gk-about__stat-number">{{ block.settings.stat_2_number }}</span>
+                <span class="gk-about__stat-label">{{ block.settings.stat_2_label }}</span>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.stat_3_number != blank -%}
+              <div class="gk-about__stat">
+                <span class="gk-about__stat-number">{{ block.settings.stat_3_number }}</span>
+                <span class="gk-about__stat-label">{{ block.settings.stat_3_label }}</span>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.stat_4_number != blank -%}
+              <div class="gk-about__stat">
+                <span class="gk-about__stat-number">{{ block.settings.stat_4_number }}</span>
+                <span class="gk-about__stat-label">{{ block.settings.stat_4_label }}</span>
+              </div>
+            {%- endif -%}
+          </div>
+
+        {%- when 'richtext' -%}
+          <div class="gk-about__text" style="max-width: 800px;{% if block.settings.center %} margin: 0 auto; text-align: center;{% endif %}" {{ block.shopify_attributes }}>
+            {%- if block.settings.eyebrow != blank -%}
+              <span class="gk-about__text-eyebrow">{{ block.settings.eyebrow }}</span>
+            {%- endif -%}
+            {%- if block.settings.heading != blank -%}
+              <h2 class="gk-about__text-heading">{{ block.settings.heading }}</h2>
+            {%- endif -%}
+            {%- if block.settings.body != blank -%}
+              <div class="gk-about__text-body">{{ block.settings.body }}</div>
+            {%- endif -%}
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GK About Page",
+  "tag": "section",
+  "class": "gk-about-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0D0D0D"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show Page Header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "The Gristleman"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Page Heading",
+      "default": "ABOUT GREG KOCH"
+    },
+    {
+      "type": "select",
+      "id": "image_width",
+      "label": "Image Column Width",
+      "default": "1",
+      "options": [
+        { "value": "1", "label": "Equal" },
+        { "value": "2", "label": "Image Wider" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_width",
+      "label": "Text Column Width",
+      "default": "1",
+      "options": [
+        { "value": "1", "label": "Equal" },
+        { "value": "2", "label": "Text Wider" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "editorial_block",
+      "name": "Image + Text Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow Text",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "The Story"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Body Text",
+          "default": "<p>Greg Koch is a guitar fiend from Milwaukee, Wisconsin. Known for his unique blend of blues, rock, country, and jazz, Koch has been unleashing his brand of musical mayhem for decades.</p><p>A Reverend Guitars and Fishman artist, Koch is equally at home shredding on stage, recording in the studio, or teaching his trademark techniques to students around the world.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "reverse_layout",
+          "label": "Reverse Layout (text left, image right)",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "stats_bar",
+      "name": "Stats Bar",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "stat_1_number",
+          "label": "Stat 1 Number",
+          "default": "30+"
+        },
+        {
+          "type": "text",
+          "id": "stat_1_label",
+          "label": "Stat 1 Label",
+          "default": "Years Playing"
+        },
+        {
+          "type": "text",
+          "id": "stat_2_number",
+          "label": "Stat 2 Number",
+          "default": "20+"
+        },
+        {
+          "type": "text",
+          "id": "stat_2_label",
+          "label": "Stat 2 Label",
+          "default": "Albums Released"
+        },
+        {
+          "type": "text",
+          "id": "stat_3_number",
+          "label": "Stat 3 Number",
+          "default": "1000+"
+        },
+        {
+          "type": "text",
+          "id": "stat_3_label",
+          "label": "Stat 3 Label",
+          "default": "Shows Played"
+        },
+        {
+          "type": "text",
+          "id": "stat_4_number",
+          "label": "Stat 4 Number",
+          "default": "50+"
+        },
+        {
+          "type": "text",
+          "id": "stat_4_label",
+          "label": "Stat 4 Label",
+          "default": "Courses Published"
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "name": "Rich Text Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow Text",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": ""
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Body Text",
+          "default": "<p>Additional bio content goes here.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "center",
+          "label": "Center Text",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK About Page",
+      "blocks": [
+        {
+          "type": "editorial_block",
+          "settings": {
+            "heading": "The Story",
+            "reverse_layout": false
+          }
+        },
+        {
+          "type": "stats_bar"
+        },
+        {
+          "type": "editorial_block",
+          "settings": {
+            "heading": "The Gear",
+            "reverse_layout": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,228 @@
+{%- style -%}
+  .gk-dates-page {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  .gk-dates-page__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gk-dates-page__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .gk-dates-page__eyebrow {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.75rem;
+    color: #E8690A;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .gk-dates-page__heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 12px 0;
+  }
+
+  .gk-dates-page__subtext {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .gk-dates-page__embed {
+    width: 100%;
+    min-height: 500px;
+  }
+
+  .gk-dates-page__cta {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .gk-dates-page__btn {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 14px 36px;
+    border-radius: 0;
+    text-decoration: none;
+    background-color: #E8690A;
+    color: #FFFFFF;
+    border: 2px solid #E8690A;
+    transition: all 0.3s ease;
+  }
+
+  .gk-dates-page__btn:hover {
+    background-color: transparent;
+    color: #E8690A;
+  }
+{%- endstyle -%}
+
+<section class="gk-dates-page" id="section-{{ section.id }}">
+  <div class="gk-dates-page__inner">
+    <div class="gk-dates-page__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="gk-dates-page__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h1 class="gk-dates-page__heading">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+      {%- if section.settings.subtext != blank -%}
+        <p class="gk-dates-page__subtext">{{ section.settings.subtext }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="gk-dates-page__embed">
+      {%- if section.settings.artist_name != blank -%}
+        <a class="bit-widget-initializer"
+          data-artist-name="{{ section.settings.artist_name }}"
+          data-display-local-dates="false"
+          data-display-past-dates="{{ section.settings.show_past_dates }}"
+          data-auto-style="false"
+          data-text-color="#E8E8E8"
+          data-link-color="#E8690A"
+          data-background-color="transparent"
+          data-display-limit="{{ section.settings.display_limit }}"
+          data-display-start-time="false"
+          data-link-text-color="#FFFFFF"
+          data-display-lineup="false"
+          data-display-play-my-city="{{ section.settings.show_play_my_city }}"
+          data-separator-color="#272727"
+        ></a>
+        <script charset="utf-8" src="https://widgetv3.bandsintown.com/main.min.js"></script>
+      {%- elsif section.settings.custom_embed != blank -%}
+        {{ section.settings.custom_embed }}
+      {%- else -%}
+        <div style="text-align: center; padding: 60px; border: 1px solid #272727; background-color: #141414;">
+          <p style="color: #777777; font-family: 'DM Sans', sans-serif;">Configure the Bandsintown artist name in the theme editor.</p>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.cta_label != blank -%}
+      <div class="gk-dates-page__cta">
+        <a href="{{ section.settings.cta_link }}" class="gk-dates-page__btn">{{ section.settings.cta_label }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GK Dates Page",
+  "tag": "section",
+  "class": "gk-dates-page-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0D0D0D"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "On the Road"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "TOUR DATES"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Catch the Gristle live. Check below for upcoming shows and grab your tickets."
+    },
+    {
+      "type": "text",
+      "id": "artist_name",
+      "label": "Bandsintown Artist Name",
+      "default": "Greg Koch"
+    },
+    {
+      "type": "range",
+      "id": "display_limit",
+      "label": "Number of Dates",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "checkbox",
+      "id": "show_past_dates",
+      "label": "Show Past Dates",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_play_my_city",
+      "label": "Show Play My City",
+      "default": true
+    },
+    {
+      "type": "html",
+      "id": "custom_embed",
+      "label": "Custom Embed Code",
+      "info": "Override: paste custom embed HTML"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Button Label",
+      "default": ""
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Dates Page"
+    }
+  ]
+}
+{% endschema %}

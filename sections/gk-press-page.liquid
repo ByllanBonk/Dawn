@@ -1,0 +1,362 @@
+{%- style -%}
+  .gk-press {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  .gk-press__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gk-press__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .gk-press__eyebrow {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.75rem;
+    color: #E8690A;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .gk-press__heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 12px 0;
+  }
+
+  .gk-press__subtext {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .gk-press__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
+    gap: 24px;
+  }
+
+  .gk-press__card {
+    background-color: #141414;
+    border: 1px solid #272727;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+  }
+
+  .gk-press__card:hover {
+    border-color: #E8690A;
+  }
+
+  .gk-press__quote {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: #E8E8E8;
+    line-height: 1.7;
+    margin: 0 0 20px 0;
+    flex: 1;
+    position: relative;
+    padding-left: 20px;
+    border-left: 3px solid #E8690A;
+  }
+
+  .gk-press__source {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.7rem;
+    color: #E8690A;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .gk-press__author {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 0.85rem;
+  }
+
+  .gk-press__card-link {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #E8690A;
+    text-decoration: none;
+    margin-top: 16px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+
+  .gk-press__card-link:hover {
+    border-bottom-color: #E8690A;
+  }
+
+  /* Featured press - large quote */
+  .gk-press__featured {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 48px;
+    background-color: #141414;
+    border: 1px solid #272727;
+    margin-bottom: 24px;
+  }
+
+  .gk-press__featured .gk-press__quote {
+    border-left: none;
+    padding-left: 0;
+    font-size: 1.4rem;
+    max-width: 800px;
+    margin: 0 auto 24px;
+  }
+
+  .gk-press__featured .gk-press__quote::before {
+    content: """;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: #E8690A;
+    display: block;
+    line-height: 1;
+    margin-bottom: 12px;
+    font-style: normal;
+  }
+
+  @media screen and (max-width: 989px) {
+    .gk-press__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .gk-press__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .gk-press__featured {
+      padding: 40px 24px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="gk-press" id="section-{{ section.id }}">
+  <div class="gk-press__inner">
+    <div class="gk-press__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="gk-press__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h1 class="gk-press__heading">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+      {%- if section.settings.subtext != blank -%}
+        <p class="gk-press__subtext">{{ section.settings.subtext }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="gk-press__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'featured_quote' -%}
+            <div class="gk-press__featured" {{ block.shopify_attributes }}>
+              {%- if block.settings.quote != blank -%}
+                <blockquote class="gk-press__quote">{{ block.settings.quote }}</blockquote>
+              {%- endif -%}
+              {%- if block.settings.source != blank -%}
+                <span class="gk-press__source">{{ block.settings.source }}</span>
+              {%- endif -%}
+              {%- if block.settings.author != blank -%}
+                <span class="gk-press__author">{{ block.settings.author }}</span>
+              {%- endif -%}
+            </div>
+          {%- elsif block.type == 'press_quote' -%}
+            <div class="gk-press__card" {{ block.shopify_attributes }}>
+              {%- if block.settings.quote != blank -%}
+                <blockquote class="gk-press__quote">{{ block.settings.quote }}</blockquote>
+              {%- endif -%}
+              {%- if block.settings.source != blank -%}
+                <span class="gk-press__source">{{ block.settings.source }}</span>
+              {%- endif -%}
+              {%- if block.settings.author != blank -%}
+                <span class="gk-press__author">{{ block.settings.author }}</span>
+              {%- endif -%}
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}" class="gk-press__card-link" target="_blank" rel="noopener">READ ARTICLE →</a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GK Press Page",
+  "tag": "section",
+  "class": "gk-press-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0D0D0D"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "In the Press"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "PRESS"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "What they're saying about the Gristleman."
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Desktop Columns",
+      "default": "3",
+      "options": [
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured_quote",
+      "name": "Featured Quote",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote Text",
+          "default": "Greg Koch is one of the most creative and entertaining guitarists on the planet."
+        },
+        {
+          "type": "text",
+          "id": "source",
+          "label": "Publication / Source",
+          "default": "Guitar Player Magazine"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author (optional)",
+          "default": ""
+        }
+      ]
+    },
+    {
+      "type": "press_quote",
+      "name": "Press Quote",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote Text",
+          "default": "A remarkable display of technique and feel."
+        },
+        {
+          "type": "text",
+          "id": "source",
+          "label": "Publication / Source",
+          "default": "Premier Guitar"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author (optional)",
+          "default": ""
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Article Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Press Page",
+      "blocks": [
+        {
+          "type": "featured_quote",
+          "settings": {
+            "quote": "Greg Koch is one of the most creative and entertaining guitarists on the planet.",
+            "source": "Guitar Player Magazine"
+          }
+        },
+        {
+          "type": "press_quote",
+          "settings": {
+            "quote": "A remarkable display of technique and feel that is entirely his own.",
+            "source": "Premier Guitar"
+          }
+        },
+        {
+          "type": "press_quote",
+          "settings": {
+            "quote": "Koch channels the spirit of Hendrix, SRV, and Danny Gatton through his own unique lens.",
+            "source": "Vintage Guitar Magazine"
+          }
+        },
+        {
+          "type": "press_quote",
+          "settings": {
+            "quote": "Milwaukee's best-kept secret, unleashing gristle on an unsuspecting world.",
+            "source": "Guitar World"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

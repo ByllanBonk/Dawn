@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "gk_contact": {
+      "type": "gk-contact-page",
+      "blocks": {
+        "email_general": {
+          "type": "info_item",
+          "settings": {
+            "label": "General",
+            "value": "info@gregkoch.com"
+          }
+        },
+        "email_booking": {
+          "type": "info_item",
+          "settings": {
+            "label": "Booking",
+            "value": "booking@gregkoch.com"
+          }
+        },
+        "email_press": {
+          "type": "info_item",
+          "settings": {
+            "label": "Press",
+            "value": "press@gregkoch.com"
+          }
+        }
+      },
+      "block_order": [
+        "email_general",
+        "email_booking",
+        "email_press"
+      ],
+      "settings": {
+        "bg_color": "#0D0D0D",
+        "eyebrow": "Get in Touch",
+        "heading": "CONTACT",
+        "subtext": "For booking, press, lessons, or general inquiries.",
+        "name_label": "Name",
+        "name_placeholder": "Your name",
+        "email_label": "Email",
+        "email_placeholder": "your@email.com",
+        "show_phone": false,
+        "message_label": "Message",
+        "message_placeholder": "What's on your mind?",
+        "submit_label": "SEND MESSAGE",
+        "success_message": "Thanks for reaching out! We'll get back to you soon.",
+        "button_alignment": "left",
+        "button_width": "auto",
+        "form_width": 700,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "gk_contact"
+  ]
+}
