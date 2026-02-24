@@ -1,5 +1,65 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "gk_tour_dates_7fUzXw": {
+      "type": "gk-tour-dates",
+      "blocks": {
+        "show_d3qnbz": {
+          "type": "show",
+          "settings": {
+            "show_date": "Feb 25, 2026",
+            "venue_name": "The Big Room",
+            "city_state": "Milwaukee, WI",
+            "ticket_url": "https://bandsintown.com/t/107664965?affil_code=js_www.gregkoch.com&app_id=js_www.gregkoch.com&came_from=242&utm_campaign=ticket&utm_medium=web&utm_source=widget",
+            "is_sold_out": false
+          }
+        },
+        "show_VDFjUN": {
+          "type": "show",
+          "settings": {
+            "show_date": "March 15, 2026",
+            "venue_name": "The Big Room",
+            "city_state": "Milwaukee, WI",
+            "ticket_url": "",
+            "is_sold_out": false
+          }
+        },
+        "show_xmjyQt": {
+          "type": "show",
+          "settings": {
+            "show_date": "March 15, 2026",
+            "venue_name": "The Big Room",
+            "city_state": "Milwaukee, WI",
+            "ticket_url": "",
+            "is_sold_out": false
+          }
+        }
+      },
+      "block_order": [
+        "show_d3qnbz",
+        "show_VDFjUN",
+        "show_xmjyQt"
+      ],
+      "name": "GK Tour Dates",
+      "settings": {
+        "eyebrow": "Tour Dates",
+        "heading": "GREG KOCH DATES",
+        "subtext": "See upcoming dates below.",
+        "empty_text": "No upcoming dates. Check back soon.",
+        "text_align": "left",
+        "bg_color": "#0D0D0D",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
     "main": {
       "type": "main-page",
       "settings": {
@@ -9,6 +69,7 @@
     }
   },
   "order": [
+    "gk_tour_dates_7fUzXw",
     "main"
   ]
 }
