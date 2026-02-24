@@ -124,20 +124,10 @@
         "padding_bottom": 36
       }
     },
-    "gk_tour_dates_zzd3Qk": {
+    "gk_tour_dates_home_dLWg9B": {
       "type": "gk-tour-dates-home",
       "blocks": {
-        "show_8Bkwyi": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "https://www.ticketmaster.com/devon-allmans-blues-summit-denver-colorado-02-26-2026/event/1E00633766570D61?utm_medium=affiliate&irgwc=1&afsrc=1&clickid=wlhV5Ex3exyZUiv3woxZjQiWUku2k0X9L0xKXE0&camefrom=CFC_BUYAT_219208&impradid=219208&REFERRAL_ID=tmfeedbuyat219208&wt.mc_id=aff_BUYAT_219208&utm_source=219208-Bandsintown&impradname=Bandsintown&ircid=4272",
-            "is_sold_out": false
-          }
-        },
-        "show_fHpnMM": {
+        "show_9zeBQQ": {
           "type": "show",
           "settings": {
             "show_date": "March 15, 2026",
@@ -147,7 +137,27 @@
             "is_sold_out": false
           }
         },
-        "show_YVGAzC": {
+        "show_aagr6E": {
+          "type": "show",
+          "settings": {
+            "show_date": "March 15, 2026",
+            "venue_name": "The Big Room",
+            "city_state": "Milwaukee, WI",
+            "ticket_url": "",
+            "is_sold_out": false
+          }
+        },
+        "show_biBwQG": {
+          "type": "show",
+          "settings": {
+            "show_date": "March 15, 2026",
+            "venue_name": "The Big Room",
+            "city_state": "Milwaukee, WI",
+            "ticket_url": "",
+            "is_sold_out": false
+          }
+        },
+        "show_rPncVR": {
           "type": "show",
           "settings": {
             "show_date": "March 15, 2026",
@@ -159,11 +169,12 @@
         }
       },
       "block_order": [
-        "show_8Bkwyi",
-        "show_fHpnMM",
-        "show_YVGAzC"
+        "show_9zeBQQ",
+        "show_aagr6E",
+        "show_biBwQG",
+        "show_rPncVR"
       ],
-      "name": "GK Tour Dates",
+      "name": "GK Tour Dates Home",
       "settings": {
         "eyebrow": "Tour Dates",
         "heading": "GREG KOCH DATES",
@@ -178,71 +189,59 @@
         "padding_bottom": 64
       }
     },
-    "video": {
-      "type": "video",
-      "settings": {
-        "heading": "",
-        "heading_size": "h1",
-        "enable_video_looping": false,
-        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
-        "description": "",
-        "full_width": false,
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "multicolumn": {
-      "type": "multicolumn",
+    "gk_featured_gristle_w9Up6E": {
+      "type": "gk-featured-gristle",
       "blocks": {
-        "column1": {
-          "type": "column",
+        "card_gPVNAw": {
+          "type": "card",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
+            "image": "shopify://shop_images/lessons-cover_orig.jpg",
+            "label": "Lessons",
+            "title": "Virtual Lessons",
+            "description": "One-on-one virtual guitar lessons with Greg Koch via Zoom.",
+            "button_label": "BOOK NOW",
             "link": ""
           }
         },
-        "column2": {
-          "type": "column",
+        "card_JPQw3d": {
+          "type": "card",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
+            "image": "shopify://shop_images/homepage-digital-lessons_orig.jpg",
+            "label": "On Demand",
+            "title": "On-Demand Courses",
+            "description": "Self-paced video courses covering technique, tone, and more.",
+            "button_label": "BROWSE COURSES",
             "link": ""
           }
         },
-        "column3": {
-          "type": "column",
+        "card_xDpydz": {
+          "type": "card",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
+            "image": "shopify://shop_images/homepage-cords_orig.jpg",
+            "label": "TrueFire",
+            "title": "TrueFire Courses",
+            "description": "Full-length instructional courses on the TrueFire platform.",
+            "button_label": "VIEW ON TRUEFIRE",
             "link": ""
           }
         }
       },
       "block_order": [
-        "column1",
-        "column2",
-        "column3"
+        "card_gPVNAw",
+        "card_JPQw3d",
+        "card_xDpydz"
       ],
+      "name": "GK Featured Gristle",
       "settings": {
-        "title": "",
-        "heading_size": "h1",
-        "image_width": "third",
-        "image_ratio": "adapt",
-        "button_label": "",
-        "button_link": "",
-        "columns_desktop": 3,
-        "column_alignment": "center",
-        "background_style": "none",
-        "color_scheme": "scheme-1",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "bg_color": "#0D0D0D",
+        "eyebrow": "Learn from the Gristleman",
+        "heading": "FEATURED GRISTLE",
+        "subtext": "Lessons, courses, and on-demand content from Greg Koch.",
+        "text_alignment": "center",
+        "columns_desktop": "3",
+        "image_ratio": "16/9",
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "gk_stream_follow_GVbNme": {
@@ -454,69 +453,71 @@
         "text_color": "#ffffff"
       }
     },
-    "gk_tour_dates_home_dLWg9B": {
-      "type": "gk-tour-dates-home",
+    "video": {
+      "type": "video",
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "enable_video_looping": false,
+        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "description": "",
+        "full_width": false,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn": {
+      "type": "multicolumn",
       "blocks": {
-        "show_9zeBQQ": {
-          "type": "show",
+        "column1": {
+          "type": "column",
           "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
+            "title": "Column",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": ""
           }
         },
-        "show_aagr6E": {
-          "type": "show",
+        "column2": {
+          "type": "column",
           "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
+            "title": "Column",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": ""
           }
         },
-        "show_biBwQG": {
-          "type": "show",
+        "column3": {
+          "type": "column",
           "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
-          }
-        },
-        "show_rPncVR": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
+            "title": "Column",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": ""
           }
         }
       },
       "block_order": [
-        "show_9zeBQQ",
-        "show_aagr6E",
-        "show_biBwQG",
-        "show_rPncVR"
+        "column1",
+        "column2",
+        "column3"
       ],
-      "name": "GK Tour Dates Home",
       "settings": {
-        "eyebrow": "Tour Dates",
-        "heading": "GREG KOCH DATES",
-        "subtext": "See upcoming dates below.",
-        "empty_text": "No upcoming dates. Check back soon.",
-        "more_label": "Show more dates",
-        "initial_visible": 3,
-        "reveal_step": 3,
-        "text_align": "left",
-        "bg_color": "#0d0d0d",
-        "padding_top": 64,
-        "padding_bottom": 64
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "third",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "none",
+        "color_scheme": "scheme-1",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
@@ -524,10 +525,10 @@
     "image_banner",
     "featured_collection",
     "collage",
-    "gk_tour_dates_zzd3Qk",
-    "video",
-    "multicolumn",
+    "gk_tour_dates_home_dLWg9B",
+    "gk_featured_gristle_w9Up6E",
     "gk_stream_follow_GVbNme",
-    "gk_tour_dates_home_dLWg9B"
+    "video",
+    "multicolumn"
   ]
 }
