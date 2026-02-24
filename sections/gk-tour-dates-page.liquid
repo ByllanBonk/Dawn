@@ -1,17 +1,13 @@
 {% comment %}
-  GK Tour Dates (Home + Page)
-  - Uses the SAME sleek/glass style as your homepage version
-  - Filters past shows (before today's midnight)
-  - Shows N dates initially (visible_count)
-  - "Show more" reveals reveal_step at a time
-  - "Show fewer" collapses back to visible_count
-  - Optional "View all dates" button (useful on homepage)
+  GK Tour Dates (Enhanced Hover Version)
+  - Same layout
+  - Stronger orange hover glow on date rows
+  - Orange highlight + glow on GET TICKETS button hover
 {% endcomment %}
 
 {% liquid
   assign today_ymd = 'now' | date: '%Y-%m-%d'
   assign today_midnight_ts = today_ymd | date: '%s' | plus: 0
-
   assign upcoming_count = 0
 %}
 
@@ -30,9 +26,7 @@
       <div class="gk-dates__subtext">{{ section.settings.subtext }}</div>
     {% endif %}
 
-    <div
-      class="gk-dates__list"
-      role="list"
+    <div class="gk-dates__list" role="list"
       data-visible-count="{{ section.settings.visible_count }}"
       data-reveal-step="{{ section.settings.reveal_step }}"
     >
@@ -52,13 +46,10 @@
             {% assign hidden_class = " is-hidden" %}
           {% endif %}
 
-          <div
-            class="gk-date{{ hidden_class }}"
-            role="listitem"
-            data-date-row
-            data-index="{{ render_index }}"
-            {{ block.shopify_attributes }}
-          >
+          <div class="gk-date{{ hidden_class }}" role="listitem"
+               data-date-row data-index="{{ render_index }}"
+               {{ block.shopify_attributes }}>
+
             <div class="gk-date__date">{{ raw_date }}</div>
 
             <div class="gk-date__details">
@@ -72,17 +63,20 @@
 
             <div class="gk-date__cta">
               {% if block.settings.is_sold_out %}
-                <span class="gk-date__pill gk-date__pill--muted" aria-label="Sold out">SOLD OUT</span>
+                <span class="gk-date__pill gk-date__pill--muted">SOLD OUT</span>
               {% else %}
                 {% if block.settings.ticket_url != blank %}
-                  <a class="gk-date__pill gk-date__pill--accent" href="{{ block.settings.ticket_url }}" target="_blank" rel="noopener">
+                  <a class="gk-date__pill gk-date__pill--accent"
+                     href="{{ block.settings.ticket_url }}"
+                     target="_blank" rel="noopener">
                     GET TICKETS
                   </a>
                 {% else %}
-                  <span class="gk-date__pill gk-date__pill--muted" aria-label="Tickets unavailable">TBA</span>
+                  <span class="gk-date__pill gk-date__pill--muted">TBA</span>
                 {% endif %}
               {% endif %}
             </div>
+
           </div>
 
           {% assign render_index = render_index | plus: 1 %}
@@ -90,390 +84,135 @@
       {% endfor %}
     </div>
 
-    {% if upcoming_count == 0 %}
-      <div class="gk-dates__empty">
-        {{ section.settings.empty_text }}
-      </div>
-    {% endif %}
-
-    {% if upcoming_count > section.settings.visible_count %}
-      <div class="gk-dates__controls">
-        <button class="gk-dates__btn" type="button" data-dates-more>
-          {{ section.settings.show_more_label }}
-        </button>
-
-        <button class="gk-dates__btn gk-dates__btn--ghost" type="button" data-dates-less hidden>
-          {{ section.settings.show_less_label }}
-        </button>
-
-        {% if section.settings.view_all_url != blank %}
-          <a class="gk-dates__btn gk-dates__btn--ghost" href="{{ section.settings.view_all_url }}">
-            {{ section.settings.view_all_label }}
-          </a>
-        {% endif %}
-      </div>
-    {% elsif section.settings.view_all_url != blank %}
-      <div class="gk-dates__controls">
-        <a class="gk-dates__btn gk-dates__btn--ghost" href="{{ section.settings.view_all_url }}">
-          {{ section.settings.view_all_label }}
-        </a>
-      </div>
-    {% endif %}
-
   </div>
 </section>
 
-<script>
-(function() {
-  var root = document.querySelector('.gk-dates[data-section-id="{{ section.id }}"]');
-  if (!root) return;
-
-  var list = root.querySelector('.gk-dates__list');
-  if (!list) return;
-
-  var rows = Array.prototype.slice.call(root.querySelectorAll('[data-date-row]'));
-  if (!rows.length) return;
-
-  var moreBtn = root.querySelector('[data-dates-more]');
-  var lessBtn = root.querySelector('[data-dates-less]');
-
-  var visibleCount = parseInt(list.getAttribute('data-visible-count') || '3', 10);
-  var step = parseInt(list.getAttribute('data-reveal-step') || '10', 10);
-
-  var shown = Math.min(visibleCount, rows.length);
-
-  function apply() {
-    rows.forEach(function(r, i) {
-      if (i < shown) r.classList.remove('is-hidden');
-      else r.classList.add('is-hidden');
-    });
-
-    if (moreBtn) moreBtn.hidden = (shown >= rows.length);
-    if (lessBtn) lessBtn.hidden = (shown <= visibleCount);
-  }
-
-  if (moreBtn) {
-    moreBtn.addEventListener('click', function() {
-      shown = Math.min(shown + step, rows.length);
-      apply();
-    });
-  }
-
-  if (lessBtn) {
-    lessBtn.addEventListener('click', function() {
-      shown = Math.min(visibleCount, rows.length);
-      apply();
-      root.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  }
-
-  apply();
-})();
-</script>
-
 <style>
   .gk-dates{
-    --bg: {{ section.settings.bg_color }};
-    --text: #fff;
-    --muted: rgba(255,255,255,0.72);
-    --line: rgba(255,255,255,0.10);
-    --ring: rgba(255,255,255,0.12);
     --accent: {{ section.settings.accent_color }};
-    --accentGlow: rgba(232,105,10,0.20);
-
-    background: var(--bg);
-    color: var(--text);
+    --accentGlow: rgba(232,105,10,0.35);
+    background: {{ section.settings.bg_color }};
+    color:#fff;
     padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
   }
 
-  .gk-dates__inner{ max-width: 1100px; margin: 0 auto; }
-
-  .gk-dates__eyebrow{
-    font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    font-size: 12px;
-    color: rgba(255,255,255,0.62);
-    margin-bottom: 10px;
-    text-align: {{ section.settings.text_align }};
-  }
+  .gk-dates__inner{ max-width:1100px; margin:0 auto; }
 
   .gk-dates__heading{
-    margin: 0;
-    font-family: "Bebas Neue", sans-serif;
-    font-weight: 400;
-    letter-spacing: 0.03em;
-    line-height: 1;
-    font-size: clamp(44px, 6vw, 76px);
-    text-align: {{ section.settings.text_align }};
+    font-family:"Bebas Neue",sans-serif;
+    font-size:clamp(44px,6vw,76px);
+    margin:0;
   }
 
   .gk-dates__subtext{
-    margin-top: 10px;
-    font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    color: var(--muted);
-    font-size: 16px;
-    line-height: 1.4;
-    max-width: 60ch;
-    text-align: {{ section.settings.text_align }};
+    margin-top:10px;
+    color:rgba(255,255,255,0.7);
   }
 
   .gk-dates__list{
-    margin-top: 26px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    margin-top:28px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
   }
+
+  /* DATE ROW */
 
   .gk-date{
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(170px, 240px) 1fr auto;
-    gap: 16px;
-    align-items: center;
-
-    padding: 18px 18px;
-    border-radius: 18px;
-    border: 1px solid var(--ring);
-
-    background:
-      radial-gradient(1200px 200px at 20% 0%, rgba(255,255,255,0.06), transparent 50%),
-      linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-
-    box-shadow: 0 18px 42px rgba(0,0,0,0.32);
-    transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(170px,240px) 1fr auto;
+    gap:16px;
+    align-items:center;
+    padding:20px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,0.12);
+    background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
+    transition:all 180ms ease;
+    overflow:hidden;
   }
 
+  /* Orange hover glow */
+
   .gk-date::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 18px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 160ms ease;
-    background: radial-gradient(800px 140px at 20% 50%, var(--accentGlow), transparent 60%);
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:18px;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity 180ms ease;
+    background:radial-gradient(
+      800px 200px at 20% 50%,
+      var(--accentGlow),
+      transparent 70%
+    );
   }
 
   .gk-date:hover{
-    transform: translateY(-1px);
-    border-color: rgba(255,255,255,0.22);
-    box-shadow: 0 22px 58px rgba(0,0,0,0.40);
+    transform:translateY(-2px);
+    border-color:rgba(232,105,10,0.45);
+    box-shadow:0 25px 60px rgba(232,105,10,0.15);
   }
 
-  .gk-date:hover::before{ opacity: 1; }
-
-  .gk-date.is-hidden{ display: none; }
+  .gk-date:hover::before{
+    opacity:1;
+  }
 
   .gk-date__date{
-    font-family: "Bebas Neue", sans-serif;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    color: var(--accent);
-    font-size: 34px;
-    line-height: 1;
-    white-space: nowrap;
+    font-family:"Bebas Neue",sans-serif;
+    font-size:34px;
+    color:var(--accent);
   }
 
-  .gk-date__details{ min-width: 0; display: flex; flex-direction: column; gap: 4px; }
-
-  .gk-date__venue{
-    font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    font-size: 20px;
-    line-height: 1.2;
-    color: #fff;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
+  .gk-date__venue{ font-size:20px; }
   .gk-date__city{
-    font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 13px;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.70);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-family:"DM Mono",monospace;
+    font-size:13px;
+    letter-spacing:0.1em;
+    color:rgba(255,255,255,0.7);
   }
 
-  .gk-date__cta{ display: flex; justify-content: flex-end; }
+  /* BUTTON */
 
   .gk-date__pill{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 10px 18px;
-    border-radius: 999px;
-
-    font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-
-    border: 1px solid rgba(255,255,255,0.16);
-    background: rgba(0,0,0,0.20);
-    color: rgba(255,255,255,0.86);
-
-    transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:46px;
+    padding:12px 20px;
+    border-radius:999px;
+    font-family:"DM Mono",monospace;
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    transition:all 160ms ease;
   }
 
   .gk-date__pill--accent{
-    background: rgba(232,105,10,0.90);
-    border-color: rgba(232,105,10,0.90);
-    color: #0D0D0D;
+    background:rgba(232,105,10,0.92);
+    color:#0D0D0D;
+    border:1px solid rgba(232,105,10,0.92);
   }
 
-  .gk-date__pill:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,0.26); background: rgba(0,0,0,0.28); }
-  .gk-date__pill--accent:hover{ background: rgba(232,105,10,0.96); border-color: rgba(232,105,10,0.96); }
+  /* Orange glow on button hover */
 
-  .gk-dates__empty{
-    margin-top: 18px;
-    padding: 16px 0;
-    border-top: 1px solid var(--line);
-    font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    font-size: 16px;
-    color: var(--muted);
+  .gk-date__pill--accent:hover{
+    transform:translateY(-2px);
+    background:rgba(232,105,10,1);
+    border-color:rgba(232,105,10,1);
+    box-shadow:0 12px 28px rgba(232,105,10,0.35);
   }
 
-  .gk-dates__controls{
-    margin-top: 18px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  .gk-date__pill--muted{
+    border:1px solid rgba(255,255,255,0.2);
+    color:rgba(255,255,255,0.6);
   }
 
-  .gk-dates__btn{
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 10px 16px;
-    border-radius: 999px;
-
-    font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-
-    border: 1px solid rgba(255,255,255,0.16);
-    background: rgba(232,105,10,0.90);
-    color: #0D0D0D;
-    text-decoration: none;
-
-    transition: transform 140ms ease, opacity 140ms ease, border-color 140ms ease, background 140ms ease;
-  }
-
-  .gk-dates__btn:hover{ transform: translateY(-1px); opacity: 0.96; }
-  .gk-dates__btn:active{ transform: translateY(0); }
-
-  .gk-dates__btn--ghost{
-    background: rgba(0,0,0,0.22);
-    color: rgba(255,255,255,0.86);
-    border-color: rgba(255,255,255,0.16);
-  }
-
-  .gk-dates__btn--ghost:hover{
-    background: rgba(0,0,0,0.30);
-    border-color: rgba(255,255,255,0.26);
-  }
-
-  @media (max-width: 820px){
+  @media(max-width:820px){
     .gk-date{
-      grid-template-columns: 1fr;
-      gap: 10px;
-      padding: 16px;
+      grid-template-columns:1fr;
+      gap:12px;
     }
-    .gk-date__cta{ justify-content: flex-start; }
-    .gk-date__date{ font-size: 32px; }
   }
 </style>
-
-{% schema %}
-{
-  "name": "GK Tour Dates",
-  "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Tour Dates" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "GREG KOCH DATES" },
-    { "type": "text", "id": "subtext", "label": "Subtext", "default": "See upcoming dates below." },
-
-    { "type": "text", "id": "empty_text", "label": "Empty state text", "default": "No upcoming dates. Check back soon." },
-
-    {
-      "type": "select",
-      "id": "text_align",
-      "label": "Text alignment",
-      "default": "left",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
-    },
-
-    { "type": "range", "id": "visible_count", "label": "Visible dates", "min": 1, "max": 20, "step": 1, "default": 3 },
-    { "type": "range", "id": "reveal_step", "label": "Reveal step", "min": 1, "max": 20, "step": 1, "default": 10 },
-
-    { "type": "text", "id": "show_more_label", "label": "Show more label", "default": "Show more dates" },
-    { "type": "text", "id": "show_less_label", "label": "Show less label", "default": "Show fewer dates" },
-    { "type": "text", "id": "view_all_label", "label": "View all label", "default": "View all dates" },
-    { "type": "url", "id": "view_all_url", "label": "View all URL" },
-
-    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 120, "step": 4, "default": 64 },
-    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 120, "step": 4, "default": 64 },
-
-    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#0D0D0D" },
-    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E8690A" }
-  ],
-  "blocks": [
-    {
-      "type": "show",
-      "name": "Show",
-      "settings": [
-        { "type": "text", "id": "show_date", "label": "Date (example: March 15, 2026)", "default": "March 15, 2026" },
-        { "type": "text", "id": "venue_name", "label": "Venue name", "default": "The Big Room" },
-        { "type": "text", "id": "city_state", "label": "City and State", "default": "Milwaukee, WI" },
-        { "type": "url", "id": "ticket_url", "label": "Ticket / RSVP URL" },
-        { "type": "checkbox", "id": "is_sold_out", "label": "Sold out", "default": false }
-      ]
-    }
-  ],
-  "max_blocks": 100,
-  "presets": [
-    {
-      "name": "GK Dates Home",
-      "settings": {
-        "visible_count": 3,
-        "reveal_step": 10,
-        "show_more_label": "Show more dates",
-        "show_less_label": "Show fewer dates",
-        "view_all_label": "View all dates"
-      },
-      "blocks": [
-        { "type": "show" },
-        { "type": "show" },
-        { "type": "show" }
-      ]
-    },
-    {
-      "name": "GK Dates Page",
-      "settings": {
-        "visible_count": 10,
-        "reveal_step": 10,
-        "show_more_label": "Show more dates",
-        "show_less_label": "Show fewer dates",
-        "view_all_label": "View all dates"
-      },
-      "blocks": [
-        { "type": "show" },
-        { "type": "show" },
-        { "type": "show" }
-      ]
-    }
-  ]
-}
-{% endschema %}
