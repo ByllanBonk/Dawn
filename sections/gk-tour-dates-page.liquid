@@ -1,0 +1,164 @@
+{% comment %}
+  GK Tour Dates (PAGE)
+  Same as HOME, but default 10 visible + reveal 10
+{% endcomment %}
+
+{% liquid
+  assign today_ymd = 'now' | date: '%Y-%m-%d'
+  assign today_midnight_ts = today_ymd | date: '%s' | plus: 0
+  assign upcoming_count = 0
+  assign initial_visible = section.settings.initial_visible | default: 10
+  assign reveal_step = section.settings.reveal_step | default: 10
+%}
+
+<section class="gk-tour-dates gk-tour-dates--reveal" data-section-id="{{ section.id }}">
+  <div class="gk-tour-dates__inner">
+    {% if section.settings.eyebrow != blank %}
+      <div class="gk-tour-dates__eyebrow">{{ section.settings.eyebrow }}</div>
+    {% endif %}
+
+    {% if section.settings.heading != blank %}
+      <h1 class="gk-tour-dates__heading">{{ section.settings.heading }}</h1>
+    {% endif %}
+
+    {% if section.settings.subtext != blank %}
+      <div class="gk-tour-dates__subtext">{{ section.settings.subtext }}</div>
+    {% endif %}
+
+    <div class="gk-tour-dates__list" role="list">
+      {% for block in section.blocks %}
+        {% liquid
+          assign raw_date = block.settings.show_date | strip
+          assign show_ts = raw_date | date: '%s' | plus: 0
+        %}
+
+        {% if raw_date != blank and show_ts >= today_midnight_ts %}
+          {% assign upcoming_count = upcoming_count | plus: 1 %}
+
+          <div class="gk-date-row" role="listitem" {{ block.shopify_attributes }}>
+            <div class="gk-date-row__date">{{ raw_date }}</div>
+
+            <div class="gk-date-row__details">
+              {% if block.settings.venue_name != blank %}
+                <div class="gk-date-row__venue">{{ block.settings.venue_name }}</div>
+              {% endif %}
+              {% if block.settings.city_state != blank %}
+                <div class="gk-date-row__city">{{ block.settings.city_state }}</div>
+              {% endif %}
+            </div>
+
+            <div class="gk-date-row__cta">
+              {% if block.settings.is_sold_out %}
+                <span class="gk-date-row__soldout" aria-label="Sold out">SOLD OUT</span>
+              {% else %}
+                {% if block.settings.ticket_url != blank %}
+                  <a class="gk-date-row__btn" href="{{ block.settings.ticket_url }}" target="_blank" rel="noopener">
+                    GET TICKETS
+                  </a>
+                {% else %}
+                  <span class="gk-date-row__soldout" aria-label="Tickets unavailable">TBA</span>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if upcoming_count == 0 %}
+      <div class="gk-tour-dates__empty">{{ section.settings.empty_text }}</div>
+    {% endif %}
+
+    {% if upcoming_count > initial_visible %}
+      <div class="gk-tour-dates__more-wrap">
+        <button type="button" class="gk-tour-dates__more">
+          {{ section.settings.more_label }}
+        </button>
+      </div>
+    {% endif %}
+  </div>
+
+  {% if upcoming_count > initial_visible %}
+    <script>
+      (function () {
+        var section = document.querySelector('[data-section-id="{{ section.id }}"]');
+        if (!section) return;
+
+        var rows = section.querySelectorAll('.gk-date-row');
+        var btn  = section.querySelector('.gk-tour-dates__more');
+        if (!btn || !rows.length) return;
+
+        var initial = {{ initial_visible }};
+        var step    = {{ reveal_step }};
+        var shown   = Math.min(initial, rows.length);
+
+        function render() {
+          rows.forEach(function (row, idx) {
+            row.style.display = (idx < shown) ? '' : 'none';
+          });
+          btn.style.display = (shown >= rows.length) ? 'none' : '';
+        }
+
+        render();
+
+        btn.addEventListener('click', function () {
+          shown = Math.min(shown + step, rows.length);
+          render();
+        });
+      })();
+    </script>
+  {% endif %}
+</section>
+
+{% style %}
+  /* Use the exact same CSS block from the HOME section */
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "GK Tour Dates Page",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Tour Dates" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "GREG KOCH DATES" },
+    { "type": "text", "id": "subtext", "label": "Subtext", "default": "See upcoming dates below." },
+    { "type": "text", "id": "empty_text", "label": "Empty state text", "default": "No upcoming dates. Check back soon." },
+
+    { "type": "text", "id": "more_label", "label": "Show more button label", "default": "Show more dates" },
+    { "type": "range", "id": "initial_visible", "label": "Initially visible dates", "min": 1, "max": 50, "step": 1, "default": 10 },
+    { "type": "range", "id": "reveal_step", "label": "Reveal step (per click)", "min": 1, "max": 50, "step": 1, "default": 10 },
+
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#0D0D0D" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 120, "step": 4, "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 120, "step": 4, "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "show",
+      "name": "Show",
+      "settings": [
+        { "type": "text", "id": "show_date", "label": "Date (example: March 15, 2026)", "default": "March 15, 2026" },
+        { "type": "text", "id": "venue_name", "label": "Venue name", "default": "The Big Room" },
+        { "type": "text", "id": "city_state", "label": "City and State", "default": "Milwaukee, WI" },
+        { "type": "url", "id": "ticket_url", "label": "Ticket / RSVP URL" },
+        { "type": "checkbox", "id": "is_sold_out", "label": "Sold out", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 100,
+  "presets": [
+    { "name": "GK Tour Dates Page", "blocks": [ { "type": "show" }, { "type": "show" }, { "type": "show" } ] }
+  ]
+}
+{% endschema %}
