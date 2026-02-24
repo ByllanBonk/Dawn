@@ -5,10 +5,18 @@
   - Self-contained CSS + JS, scoped to section.id
 {%- endcomment -%}
 
-<section id="GK-About-{{ section.id }}" class="gk-about">
+{%- assign eyebrow = section.settings.eyebrow | strip -%}
+{%- assign subheading = section.settings.subheading | strip -%}
+{%- assign button_label = section.settings.button_label | strip -%}
+
+<section
+  id="GK-About-{{ section.id }}"
+  class="gk-about"
+  data-gk-anim="{{ section.settings.enable_animation }}"
+>
   <div class="page-width gk-about__inner">
-    {%- if section.settings.eyebrow != blank -%}
-      <div class="gk-about__eyebrow">{{ section.settings.eyebrow }}</div>
+    {%- if eyebrow != blank and eyebrow != '.' -%}
+      <div class="gk-about__eyebrow">{{ eyebrow }}</div>
     {%- endif -%}
 
     {%- if section.settings.heading != blank -%}
@@ -35,7 +43,7 @@
           }}
         </div>
 
-        {%- if section.settings.photo_credit != blank -%}
+        {%- if section.settings.photo_credit != blank and section.settings.photo_credit != '.' -%}
           <figcaption class="gk-about__credit">
             {{ section.settings.photo_credit }}
           </figcaption>
@@ -44,8 +52,8 @@
     {%- endif -%}
 
     <div class="gk-about__content">
-      {%- if section.settings.subheading != blank -%}
-        <h3 class="gk-about__subheading">{{ section.settings.subheading }}</h3>
+      {%- if subheading != blank and subheading != '.' -%}
+        <h3 class="gk-about__subheading">{{ subheading }}</h3>
       {%- endif -%}
 
       {%- if section.settings.body != blank -%}
@@ -54,7 +62,7 @@
         </div>
       {%- endif -%}
 
-      {%- if section.settings.button_label != blank -%}
+      {%- if button_label != blank and button_label != '.' -%}
         <div class="gk-about__cta">
           <a
             class="button button--primary"
@@ -64,7 +72,7 @@
               role="link" aria-disabled="true"
             {% endif %}
           >
-            {{ section.settings.button_label | escape }}
+            {{ button_label | escape }}
           </a>
         </div>
       {%- endif -%}
@@ -86,14 +94,11 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
 
-    /* If your section sits on a light page, you can flip these later.
-       For now it assumes your darker premium styling. */
     #GK-About-{{ section.id }} .gk-about__inner {
       max-width: 1100px;
       margin: 0 auto;
     }
 
-    /* Title area mimics old page simplicity */
     #GK-About-{{ section.id }} .gk-about__eyebrow {
       font-size: 12px;
       letter-spacing: .14em;
@@ -108,7 +113,6 @@
       line-height: 1.12;
     }
 
-    /* Image block mimics old page size */
     #GK-About-{{ section.id }} .gk-about__figure {
       margin: 0;
     }
@@ -119,7 +123,6 @@
       border-radius: 14px;
       border: 1px solid var(--line);
       background: var(--card);
-      /* subtle depth, no glow */
       box-shadow: 0 14px 44px rgba(0,0,0,0.35);
     }
 
@@ -130,7 +133,6 @@
       transform: translateZ(0);
     }
 
-    /* Premium hover (subtle, matches your rules) */
     @media (hover: hover) {
       #GK-About-{{ section.id }} .gk-about__media {
         transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
@@ -149,7 +151,6 @@
       text-align: right;
     }
 
-    /* Content below, clean like old page but with new typography */
     #GK-About-{{ section.id }} .gk-about__content {
       margin-top: 18px;
       border-top: 1px solid var(--line);
@@ -172,17 +173,17 @@
 
     /* ============================
       Motion: Depth Slide + Fly-in
+      Fail-safe: only hide BEFORE .gk-in
       ============================ */
-    #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__media,
-    #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__heading,
-    #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__content {
+    #GK-About-{{ section.id }}[data-gk-anim="true"]:not(.gk-in) .gk-about__media,
+    #GK-About-{{ section.id }}[data-gk-anim="true"]:not(.gk-in) .gk-about__heading,
+    #GK-About-{{ section.id }}[data-gk-anim="true"]:not(.gk-in) .gk-about__content {
       opacity: 0;
       transform: translateY(18px);
       will-change: transform, opacity;
     }
 
-    /* more pronounced for image */
-    #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__media {
+    #GK-About-{{ section.id }}[data-gk-anim="true"]:not(.gk-in) .gk-about__media {
       transform: translateY(14px) scale(1.04);
     }
 
@@ -193,7 +194,6 @@
                   transform 900ms cubic-bezier(.16,.84,.44,1);
     }
 
-    /* Stagger heading then content */
     #GK-About-{{ section.id }}.gk-in .gk-about__heading {
       opacity: 1;
       transform: translateY(0);
@@ -209,9 +209,9 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__media,
-      #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__heading,
-      #GK-About-{{ section.id }}[data-gk-anim="true"] .gk-about__content {
+      #GK-About-{{ section.id }}[data-gk-anim="true"]:not(.gk-in) .gk-about__media,
+      #GK-About-{{ section.id }}[data-gk-anim="true"]:not(.gk-in) .gk-about__heading,
+      #GK-About-{{ section.id }}[data-gk-anim="true"]:not(.gk-in) .gk-about__content {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
@@ -225,19 +225,29 @@
       if (!root) return;
 
       var animEnabled = root.getAttribute('data-gk-anim') === 'true';
-      if (!animEnabled) return;
+      if (!animEnabled) {
+        root.classList.add('gk-in');
+        return;
+      }
+
+      // Hard fail-safe: reveal even if observer never fires
+      var fallbackTimer = setTimeout(function() {
+        root.classList.add('gk-in');
+      }, 1200);
 
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        clearTimeout(fallbackTimer);
         root.classList.add('gk-in');
         return;
       }
 
       var revealed = false;
-      var reveal = function() {
+      function reveal() {
         if (revealed) return;
         revealed = true;
+        clearTimeout(fallbackTimer);
         root.classList.add('gk-in');
-      };
+      }
 
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function(entries) {
@@ -247,7 +257,7 @@
               io.disconnect();
             }
           });
-        }, { threshold: 0.25 });
+        }, { threshold: 0.15 });
 
         io.observe(root);
       } else {
@@ -349,17 +359,3 @@
   ]
 }
 {% endschema %}
-
-{% javascript %}
-{% endjavascript %}
-
-{%- comment -%}
-  Set animation attribute after schema so it stays editable.
-{%- endcomment -%}
-<script>
-  (function(){
-    var el = document.getElementById('GK-About-{{ section.id }}');
-    if (!el) return;
-    el.setAttribute('data-gk-anim', {{ section.settings.enable_animation | json }});
-  })();
-</script>
