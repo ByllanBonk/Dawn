@@ -16,9 +16,28 @@
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "gk_about_feature_eqLayJ": {
+      "type": "gk-about-feature",
+      "name": "GK About Feature",
+      "settings": {
+        "enable_animation": true,
+        "eyebrow": "",
+        "heading": "About Greg",
+        "image": "shopify://shop_images/gregkoch-hallway-1317-2025cjfoeckler.jpg",
+        "photo_credit": "above photo credit: ©2025CJFoeckler",
+        "subheading": ".",
+        "body": "<p>Add your updated About copy here. This is editable in the theme editor.</p>",
+        "button_label": ".",
+        "button_link": "",
+        "accent": "#E8690A",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "gk_about_feature_eqLayJ"
   ]
 }
