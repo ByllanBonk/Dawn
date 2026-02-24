@@ -26,7 +26,7 @@
             "show_date": "March 15, 2026",
             "venue_name": "The Big Room",
             "city_state": "Milwaukee, WI",
-            "ticket_url": "",
+            "ticket_url": "https://www.bandsintown.com/t/107664965?affil_code=js_www.gregkoch.com&app_id=js_www.gregkoch.com&came_from=242&utm_campaign=ticket&utm_medium=web&utm_source=widget",
             "is_sold_out": false
           }
         },
@@ -71,8 +71,8 @@
         "view_all_url": "",
         "padding_top": 64,
         "padding_bottom": 64,
-        "bg_color": "#0D0D0D",
-        "accent_color": "#E8690A"
+        "bg_color": "#0d0d0d",
+        "accent_color": "#e8690a"
       }
     }
   },
