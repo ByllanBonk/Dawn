@@ -31,49 +31,139 @@
     color: #E8E8E8;
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin: 0 0 12px 0;
+    margin: 0;
   }
 
-  .gk-dates-page__subtext {
+  .gk-dates-page__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .gk-dates-page__row {
+    display: grid;
+    grid-template-columns: 200px 1fr auto;
+    align-items: center;
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid #272727;
+  }
+
+  .gk-dates-page__row:first-child {
+    border-top: 1px solid #272727;
+  }
+
+  .gk-dates-page__date {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: #E8690A;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .gk-dates-page__info {
+    min-width: 0;
+  }
+
+  .gk-dates-page__venue {
     font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #E8E8E8;
+    margin: 0 0 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .gk-dates-page__city {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
     color: #777777;
-    font-size: 1.1rem;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
+    margin: 0;
   }
 
-  .gk-dates-page__embed {
-    width: 100%;
-    min-height: 500px;
+  .gk-dates-page__action {
+    white-space: nowrap;
   }
 
-  .gk-dates-page__cta {
-    text-align: center;
-    margin-top: 40px;
-  }
-
-  .gk-dates-page__btn {
+  .gk-dates-page__ticket-btn {
     display: inline-block;
     font-family: 'DM Sans', sans-serif;
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 500;
-    padding: 14px 36px;
+    padding: 10px 24px;
     border-radius: 0;
     text-decoration: none;
     background-color: #E8690A;
     color: #FFFFFF;
     border: 2px solid #E8690A;
     transition: all 0.3s ease;
+    cursor: pointer;
   }
 
-  .gk-dates-page__btn:hover {
+  .gk-dates-page__ticket-btn:hover {
     background-color: transparent;
     color: #E8690A;
   }
+
+  .gk-dates-page__sold-out {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 10px 24px;
+    color: #777777;
+    border: 2px solid #272727;
+    background-color: transparent;
+    cursor: default;
+  }
+
+  .gk-dates-page__empty {
+    text-align: center;
+    padding: 80px 24px;
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 1.1rem;
+    border: 1px solid #272727;
+    background-color: #141414;
+  }
+
+  @media screen and (max-width: 749px) {
+    .gk-dates-page__row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 18px 0;
+    }
+
+    .gk-dates-page__date {
+      font-size: 1.2rem;
+    }
+
+    .gk-dates-page__action {
+      margin-top: 4px;
+    }
+  }
 {%- endstyle -%}
+
+{%- assign now_epoch = 'now' | date: '%s' | plus: 0 -%}
+
+{%- comment -%} Count upcoming shows {%- endcomment -%}
+{%- assign upcoming_count = 0 -%}
+{%- for block in section.blocks -%}
+  {%- if block.type == 'show' and block.settings.date != blank -%}
+    {%- assign show_epoch = block.settings.date | date: '%s' | plus: 0 -%}
+    {%- assign show_end = show_epoch | plus: 86400 -%}
+    {%- if show_end > now_epoch -%}
+      {%- assign upcoming_count = upcoming_count | plus: 1 -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
 
 <section class="gk-dates-page" id="section-{{ section.id }}">
   <div class="gk-dates-page__inner">
@@ -84,42 +174,43 @@
       {%- if section.settings.heading != blank -%}
         <h1 class="gk-dates-page__heading">{{ section.settings.heading }}</h1>
       {%- endif -%}
-      {%- if section.settings.subtext != blank -%}
-        <p class="gk-dates-page__subtext">{{ section.settings.subtext }}</p>
-      {%- endif -%}
     </div>
 
-    <div class="gk-dates-page__embed">
-      {%- if section.settings.artist_name != blank -%}
-        <a class="bit-widget-initializer"
-          data-artist-name="{{ section.settings.artist_name }}"
-          data-display-local-dates="false"
-          data-display-past-dates="{{ section.settings.show_past_dates }}"
-          data-auto-style="false"
-          data-text-color="#E8E8E8"
-          data-link-color="#E8690A"
-          data-background-color="transparent"
-          data-display-limit="{{ section.settings.display_limit }}"
-          data-display-start-time="false"
-          data-link-text-color="#FFFFFF"
-          data-display-lineup="false"
-          data-display-play-my-city="{{ section.settings.show_play_my_city }}"
-          data-separator-color="#272727"
-        ></a>
-        <script charset="utf-8" src="https://widgetv3.bandsintown.com/main.min.js"></script>
-      {%- elsif section.settings.custom_embed != blank -%}
-        {{ section.settings.custom_embed }}
-      {%- else -%}
-        <div style="text-align: center; padding: 60px; border: 1px solid #272727; background-color: #141414;">
-          <p style="color: #777777; font-family: 'DM Sans', sans-serif;">Configure the Bandsintown artist name in the theme editor.</p>
-        </div>
-      {%- endif -%}
-    </div>
-
-    {%- if section.settings.cta_label != blank -%}
-      <div class="gk-dates-page__cta">
-        <a href="{{ section.settings.cta_link }}" class="gk-dates-page__btn">{{ section.settings.cta_label }}</a>
-      </div>
+    {%- if upcoming_count > 0 -%}
+      <ul class="gk-dates-page__list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'show' and block.settings.date != blank -%}
+            {%- assign show_epoch = block.settings.date | date: '%s' | plus: 0 -%}
+            {%- assign show_end = show_epoch | plus: 86400 -%}
+            {%- if show_end > now_epoch -%}
+              <li class="gk-dates-page__row" {{ block.shopify_attributes }}>
+                <div class="gk-dates-page__date">
+                  {{ block.settings.date }}
+                </div>
+                <div class="gk-dates-page__info">
+                  {%- if block.settings.venue != blank -%}
+                    <p class="gk-dates-page__venue">{{ block.settings.venue }}</p>
+                  {%- endif -%}
+                  {%- if block.settings.city != blank -%}
+                    <p class="gk-dates-page__city">{{ block.settings.city }}</p>
+                  {%- endif -%}
+                </div>
+                <div class="gk-dates-page__action">
+                  {%- if block.settings.sold_out -%}
+                    <span class="gk-dates-page__sold-out">SOLD OUT</span>
+                  {%- elsif block.settings.ticket_url != blank -%}
+                    <a href="{{ block.settings.ticket_url }}" class="gk-dates-page__ticket-btn" target="_blank" rel="noopener">GET TICKETS</a>
+                  {%- else -%}
+                    <span class="gk-dates-page__ticket-btn" style="opacity: 0.5; pointer-events: none;">TBA</span>
+                  {%- endif -%}
+                </div>
+              </li>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- else -%}
+      <p class="gk-dates-page__empty">{{ section.settings.empty_message }}</p>
     {%- endif -%}
   </div>
 </section>
@@ -140,63 +231,19 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow Text",
-      "default": "On the Road"
+      "default": "GRISTLE DATES"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
-      "default": "TOUR DATES"
-    },
-    {
-      "type": "textarea",
-      "id": "subtext",
-      "label": "Subtext",
-      "default": "Catch the Gristle live. Check below for upcoming shows and grab your tickets."
+      "label": "Page Heading",
+      "default": "GREG KOCH DATES"
     },
     {
       "type": "text",
-      "id": "artist_name",
-      "label": "Bandsintown Artist Name",
-      "default": "Greg Koch"
-    },
-    {
-      "type": "range",
-      "id": "display_limit",
-      "label": "Number of Dates",
-      "min": 5,
-      "max": 50,
-      "step": 5,
-      "default": 30
-    },
-    {
-      "type": "checkbox",
-      "id": "show_past_dates",
-      "label": "Show Past Dates",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_play_my_city",
-      "label": "Show Play My City",
-      "default": true
-    },
-    {
-      "type": "html",
-      "id": "custom_embed",
-      "label": "Custom Embed Code",
-      "info": "Override: paste custom embed HTML"
-    },
-    {
-      "type": "text",
-      "id": "cta_label",
-      "label": "CTA Button Label",
-      "default": ""
-    },
-    {
-      "type": "url",
-      "id": "cta_link",
-      "label": "CTA Button Link"
+      "id": "empty_message",
+      "label": "No Dates Message",
+      "default": "No upcoming dates. Check back soon."
     },
     {
       "type": "range",
@@ -219,9 +266,103 @@
       "unit": "px"
     }
   ],
+  "blocks": [
+    {
+      "type": "show",
+      "name": "Show Date",
+      "settings": [
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "info": "Format: March 15, 2026 — past dates auto-hide the following day",
+          "default": "March 15, 2026"
+        },
+        {
+          "type": "text",
+          "id": "venue",
+          "label": "Venue Name",
+          "default": "The Pabst Theater"
+        },
+        {
+          "type": "text",
+          "id": "city",
+          "label": "City & State",
+          "default": "Milwaukee, WI"
+        },
+        {
+          "type": "url",
+          "id": "ticket_url",
+          "label": "Ticket / RSVP URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "sold_out",
+          "label": "Sold Out",
+          "default": false
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "GK Dates Page"
+      "name": "GK Dates Page",
+      "blocks": [
+        {
+          "type": "show",
+          "settings": {
+            "date": "March 15, 2026",
+            "venue": "The Pabst Theater",
+            "city": "Milwaukee, WI",
+            "sold_out": false
+          }
+        },
+        {
+          "type": "show",
+          "settings": {
+            "date": "March 22, 2026",
+            "venue": "Buddy Guy's Legends",
+            "city": "Chicago, IL",
+            "sold_out": false
+          }
+        },
+        {
+          "type": "show",
+          "settings": {
+            "date": "April 5, 2026",
+            "venue": "The Birchmere",
+            "city": "Alexandria, VA",
+            "sold_out": true
+          }
+        },
+        {
+          "type": "show",
+          "settings": {
+            "date": "April 12, 2026",
+            "venue": "City Winery",
+            "city": "Nashville, TN",
+            "sold_out": false
+          }
+        },
+        {
+          "type": "show",
+          "settings": {
+            "date": "April 26, 2026",
+            "venue": "The Iridium",
+            "city": "New York, NY",
+            "sold_out": false
+          }
+        },
+        {
+          "type": "show",
+          "settings": {
+            "date": "May 9, 2026",
+            "venue": "Antone's Nightclub",
+            "city": "Austin, TX",
+            "sold_out": false
+          }
+        }
+      ]
     }
   ]
 }

@@ -2,16 +2,75 @@
   "sections": {
     "gk_dates": {
       "type": "gk-dates-page",
+      "blocks": {
+        "show_1": {
+          "type": "show",
+          "settings": {
+            "date": "March 15, 2026",
+            "venue": "The Pabst Theater",
+            "city": "Milwaukee, WI",
+            "sold_out": false
+          }
+        },
+        "show_2": {
+          "type": "show",
+          "settings": {
+            "date": "March 22, 2026",
+            "venue": "Buddy Guy's Legends",
+            "city": "Chicago, IL",
+            "sold_out": false
+          }
+        },
+        "show_3": {
+          "type": "show",
+          "settings": {
+            "date": "April 5, 2026",
+            "venue": "The Birchmere",
+            "city": "Alexandria, VA",
+            "sold_out": true
+          }
+        },
+        "show_4": {
+          "type": "show",
+          "settings": {
+            "date": "April 12, 2026",
+            "venue": "City Winery",
+            "city": "Nashville, TN",
+            "sold_out": false
+          }
+        },
+        "show_5": {
+          "type": "show",
+          "settings": {
+            "date": "April 26, 2026",
+            "venue": "The Iridium",
+            "city": "New York, NY",
+            "sold_out": false
+          }
+        },
+        "show_6": {
+          "type": "show",
+          "settings": {
+            "date": "May 9, 2026",
+            "venue": "Antone's Nightclub",
+            "city": "Austin, TX",
+            "sold_out": false
+          }
+        }
+      },
+      "block_order": [
+        "show_1",
+        "show_2",
+        "show_3",
+        "show_4",
+        "show_5",
+        "show_6"
+      ],
       "settings": {
         "bg_color": "#0D0D0D",
-        "eyebrow": "On the Road",
-        "heading": "TOUR DATES",
-        "subtext": "Catch the Gristle live. Check below for upcoming shows and grab your tickets.",
-        "artist_name": "Greg Koch",
-        "display_limit": 30,
-        "show_past_dates": false,
-        "show_play_my_city": true,
-        "cta_label": "",
+        "eyebrow": "GRISTLE DATES",
+        "heading": "GREG KOCH DATES",
+        "empty_message": "No upcoming dates. Check back soon.",
         "padding_top": 60,
         "padding_bottom": 60
       }
