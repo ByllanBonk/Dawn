@@ -85,45 +85,6 @@
         "padding_bottom": 36
       }
     },
-    "collage": {
-      "type": "collage",
-      "blocks": {
-        "collection-0": {
-          "type": "collection",
-          "settings": {
-            "collection": ""
-          }
-        },
-        "product": {
-          "type": "product",
-          "settings": {
-            "product": "",
-            "second_image": false
-          }
-        },
-        "collection-1": {
-          "type": "collection",
-          "settings": {
-            "collection": ""
-          }
-        }
-      },
-      "block_order": [
-        "collection-0",
-        "product",
-        "collection-1"
-      ],
-      "settings": {
-        "heading": "Multimedia collage",
-        "heading_size": "h2",
-        "desktop_layout": "left",
-        "mobile_layout": "collage",
-        "card_styles": "product-card-wrapper",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "gk_tour_dates_home_dLWg9B": {
       "type": "gk-tour-dates-home",
       "blocks": {
@@ -524,7 +485,6 @@
   "order": [
     "image_banner",
     "featured_collection",
-    "collage",
     "gk_tour_dates_home_dLWg9B",
     "gk_featured_gristle_w9Up6E",
     "gk_stream_follow_GVbNme",
