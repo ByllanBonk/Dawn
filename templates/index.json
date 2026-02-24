@@ -253,6 +253,30 @@
             "url": "https://podcasts.apple.com/us/podcast/chewing-the-gristle-with-greg-koch/id1525643497"
           }
         },
+        "platform_link_mLmVKg": {
+          "type": "platform_link",
+          "settings": {
+            "column": "podcast",
+            "label": "Buzzprout",
+            "url": "https://www.buzzsprout.com/1246721"
+          }
+        },
+        "platform_link_exYqQe": {
+          "type": "platform_link",
+          "settings": {
+            "column": "podcast",
+            "label": "Spotify Podcasts",
+            "url": "https://open.spotify.com/show/0J5kQaxZPd1iKqT3Vfzirc"
+          }
+        },
+        "platform_link_BQXf4F": {
+          "type": "platform_link",
+          "settings": {
+            "column": "podcast",
+            "label": "Deezer Podcasts",
+            "url": "https://www.deezer.com/us/show/1572042"
+          }
+        },
         "platform_link_GLRmRE": {
           "type": "platform_link",
           "settings": {
@@ -351,6 +375,9 @@
       },
       "block_order": [
         "platform_link_q8HBBn",
+        "platform_link_mLmVKg",
+        "platform_link_exYqQe",
+        "platform_link_BQXf4F",
         "platform_link_GLRmRE",
         "platform_link_GjRh34",
         "platform_link_YwtxXf",
