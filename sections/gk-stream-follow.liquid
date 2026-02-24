@@ -1,6 +1,311 @@
-<div style="padding:40px; background:#e8690a; color:#000; font-size:24px;">
-  GK Stream + Follow is rendering ✅
-</div>
+{% comment %}
+  GK Stream + Follow (Modern)
+  4 fixed columns: Stream Greg / Stream KMT / Podcast / Watch Greg Live
+  - platform_link blocks get assigned to a column via dropdown
+  - follow_link blocks render as pills under FOLLOW
+{% endcomment %}
+
+<section class="gk-stream" data-section-id="{{ section.id }}">
+  <div class="gk-stream__inner">
+    {% if section.settings.eyebrow != blank %}
+      <div class="gk-stream__eyebrow">{{ section.settings.eyebrow }}</div>
+    {% endif %}
+
+    {% if section.settings.heading != blank %}
+      <h2 class="gk-stream__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if section.settings.subtext != blank %}
+      <div class="gk-stream__subtext">{{ section.settings.subtext }}</div>
+    {% endif %}
+
+    {% assign col_keys = "stream_greg,stream_kmt,podcast,watch_live" | split: "," %}
+
+    <div class="gk-stream__grid" role="list">
+      {% for col in col_keys %}
+        <div class="gk-stream__card" role="listitem">
+          <div class="gk-stream__card-head">
+            <h3 class="gk-stream__card-title">
+              {% case col %}
+                {% when "stream_greg" %}{{ section.settings.col_1_title }}
+                {% when "stream_kmt" %}{{ section.settings.col_2_title }}
+                {% when "podcast" %}{{ section.settings.col_3_title }}
+                {% when "watch_live" %}{{ section.settings.col_4_title }}
+              {% endcase %}
+            </h3>
+
+            {% if section.settings.show_dividers %}
+              <div class="gk-stream__divider"></div>
+            {% endif %}
+          </div>
+
+          <ul class="gk-stream__links">
+            {% assign has_any = false %}
+
+            {% for block in section.blocks %}
+              {% if block.type == "platform_link" and block.settings.column == col %}
+                {% assign has_any = true %}
+                <li class="gk-stream__link" {{ block.shopify_attributes }}>
+                  <a href="{{ block.settings.url }}" target="_blank" rel="noopener">
+                    {% if section.settings.show_icons and block.settings.icon != blank %}
+                      <img
+                        class="gk-stream__icon"
+                        src="{{ block.settings.icon | image_url: width: 96 }}"
+                        alt=""
+                        loading="lazy"
+                        width="24"
+                        height="24"
+                      >
+                    {% endif %}
+
+                    <span class="gk-stream__link-text">{{ block.settings.label }}</span>
+                    <span class="gk-stream__chev" aria-hidden="true">↗</span>
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {% if has_any == false %}
+              <li class="gk-stream__link gk-stream__link--empty">
+                <span>{{ section.settings.empty_column_text }}</span>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% assign has_follow = false %}
+    {% for block in section.blocks %}
+      {% if block.type == "follow_link" %}
+        {% assign has_follow = true %}
+      {% endif %}
+    {% endfor %}
+
+    {% if has_follow %}
+      <div class="gk-stream__follow">
+        {% if section.settings.follow_heading != blank %}
+          <h3 class="gk-stream__follow-title">{{ section.settings.follow_heading }}</h3>
+        {% endif %}
+
+        <div class="gk-stream__follow-row" role="list">
+          {% for block in section.blocks %}
+            {% if block.type == "follow_link" %}
+              <a class="gk-stream__follow-pill" href="{{ block.settings.url }}" target="_blank" rel="noopener" role="listitem" {{ block.shopify_attributes }}>
+                {% if block.settings.icon != blank %}
+                  <img
+                    class="gk-stream__follow-icon"
+                    src="{{ block.settings.icon | image_url: width: 96 }}"
+                    alt="{{ block.settings.label | escape }}"
+                    loading="lazy"
+                    width="22"
+                    height="22"
+                  >
+                {% endif %}
+                <span class="gk-stream__follow-text">{{ block.settings.label }}</span>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .gk-stream{
+    --bg: {{ section.settings.bg_color }};
+    --text: {{ section.settings.text_color }};
+    --line: rgba(255,255,255,0.12);
+
+    background: var(--bg);
+    color: var(--text);
+    padding: {{ section.settings.pad_y }}px 20px;
+  }
+
+  .gk-stream__inner{
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .gk-stream__eyebrow{
+    font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: rgba(255,255,255,0.62);
+    margin-bottom: 10px;
+  }
+
+  .gk-stream__heading{
+    margin: 0;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    font-size: clamp(44px, 6vw, 76px);
+  }
+
+  .gk-stream__subtext{
+    margin-top: 10px;
+    font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color: rgba(255,255,255,0.75);
+    font-size: 16px;
+    line-height: 1.4;
+    max-width: 60ch;
+  }
+
+  .gk-stream__grid{
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .gk-stream__card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+    transition: transform 160ms ease, border-color 160ms ease;
+  }
+
+  .gk-stream__card:hover{
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.22);
+  }
+
+  .gk-stream__card-title{
+    margin: 0;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 20px;
+  }
+
+  .gk-stream__divider{
+    margin-top: 12px;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .gk-stream__links{
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .gk-stream__link a{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(0,0,0,0.20);
+    transition: background 160ms ease, border-color 160ms ease;
+  }
+
+  .gk-stream__link a:hover{
+    background: rgba(0,0,0,0.34);
+    border-color: rgba(255,255,255,0.18);
+  }
+
+  .gk-stream__icon{
+    border-radius: 6px;
+    filter: brightness(1.1);
+  }
+
+  .gk-stream__link-text{
+    font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.2;
+  }
+
+  .gk-stream__chev{
+    margin-left: auto;
+    color: rgba(255,255,255,0.45);
+    font-size: 13px;
+  }
+
+  .gk-stream__link--empty{
+    opacity: 0.6;
+    font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    font-size: 14px;
+    padding: 10px 10px;
+    border-radius: 12px;
+    border: 1px dashed rgba(255,255,255,0.14);
+    background: rgba(0,0,0,0.14);
+  }
+
+  .gk-stream__follow{
+    margin-top: 26px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+
+  .gk-stream__follow-title{
+    margin: 0 0 12px;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 22px;
+  }
+
+  .gk-stream__follow-row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .gk-stream__follow-pill{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.20);
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .gk-stream__follow-pill:hover{
+    transform: translateY(-1px);
+    border-color: rgba(255,255,255,0.22);
+    background: rgba(0,0,0,0.34);
+  }
+
+  .gk-stream__follow-icon{
+    border-radius: 8px;
+  }
+
+  .gk-stream__follow-text{
+    font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: rgba(255,255,255,0.82);
+  }
+
+  @media (max-width: 1000px){
+    .gk-stream__grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 620px){
+    .gk-stream__grid{ grid-template-columns: 1fr; }
+  }
+</style>
+
 {% schema %}
 {
   "name": "GK Stream + Follow",
@@ -17,16 +322,14 @@
     { "type": "text", "id": "follow_heading", "label": "Follow heading", "default": "FOLLOW" },
 
     { "type": "checkbox", "id": "show_icons", "label": "Show link icons", "default": false },
-    { "type": "checkbox", "id": "show_dividers", "label": "Show divider line under titles", "default": true },
+    { "type": "checkbox", "id": "show_dividers", "label": "Show divider line", "default": true },
 
     { "type": "text", "id": "empty_column_text", "label": "Empty column text", "default": "Add links for this column in the section blocks." },
 
     { "type": "range", "id": "pad_y", "min": 20, "max": 120, "step": 4, "unit": "px", "label": "Vertical padding", "default": 72 },
 
     { "type": "color", "id": "bg_color", "label": "Background color", "default": "#0D0D0D" },
-    { "type": "color", "id": "card_color", "label": "Card color", "default": "#141414" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#FFFFFF" },
-    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E8690A" }
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#FFFFFF" }
   ],
   "blocks": [
     {
@@ -56,7 +359,7 @@
       "settings": [
         { "type": "text", "id": "label", "label": "Label", "default": "Instagram" },
         { "type": "url", "id": "url", "label": "URL" },
-        { "type": "image_picker", "id": "icon", "label": "Icon (64x64 PNG recommended)" }
+        { "type": "image_picker", "id": "icon", "label": "Icon" }
       ]
     }
   ],
