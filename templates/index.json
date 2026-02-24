@@ -124,6 +124,57 @@
         "padding_bottom": 36
       }
     },
+    "gk_tour_dates_zzd3Qk": {
+      "type": "gk-tour-dates",
+      "blocks": {
+        "show_8Bkwyi": {
+          "type": "show",
+          "settings": {
+            "show_date": "March 15, 2026",
+            "venue_name": "The Big Room",
+            "city_state": "Milwaukee, WI",
+            "ticket_url": "",
+            "is_sold_out": false
+          }
+        },
+        "show_fHpnMM": {
+          "type": "show",
+          "settings": {
+            "show_date": "March 15, 2026",
+            "venue_name": "The Big Room",
+            "city_state": "Milwaukee, WI",
+            "ticket_url": "",
+            "is_sold_out": false
+          }
+        },
+        "show_YVGAzC": {
+          "type": "show",
+          "settings": {
+            "show_date": "March 15, 2026",
+            "venue_name": "The Big Room",
+            "city_state": "Milwaukee, WI",
+            "ticket_url": "",
+            "is_sold_out": false
+          }
+        }
+      },
+      "block_order": [
+        "show_8Bkwyi",
+        "show_fHpnMM",
+        "show_YVGAzC"
+      ],
+      "name": "GK Tour Dates",
+      "settings": {
+        "eyebrow": "Tour Dates",
+        "heading": "GREG KOCH DATES",
+        "subtext": "See upcoming dates below.",
+        "empty_text": "No upcoming dates. Check back soon.",
+        "text_align": "left",
+        "bg_color": "#0d0d0d",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
     "video": {
       "type": "video",
       "settings": {
@@ -191,55 +242,73 @@
         "padding_bottom": 36
       }
     },
-    "gk_tour_dates_zzd3Qk": {
-      "type": "gk-tour-dates",
+    "gk_stream_follow_GVbNme": {
+      "type": "gk-stream-follow",
       "blocks": {
-        "show_8Bkwyi": {
-          "type": "show",
+        "platform_link_aNzFB3": {
+          "type": "platform_link",
           "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
+            "column": "stream_greg",
+            "label": "Spotify",
+            "url": ""
           }
         },
-        "show_fHpnMM": {
-          "type": "show",
+        "platform_link_EbDTxj": {
+          "type": "platform_link",
           "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
+            "column": "stream_greg",
+            "label": "Spotify",
+            "url": ""
           }
         },
-        "show_YVGAzC": {
-          "type": "show",
+        "platform_link_wR9JCm": {
+          "type": "platform_link",
           "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
+            "column": "stream_greg",
+            "label": "Spotify",
+            "url": ""
+          }
+        },
+        "follow_link_DkFUcd": {
+          "type": "follow_link",
+          "settings": {
+            "label": "Instagram",
+            "url": ""
+          }
+        },
+        "follow_link_FNhrbc": {
+          "type": "follow_link",
+          "settings": {
+            "label": "Instagram",
+            "url": ""
           }
         }
       },
       "block_order": [
-        "show_8Bkwyi",
-        "show_fHpnMM",
-        "show_YVGAzC"
+        "platform_link_aNzFB3",
+        "platform_link_EbDTxj",
+        "platform_link_wR9JCm",
+        "follow_link_DkFUcd",
+        "follow_link_FNhrbc"
       ],
-      "name": "GK Tour Dates",
+      "name": "GK Stream + Follow",
       "settings": {
-        "eyebrow": "Tour Dates",
-        "heading": "GREG KOCH DATES",
-        "subtext": "See upcoming dates below.",
-        "empty_text": "No upcoming dates. Check back soon.",
-        "text_align": "left",
+        "eyebrow": "LISTEN & CONNECT",
+        "heading": "STREAM + FOLLOW",
+        "subtext": "Find Greg Koch on every platform.",
+        "col_1_title": "STREAM GREG",
+        "col_2_title": "STREAM KMT",
+        "col_3_title": "PODCAST",
+        "col_4_title": "WATCH GREG LIVE",
+        "follow_heading": "FOLLOW",
+        "show_icons": false,
+        "show_dividers": true,
+        "empty_column_text": "Add links for this column in the section blocks.",
+        "pad_y": 72,
         "bg_color": "#0D0D0D",
-        "padding_top": 64,
-        "padding_bottom": 64
+        "card_color": "#141414",
+        "text_color": "#FFFFFF",
+        "accent_color": "#E8690A"
       }
     }
   },
@@ -249,6 +318,7 @@
     "collage",
     "gk_tour_dates_zzd3Qk",
     "video",
-    "multicolumn"
+    "multicolumn",
+    "gk_stream_follow_GVbNme"
   ]
 }
