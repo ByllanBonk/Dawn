@@ -250,7 +250,8 @@
           "settings": {
             "column": "stream_greg",
             "label": "Spotify",
-            "url": ""
+            "url": "https://open.spotify.com/artist/5Y6wPwVr2krTASRASpMLsC",
+            "icon": "shopify://shop_images/2024_Spotify_logo_without_text__black.svg"
           }
         },
         "platform_link_EbDTxj": {
@@ -305,10 +306,8 @@
         "show_dividers": true,
         "empty_column_text": "Add links for this column in the section blocks.",
         "pad_y": 72,
-        "bg_color": "#0D0D0D",
-        "card_color": "#141414",
-        "text_color": "#FFFFFF",
-        "accent_color": "#E8690A"
+        "bg_color": "#0d0d0d",
+        "text_color": "#ffffff"
       }
     }
   },
