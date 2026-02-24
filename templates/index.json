@@ -285,6 +285,14 @@
             "url": "https://www.youtube.com/@GregKochMusic/streams"
           }
         },
+        "platform_link_gTtWaD": {
+          "type": "platform_link",
+          "settings": {
+            "column": "watch_live",
+            "label": "Facebook",
+            "url": "https://www.facebook.com/GregKochMusic"
+          }
+        },
         "platform_link_GLRmRE": {
           "type": "platform_link",
           "settings": {
@@ -387,6 +395,7 @@
         "platform_link_exYqQe",
         "platform_link_BQXf4F",
         "platform_link_NYRx3L",
+        "platform_link_gTtWaD",
         "platform_link_GLRmRE",
         "platform_link_GjRh34",
         "platform_link_YwtxXf",
