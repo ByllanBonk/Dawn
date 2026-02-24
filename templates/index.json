@@ -270,6 +270,30 @@
             "url": "https://music.youtube.com/channel/UCX3rdX9oHrDLxb8Ql74Gwaw"
           }
         },
+        "platform_link_ytJhCB": {
+          "type": "platform_link",
+          "settings": {
+            "column": "stream_greg",
+            "label": "BandCamp",
+            "url": "https://gregkoch.bandcamp.com/album/live-on-the-radio-volume-2"
+          }
+        },
+        "platform_link_BpyBqF": {
+          "type": "platform_link",
+          "settings": {
+            "column": "stream_greg",
+            "label": "Deezer",
+            "url": "https://www.deezer.com/us/artist/386838"
+          }
+        },
+        "platform_link_iJMtQK": {
+          "type": "platform_link",
+          "settings": {
+            "column": "stream_greg",
+            "label": "Tidal",
+            "url": "https://tidal.com/artist/4515825"
+          }
+        },
         "follow_link_DkFUcd": {
           "type": "follow_link",
           "settings": {
@@ -289,6 +313,9 @@
         "platform_link_aNzFB3",
         "platform_link_EbDTxj",
         "platform_link_wR9JCm",
+        "platform_link_ytJhCB",
+        "platform_link_BpyBqF",
+        "platform_link_iJMtQK",
         "follow_link_DkFUcd",
         "follow_link_FNhrbc"
       ],
