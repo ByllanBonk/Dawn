@@ -1,183 +1,285 @@
-{%- style -%}
-  .gk-tour-dates {
-    background-color: {{ section.settings.bg_color }};
-    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
-  }
+{% comment %}
+  GK Tour Dates Section
+  - Editable show blocks (date, venue, city, button URL, sold out)
+  - Hides past shows (before today's midnight)
+{% endcomment %}
 
-  .gk-tour-dates__inner {
-    max-width: var(--page-width);
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+{% liquid
+  assign today_ymd = 'now' | date: '%Y-%m-%d'
+  assign today_midnight_ts = today_ymd | date: '%s' | plus: 0
+  assign upcoming_count = 0
+%}
 
-  .gk-tour-dates__eyebrow {
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-size: 0.75rem;
-    color: #E8690A;
-    margin-bottom: 12px;
-    display: block;
-    text-align: {{ section.settings.text_alignment }};
-  }
-
-  .gk-tour-dates__heading {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    color: #E8E8E8;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin: 0 0 8px 0;
-    text-align: {{ section.settings.text_alignment }};
-  }
-
-  .gk-tour-dates__subtext {
-    font-family: 'DM Sans', sans-serif;
-    color: #777777;
-    font-size: 1rem;
-    margin-bottom: 32px;
-    text-align: {{ section.settings.text_alignment }};
-  }
-
-  .gk-tour-dates__embed {
-    width: 100%;
-    min-height: 400px;
-  }
-
-  .gk-tour-dates__embed iframe {
-    width: 100%;
-    border: none;
-  }
-
-  /* Override Bandsintown widget dark styles */
-  .gk-tour-dates .bit-widget {
-    background-color: transparent !important;
-  }
-
-  .gk-tour-dates__fallback {
-    text-align: center;
-    padding: 60px 24px;
-    border: 1px solid #272727;
-    background-color: #141414;
-  }
-
-  .gk-tour-dates__fallback-text {
-    color: #777777;
-    font-family: 'DM Sans', sans-serif;
-    margin-bottom: 24px;
-  }
-
-  .gk-tour-dates__btn {
-    display: inline-block;
-    font-family: 'DM Sans', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    padding: 14px 36px;
-    border-radius: 0;
-    text-decoration: none;
-    background-color: #E8690A;
-    color: #FFFFFF;
-    border: 2px solid #E8690A;
-    transition: all 0.3s ease;
-  }
-
-  .gk-tour-dates__btn:hover {
-    background-color: transparent;
-    color: #E8690A;
-  }
-{%- endstyle -%}
-
-<section class="gk-tour-dates" id="section-{{ section.id }}">
+<section class="gk-tour-dates" data-section-id="{{ section.id }}">
   <div class="gk-tour-dates__inner">
-    {%- for block in section.blocks -%}
-      {%- case block.type -%}
-        {%- when 'eyebrow' -%}
-          {%- if block.settings.text != blank -%}
-            <span class="gk-tour-dates__eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
-          {%- endif -%}
 
-        {%- when 'heading' -%}
-          {%- if block.settings.heading != blank -%}
-            <h2 class="gk-tour-dates__heading" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
-          {%- endif -%}
+    {% if section.settings.eyebrow != blank %}
+      <div class="gk-tour-dates__eyebrow">{{ section.settings.eyebrow }}</div>
+    {% endif %}
 
-        {%- when 'subtext' -%}
-          {%- if block.settings.text != blank -%}
-            <p class="gk-tour-dates__subtext" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
-          {%- endif -%}
+    {% if section.settings.heading != blank %}
+      <h1 class="gk-tour-dates__heading">{{ section.settings.heading }}</h1>
+    {% endif %}
 
-        {%- when 'bandsintown_embed' -%}
-          <div class="gk-tour-dates__embed" {{ block.shopify_attributes }}>
-            {%- if block.settings.artist_name != blank -%}
-              <a class="bit-widget-initializer"
-                data-artist-name="{{ block.settings.artist_name }}"
-                data-display-local-dates="false"
-                data-display-past-dates="{{ block.settings.show_past_dates }}"
-                data-auto-style="false"
-                data-text-color="#E8E8E8"
-                data-link-color="#E8690A"
-                data-background-color="transparent"
-                data-display-limit="{{ block.settings.display_limit }}"
-                data-display-start-time="false"
-                data-link-text-color="#FFFFFF"
-                data-display-lineup="false"
-                data-display-play-my-city="{{ block.settings.show_play_my_city }}"
-                data-separator-color="#272727"
-              ></a>
-            {%- else -%}
-              <div class="gk-tour-dates__fallback">
-                <p class="gk-tour-dates__fallback-text">Configure the Bandsintown artist name in the theme editor to display tour dates.</p>
-              </div>
-            {%- endif -%}
+    {% if section.settings.subtext != blank %}
+      <div class="gk-tour-dates__subtext">{{ section.settings.subtext }}</div>
+    {% endif %}
+
+    <div class="gk-tour-dates__list" role="list">
+      {% for block in section.blocks %}
+        {% liquid
+          assign raw_date = block.settings.show_date | strip
+          assign show_ts = raw_date | date: '%s' | plus: 0
+        %}
+
+        {% if raw_date != blank and show_ts >= today_midnight_ts %}
+          {% assign upcoming_count = upcoming_count | plus: 1 %}
+
+          <div class="gk-date-row" role="listitem" {{ block.shopify_attributes }}>
+            <div class="gk-date-row__date">
+              {{ raw_date }}
+            </div>
+
+            <div class="gk-date-row__details">
+              {% if block.settings.venue_name != blank %}
+                <div class="gk-date-row__venue">{{ block.settings.venue_name }}</div>
+              {% endif %}
+
+              {% if block.settings.city_state != blank %}
+                <div class="gk-date-row__city">{{ block.settings.city_state }}</div>
+              {% endif %}
+            </div>
+
+            <div class="gk-date-row__cta">
+              {% if block.settings.is_sold_out %}
+                <span class="gk-date-row__soldout" aria-label="Sold out">SOLD OUT</span>
+              {% else %}
+                {% if block.settings.ticket_url != blank %}
+                  <a class="gk-date-row__btn" href="{{ block.settings.ticket_url }}" target="_blank" rel="noopener">
+                    GET TICKETS
+                  </a>
+                {% else %}
+                  <span class="gk-date-row__soldout" aria-label="Tickets unavailable">TBA</span>
+                {% endif %}
+              {% endif %}
+            </div>
           </div>
+        {% endif %}
+      {% endfor %}
+    </div>
 
-        {%- when 'custom_html' -%}
-          {%- if block.settings.html != blank -%}
-            <div class="gk-tour-dates__embed" {{ block.shopify_attributes }}>
-              {{ block.settings.html }}
-            </div>
-          {%- endif -%}
+    {% if upcoming_count == 0 %}
+      <div class="gk-tour-dates__empty">
+        {{ section.settings.empty_text }}
+      </div>
+    {% endif %}
 
-        {%- when 'button' -%}
-          {%- if block.settings.label != blank -%}
-            <div style="text-align: {{ section.settings.text_alignment }}; margin-top: 24px;">
-              <a href="{{ block.settings.link }}" class="gk-tour-dates__btn" {{ block.shopify_attributes }}>
-                {{ block.settings.label }}
-              </a>
-            </div>
-          {%- endif -%}
-      {%- endcase -%}
-    {%- endfor -%}
   </div>
 </section>
 
-{%- if section.blocks.size > 0 -%}
-  {%- for block in section.blocks -%}
-    {%- if block.type == 'bandsintown_embed' and block.settings.artist_name != blank -%}
-      <script charset="utf-8" src="https://widgetv3.bandsintown.com/main.min.js"></script>
-    {%- endif -%}
-  {%- endfor -%}
-{%- endif -%}
+{% style %}
+.gk-tour-dates {
+  background: {{ section.settings.bg_color }};
+  color: #FFFFFF;
+  padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+}
+
+.gk-tour-dates__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.gk-tour-dates__eyebrow {
+  font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.75rem;
+  color: #E8690A;
+  margin-bottom: 12px;
+  text-align: {{ section.settings.text_align }};
+  display: block;
+}
+
+.gk-tour-dates__heading {
+  margin: 0 0 8px 0;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  font-size: clamp(44px, 6vw, 76px);
+  color: #FFFFFF;
+  text-align: {{ section.settings.text_align }};
+}
+
+.gk-tour-dates__subtext {
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 16px;
+  color: rgba(255,255,255,0.72);
+  margin-bottom: 28px;
+  text-align: {{ section.settings.text_align }};
+}
+
+.gk-tour-dates__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gk-date-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+.gk-date-row:last-child {
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.gk-date-row__date {
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #E8690A;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.gk-date-row__details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.gk-date-row__venue {
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 18px;
+  line-height: 1.2;
+  color: #FFFFFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gk-date-row__city {
+  font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gk-date-row__cta {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.gk-date-row__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  background: #E8690A;
+  color: #0D0D0D;
+  text-decoration: none;
+  font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  border: 1px solid #E8690A;
+  border-radius: 0;
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.gk-date-row__btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.gk-date-row__btn:active {
+  transform: translateY(0);
+}
+
+.gk-date-row__soldout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 0;
+  background: transparent;
+}
+
+.gk-tour-dates__empty {
+  margin-top: 20px;
+  padding: 18px 0;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 16px;
+  color: rgba(255,255,255,0.72);
+}
+
+@media (max-width: 720px) {
+  .gk-date-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 16px 0;
+  }
+
+  .gk-date-row__cta {
+    justify-content: flex-start;
+  }
+
+  .gk-date-row__date {
+    font-size: 30px;
+  }
+}
+{% endstyle %}
 
 {% schema %}
 {
   "name": "GK Tour Dates",
-  "tag": "section",
-  "class": "gk-tour-dates-section",
   "settings": [
     {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background Color",
-      "default": "#0D0D0D"
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Tour Dates"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "GREG KOCH DATES"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "See upcoming dates below."
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty state text",
+      "default": "No upcoming dates. Check back soon."
     },
     {
       "type": "select",
-      "id": "text_alignment",
-      "label": "Text Alignment",
-      "default": "center",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "left",
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
@@ -185,141 +287,75 @@
       ]
     },
     {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#0D0D0D"
+    },
+    {
       "type": "range",
       "id": "padding_top",
-      "label": "Padding Top",
+      "label": "Padding top",
       "min": 0,
-      "max": 100,
+      "max": 120,
       "step": 4,
-      "default": 60,
-      "unit": "px"
+      "default": 64
     },
     {
       "type": "range",
       "id": "padding_bottom",
-      "label": "Padding Bottom",
+      "label": "Padding bottom",
       "min": 0,
-      "max": 100,
+      "max": 120,
       "step": 4,
-      "default": 60,
-      "unit": "px"
+      "default": 64
     }
   ],
   "blocks": [
     {
-      "type": "eyebrow",
-      "name": "Eyebrow Text",
-      "limit": 1,
+      "type": "show",
+      "name": "Show",
       "settings": [
         {
           "type": "text",
-          "id": "text",
-          "label": "Eyebrow Text",
-          "default": "On the Road"
-        }
-      ]
-    },
-    {
-      "type": "heading",
-      "name": "Heading",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "TOUR DATES"
-        }
-      ]
-    },
-    {
-      "type": "subtext",
-      "name": "Subtext",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Subtext",
-          "default": "Catch the Gristle live near you."
-        }
-      ]
-    },
-    {
-      "type": "bandsintown_embed",
-      "name": "Bandsintown Widget",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "artist_name",
-          "label": "Artist Name",
-          "default": "Greg Koch",
-          "info": "Exact artist name as it appears on Bandsintown"
+          "id": "show_date",
+          "label": "Date (example: March 15, 2026)",
+          "default": "March 15, 2026"
         },
         {
-          "type": "range",
-          "id": "display_limit",
-          "label": "Number of Dates to Show",
-          "min": 5,
-          "max": 30,
-          "step": 1,
-          "default": 15
+          "type": "text",
+          "id": "venue_name",
+          "label": "Venue name",
+          "default": "The Big Room"
         },
-        {
-          "type": "checkbox",
-          "id": "show_past_dates",
-          "label": "Show Past Dates",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "show_play_my_city",
-          "label": "Show Play My City",
-          "default": true
-        }
-      ]
-    },
-    {
-      "type": "custom_html",
-      "name": "Custom HTML",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "html",
-          "id": "html",
-          "label": "Custom Embed Code",
-          "info": "Paste any embed code (Bandsintown, Songkick, etc.)"
-        }
-      ]
-    },
-    {
-      "type": "button",
-      "name": "Button",
-      "limit": 1,
-      "settings": [
         {
           "type": "text",
-          "id": "label",
-          "label": "Button Label",
-          "default": "SEE ALL DATES"
+          "id": "city_state",
+          "label": "City and State",
+          "default": "Milwaukee, WI"
         },
         {
           "type": "url",
-          "id": "link",
-          "label": "Button Link"
+          "id": "ticket_url",
+          "label": "Ticket / RSVP URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_sold_out",
+          "label": "Sold out",
+          "default": false
         }
       ]
     }
   ],
+  "max_blocks": 100,
   "presets": [
     {
       "name": "GK Tour Dates",
       "blocks": [
-        { "type": "eyebrow" },
-        { "type": "heading" },
-        { "type": "subtext" },
-        { "type": "bandsintown_embed" }
+        { "type": "show" },
+        { "type": "show" },
+        { "type": "show" }
       ]
     }
   ]
