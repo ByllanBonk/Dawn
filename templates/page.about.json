@@ -17,67 +17,27 @@
         "padding_bottom": 28
       }
     },
-    "gk_tour_dates_page_tJ74y3": {
-      "type": "gk-tour-dates-page",
-      "blocks": {
-        "show_RCYUxR": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
-          }
-        },
-        "show_KkW66L": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
-          }
-        },
-        "show_tQQCt3": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
-          }
-        }
-      },
-      "block_order": [
-        "show_RCYUxR",
-        "show_KkW66L",
-        "show_tQQCt3"
-      ],
-      "name": "GK Dates Page",
+    "gk_about_feature_NcbxQh": {
+      "type": "gk-about-feature",
+      "name": "GK About Feature",
       "settings": {
-        "eyebrow": "Tour Dates",
-        "heading": "GREG KOCH DATES",
-        "subtext": "See upcoming dates below.",
-        "empty_text": "No upcoming dates. Check back soon.",
-        "text_align": "left",
-        "visible_count": 10,
-        "reveal_step": 10,
-        "show_more_label": "Show more dates",
-        "show_less_label": "Show fewer dates",
-        "view_all_label": "View all dates",
-        "view_all_url": "",
-        "padding_top": 64,
-        "padding_bottom": 64,
-        "bg_color": "#0D0D0D",
-        "accent_color": "#E8690A"
+        "enable_animation": true,
+        "eyebrow": "",
+        "heading": "About Greg",
+        "image": "shopify://shop_images/gregkoch-hallway-1317-2025cjfoeckler.jpg",
+        "photo_credit": "above photo credit: ©2025CJFoeckler",
+        "subheading": ".",
+        "body": "<p>It is not a stretch to say that Milwaukee native Greg Koch is one of the most famous unknown guitar players in the world. His fierce creative spirit and crazed sense of fun fused with a tremendous degree of versatility has made him an island of six-stringed mirth in a sea of guitar warlords. Fifteen critically acclaimed CD’s featuring his unique and incendiary brand of playing and composing, international tours as band leader, fourteen best-selling guitar instructional materials for the Hal Leonard Publishing empire, articles and columns in some the biggest guitar magazines, a lengthy past tenure as an ambassador for Fender Guitars and a similar position in that capacity for Fishman Transducers has generated a respectable following for Greg throughout the world. Ultimately, Greg's 4000 plus videos exceeding 50 million views for Wildwood Guitars of Louisville Colorado showcasing Greg’s wild guitar test drives and random humorous commentary have made him a household name for guitar players throughout the galaxy.​<br/>​</p><p>Greg’s latest original music outlet, The Koch-Marshall Trio, is perhaps the best vehicle yet to convey his bold improvisational explorations and ever increasing arsenal of original material. The trio blends the explosive guitar manipulations of Greg, the groove-centric, power-pocket playing of his son Dylan on drums (who share many telepathic musical moments) and the glorious, Hammond organ stylings of the uber-talented Toby Marshall, Greg’s compositions are properly portrayed in the blues drenched, funk, chicken-fried, gospelly, jazz-rock panorama in which they were conceived. Their first release, “Toby Arrives” will be released in the February 23, 2018 on the Mascot Label Group / Players Club Imprint and features the first moments of their unexpected musical partnership captured at an extemporaneous jam session earlier in the year. </p>",
+        "button_label": ".",
+        "button_link": "",
+        "accent": "#E8690A",
+        "padding_top": 40,
+        "padding_bottom": 52
       }
     }
   },
   "order": [
     "main",
-    "gk_tour_dates_page_tJ74y3"
+    "gk_about_feature_NcbxQh"
   ]
 }
