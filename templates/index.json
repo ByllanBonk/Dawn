@@ -1,62 +1,79 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "gk_hero": {
-      "type": "gk-hero",
+    "image_banner": {
+      "type": "image-banner",
       "blocks": {
-        "eyebrow": {
-          "type": "eyebrow",
-          "settings": { "text": "Guitar Fiend \u2022 Gristle King" }
-        },
         "heading": {
           "type": "heading",
-          "settings": { "heading": "GREG KOCH" }
+          "settings": {
+            "heading": "Home Of The Gristle",
+            "heading_size": "h0"
+          }
         },
-        "subheading": {
-          "type": "subheading",
-          "settings": { "text": "Unleashing his own brand of musical mayhem from Milwaukee, WI." }
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
         },
-        "buttons": {
+        "button": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "SHOP THE GRISTLE",
+            "button_label_1": "Shop all",
             "button_link_1": "shopify://collections/all",
-            "button_label_2": "TOUR DATES",
-            "button_link_2": "/pages/dates"
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
           }
         }
       },
-      "block_order": ["eyebrow", "heading", "subheading", "buttons"],
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
       "settings": {
         "image": "shopify://shop_images/pic.jpg",
-        "image_position": "center center",
-        "hero_height": 100,
-        "mobile_height": 85,
-        "overlay_opacity": 30,
-        "overlay_end_opacity": 85,
-        "gradient_direction": "bottom",
-        "content_position": "flex-end",
-        "text_alignment": "left",
-        "content_width": 800,
-        "heading_size": 8
+        "image_overlay_opacity": 40,
+        "image_height": "large",
+        "image_behavior": "none",
+        "desktop_content_position": "bottom-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
       }
     },
-    "gk_featured_products": {
+    "featured_collection": {
       "type": "featured-collection",
       "settings": {
         "collection": "all",
-        "products_to_show": 3,
-        "title": "The Latest Gristle",
+        "products_to_show": 8,
+        "title": "Featured products",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "columns_desktop": 3,
+        "columns_desktop": 4,
         "enable_desktop_slider": false,
         "full_width": false,
-        "show_view_all": true,
+        "show_view_all": false,
         "view_all_style": "solid",
         "color_scheme": "scheme-1",
-        "image_ratio": "portrait",
+        "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
@@ -64,126 +81,174 @@
         "quick_add": "none",
         "columns_mobile": "2",
         "swipe_on_mobile": false,
-        "padding_top": 60,
-        "padding_bottom": 60
+        "padding_top": 28,
+        "padding_bottom": 36
       }
     },
-    "gk_tour_dates": {
+    "collage": {
+      "type": "collage",
+      "blocks": {
+        "collection-0": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "product": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "second_image": false
+          }
+        },
+        "collection-1": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection-0",
+        "product",
+        "collection-1"
+      ],
+      "settings": {
+        "heading": "Multimedia collage",
+        "heading_size": "h2",
+        "desktop_layout": "left",
+        "mobile_layout": "collage",
+        "card_styles": "product-card-wrapper",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "video": {
+      "type": "video",
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "enable_video_looping": false,
+        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "description": "",
+        "full_width": false,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn": {
+      "type": "multicolumn",
+      "blocks": {
+        "column1": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column2": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column3": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column1",
+        "column2",
+        "column3"
+      ],
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "third",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "none",
+        "color_scheme": "scheme-1",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "gk_tour_dates_zzd3Qk": {
       "type": "gk-tour-dates",
       "blocks": {
-        "show_1": { "type": "show", "settings": { "date": "March 15, 2026", "venue": "The Pabst Theater", "city": "Milwaukee, WI", "sold_out": false } },
-        "show_2": { "type": "show", "settings": { "date": "March 22, 2026", "venue": "Buddy Guy's Legends", "city": "Chicago, IL", "sold_out": false } },
-        "show_3": { "type": "show", "settings": { "date": "April 5, 2026", "venue": "The Birchmere", "city": "Alexandria, VA", "sold_out": true } },
-        "show_4": { "type": "show", "settings": { "date": "April 12, 2026", "venue": "City Winery", "city": "Nashville, TN", "sold_out": false } },
-        "show_5": { "type": "show", "settings": { "date": "April 26, 2026", "venue": "The Iridium", "city": "New York, NY", "sold_out": false } },
-        "show_6": { "type": "show", "settings": { "date": "May 9, 2026", "venue": "Antone's Nightclub", "city": "Austin, TX", "sold_out": false } }
+        "show_8Bkwyi": {
+          "type": "show",
+          "settings": {
+            "show_date": "March 15, 2026",
+            "venue_name": "The Big Room",
+            "city_state": "Milwaukee, WI",
+            "ticket_url": "",
+            "is_sold_out": false
+          }
+        },
+        "show_fHpnMM": {
+          "type": "show",
+          "settings": {
+            "show_date": "March 15, 2026",
+            "venue_name": "The Big Room",
+            "city_state": "Milwaukee, WI",
+            "ticket_url": "",
+            "is_sold_out": false
+          }
+        },
+        "show_YVGAzC": {
+          "type": "show",
+          "settings": {
+            "show_date": "March 15, 2026",
+            "venue_name": "The Big Room",
+            "city_state": "Milwaukee, WI",
+            "ticket_url": "",
+            "is_sold_out": false
+          }
+        }
       },
-      "block_order": ["show_1", "show_2", "show_3", "show_4", "show_5", "show_6"],
+      "block_order": [
+        "show_8Bkwyi",
+        "show_fHpnMM",
+        "show_YVGAzC"
+      ],
+      "name": "GK Tour Dates",
       "settings": {
+        "eyebrow": "Tour Dates",
+        "heading": "GREG KOCH DATES",
+        "subtext": "See upcoming dates below.",
+        "empty_text": "No upcoming dates. Check back soon.",
+        "text_align": "left",
         "bg_color": "#0D0D0D",
-        "eyebrow": "GRISTLE DATES",
-        "text_alignment": "left",
-        "max_shows": 4,
-        "empty_message": "No upcoming dates. Check back soon.",
-        "view_all_label": "VIEW ALL DATES",
-        "view_all_url": "/pages/dates",
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "gk_stream_follow": {
-      "type": "gk-stream-follow",
-      "blocks": {
-        "spotify": { "type": "platform_link", "settings": { "label": "Spotify" } },
-        "apple_music": { "type": "platform_link", "settings": { "label": "Apple Music" } },
-        "youtube": { "type": "platform_link", "settings": { "label": "YouTube" } },
-        "instagram": { "type": "platform_link", "settings": { "label": "Instagram" } },
-        "facebook": { "type": "platform_link", "settings": { "label": "Facebook" } },
-        "tiktok": { "type": "platform_link", "settings": { "label": "TikTok" } }
-      },
-      "block_order": ["spotify", "apple_music", "youtube", "instagram", "facebook", "tiktok"],
-      "settings": {
-        "bg_color": "#E8690A",
-        "eyebrow": "Listen & Connect",
-        "heading": "STREAM + FOLLOW",
-        "subtext": "Find Greg Koch on every platform.",
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "gk_featured_gristle": {
-      "type": "gk-featured-gristle",
-      "blocks": {
-        "lessons": { "type": "card", "settings": { "label": "Lessons", "title": "Virtual Lessons", "description": "One-on-one virtual guitar lessons with Greg Koch via Zoom.", "button_label": "BOOK NOW" } },
-        "on_demand": { "type": "card", "settings": { "label": "On Demand", "title": "On-Demand Courses", "description": "Self-paced video courses covering technique, tone, and more.", "button_label": "BROWSE COURSES" } },
-        "truefire": { "type": "card", "settings": { "label": "TrueFire", "title": "TrueFire Courses", "description": "Full-length instructional courses on the TrueFire platform.", "button_label": "VIEW ON TRUEFIRE" } }
-      },
-      "block_order": ["lessons", "on_demand", "truefire"],
-      "settings": {
-        "bg_color": "#0D0D0D",
-        "eyebrow": "Learn from the Gristleman",
-        "heading": "FEATURED GRISTLE",
-        "subtext": "Lessons, courses, and on-demand content from Greg Koch.",
-        "text_alignment": "center",
-        "columns_desktop": "3",
-        "image_ratio": "16/9",
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "gk_sponsors": {
-      "type": "gk-sponsor-logos",
-      "blocks": {
-        "jam": { "type": "logo", "settings": { "name": "JAM Pedals" } },
-        "fishman": { "type": "logo", "settings": { "name": "Fishman" } },
-        "reverend": { "type": "logo", "settings": { "name": "Reverend" } },
-        "toneking": { "type": "logo", "settings": { "name": "Tone King" } },
-        "daddario": { "type": "logo", "settings": { "name": "D'Addario" } },
-        "dunlop": { "type": "logo", "settings": { "name": "Dunlop" } }
-      },
-      "block_order": ["jam", "fishman", "reverend", "toneking", "daddario", "dunlop"],
-      "settings": {
-        "bg_color": "#0D0D0D",
-        "eyebrow": "Proud Partners",
-        "heading": "",
-        "orange_hover": true,
-        "logo_width": 150,
-        "logo_height": 70,
-        "logo_gap": 40,
-        "show_top_border": true,
-        "show_bottom_border": true,
-        "padding_top": 48,
-        "padding_bottom": 48
-      }
-    },
-    "gk_spotify": {
-      "type": "gk-spotify-embed",
-      "settings": {
-        "eyebrow": "FEATURED MUSIC",
-        "heading": "FEATURED MUSIC",
-        "subtext": "",
-        "spotify_input": "",
-        "show_open_link": false,
-        "background_color": "#0D0D0D",
-        "card_background_color": "#141414",
-        "text_color": "#E8E8E8",
-        "max_width": 1100,
-        "card_radius": 12,
-        "card_padding": 16,
-        "embed_height_desktop": 352,
-        "embed_height_mobile": 352,
-        "padding_top": 60,
-        "padding_bottom": 60
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     }
   },
   "order": [
-    "gk_hero",
-    "gk_featured_products",
-    "gk_tour_dates",
-    "gk_stream_follow",
-    "gk_featured_gristle",
-    "gk_sponsors",
-    "gk_spotify"
+    "image_banner",
+    "featured_collection",
+    "collage",
+    "gk_tour_dates_zzd3Qk",
+    "video",
+    "multicolumn"
   ]
 }
