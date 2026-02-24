@@ -245,6 +245,30 @@
     "gk_stream_follow_GVbNme": {
       "type": "gk-stream-follow",
       "blocks": {
+        "platform_link_GLRmRE": {
+          "type": "platform_link",
+          "settings": {
+            "column": "stream_kmt",
+            "label": "Spotify",
+            "url": "https://open.spotify.com/artist/0S1IwDW6PhPmAuC9jtOo1L"
+          }
+        },
+        "platform_link_GjRh34": {
+          "type": "platform_link",
+          "settings": {
+            "column": "stream_kmt",
+            "label": "Apple Music",
+            "url": "https://music.apple.com/us/artist/koch-marshall-trio/1325215495"
+          }
+        },
+        "platform_link_YwtxXf": {
+          "type": "platform_link",
+          "settings": {
+            "column": "stream_kmt",
+            "label": "YouTube Music",
+            "url": "https://music.youtube.com/channel/UCOCLy0S38jVy35han88h_JA"
+          }
+        },
         "platform_link_aNzFB3": {
           "type": "platform_link",
           "settings": {
@@ -318,6 +342,9 @@
         }
       },
       "block_order": [
+        "platform_link_GLRmRE",
+        "platform_link_GjRh34",
+        "platform_link_YwtxXf",
         "platform_link_aNzFB3",
         "platform_link_EbDTxj",
         "platform_link_wR9JCm",
