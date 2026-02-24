@@ -62,8 +62,8 @@
       "settings": {
         "collection": "all",
         "products_to_show": 8,
-        "title": "Featured products",
-        "heading_size": "h2",
+        "title": "The Latest Gristle",
+        "heading_size": "h1",
         "description": "",
         "show_description": false,
         "description_style": "body",
