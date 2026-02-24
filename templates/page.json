@@ -34,10 +34,57 @@
         "padding_top": 40,
         "padding_bottom": 52
       }
+    },
+    "gk_about_gallery_kjTVKa": {
+      "type": "gk-about-gallery",
+      "blocks": {
+        "image_K69LBR": {
+          "type": "image",
+          "settings": {
+            "alt": "."
+          }
+        },
+        "image_bpUcJY": {
+          "type": "image",
+          "settings": {
+            "alt": "."
+          }
+        },
+        "image_DarEBn": {
+          "type": "image",
+          "settings": {
+            "alt": "."
+          }
+        },
+        "image_Ht4GzB": {
+          "type": "image",
+          "settings": {
+            "alt": "."
+          }
+        }
+      },
+      "block_order": [
+        "image_K69LBR",
+        "image_bpUcJY",
+        "image_DarEBn",
+        "image_Ht4GzB"
+      ],
+      "name": "GK About Gallery",
+      "settings": {
+        "enable_animation": true,
+        "heading": "About the Koch Marshall Trio",
+        "main_image": "shopify://shop_images/gregkoch-couch-1025-2025cjfoeckler_orig.jpg",
+        "main_credit": "above photo credit: ©2025CJFoeckler",
+        "body": "<p>Add your updated copy here. This is editable in the theme editor.</p>",
+        "accent": "#E8690A",
+        "padding_top": 44,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
     "main",
-    "gk_about_feature_eqLayJ"
+    "gk_about_feature_eqLayJ",
+    "gk_about_gallery_kjTVKa"
   ]
 }
