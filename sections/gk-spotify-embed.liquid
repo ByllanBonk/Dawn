@@ -1,0 +1,395 @@
+{%- comment -%}
+  GK Spotify Embed (Artist Top Tracks)
+  - Cinematic dark glass card + subtle GK orange glow
+  - Uses Spotify "embed/artist/..." URL (paste src only)
+  - Optional scroll reveal animation (depth slide)
+  - Fully scoped CSS/JS to section.id (no global bleed)
+{%- endcomment -%}
+
+{%- liquid
+  assign accent = section.settings.accent | default: '#E8690A'
+  assign heading_val = section.settings.heading | strip
+  assign subheading_val = section.settings.subheading | strip
+  assign url_raw = section.settings.spotify_embed_url | strip
+
+  assign enable_anim = section.settings.enable_animation
+  assign height_px = section.settings.height | default: 380
+
+  comment
+    Basic safety: only allow open.spotify.com/embed/...
+    If invalid, we simply don't render iframe.
+  endcomment
+  assign url_ok = false
+  if url_raw != blank
+    if url_raw contains 'https://open.spotify.com/embed/'
+      assign url_ok = true
+    endif
+  endif
+
+  comment
+    Derive a "open in Spotify" link by removing "/embed"
+    Example:
+      https://open.spotify.com/embed/artist/XXXX -> https://open.spotify.com/artist/XXXX
+  endcomment
+  assign open_url = ''
+  if url_ok
+    assign open_url = url_raw | replace: 'https://open.spotify.com/embed/', 'https://open.spotify.com/'
+  endif
+-%}
+
+<section
+  id="GK-Spotify-{{ section.id }}"
+  class="gk-spotify"
+  data-gk-anim="{{ enable_anim | json }}"
+>
+  <div class="page-width gk-spotify__inner">
+    <div class="gk-spotify__header">
+      {%- if heading_val != blank and heading_val != '.' -%}
+        <h2 class="gk-spotify__heading">{{ heading_val }}</h2>
+      {%- endif -%}
+
+      {%- if subheading_val != blank and subheading_val != '.' -%}
+        <div class="gk-spotify__subheading">{{ subheading_val }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="gk-spotify__cardWrap">
+      <div class="gk-spotify__card" aria-label="Spotify player">
+        {%- if url_ok -%}
+          <iframe
+            class="gk-spotify__iframe"
+            src="{{ url_raw }}"
+            width="100%"
+            height="{{ height_px }}"
+            frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title="Spotify embed"
+          ></iframe>
+        {%- else -%}
+          <div class="gk-spotify__error">
+            <strong>Spotify embed URL missing or invalid.</strong><br>
+            Paste the <em>src</em> URL that starts with <code>https://open.spotify.com/embed/</code>.
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if url_ok and section.settings.show_open_button -%}
+        <div class="gk-spotify__cta">
+          <a class="gk-spotify__btn" href="{{ open_url }}" target="_blank" rel="noopener">
+            Open on Spotify
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <style>
+    /* ============================
+      GK Spotify (scoped)
+      ============================ */
+    #GK-Spotify-{{ section.id }}.gk-spotify{
+      --accent: {{ accent }};
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.66);
+      --line: rgba(255,255,255,0.10);
+      --glass: rgba(255,255,255,0.06);
+
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    #GK-Spotify-{{ section.id }} .gk-spotify__inner{
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    #GK-Spotify-{{ section.id }} .gk-spotify__header{
+      margin-bottom: 14px;
+    }
+
+    #GK-Spotify-{{ section.id }} .gk-spotify__heading{
+      margin: 0 0 8px 0;
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: 0.01em;
+      font-size: clamp(28px, 4vw, 52px);
+      color: var(--text);
+    }
+
+    #GK-Spotify-{{ section.id }} .gk-spotify__subheading{
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.4;
+      max-width: 72ch;
+    }
+
+    /* Cinematic wrap (subtle vignette + glow) */
+    #GK-Spotify-{{ section.id }} .gk-spotify__cardWrap{
+      position: relative;
+      border-radius: 18px;
+    }
+
+    /* A soft cinematic vignette that sits BEHIND the card */
+    #GK-Spotify-{{ section.id }} .gk-spotify__cardWrap::before{
+      content: "";
+      position: absolute;
+      inset: -18px;
+      border-radius: 22px;
+      pointer-events: none;
+      background:
+        radial-gradient(1200px 500px at 20% 0%, rgba(255,255,255,0.06), transparent 55%),
+        radial-gradient(900px 420px at 85% 10%, rgba(232,105,10,0.10), transparent 60%),
+        radial-gradient(900px 520px at 50% 115%, rgba(0,0,0,0.60), transparent 60%);
+      filter: blur(0px);
+      opacity: 0.95;
+    }
+
+    /* Card */
+    #GK-Spotify-{{ section.id }} .gk-spotify__card{
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(18,18,18,0.82), rgba(12,12,12,0.92));
+      box-shadow:
+        0 18px 70px rgba(0,0,0,0.55);
+      transform: translateZ(0);
+    }
+
+    /* Subtle GK orange glow ring (B) */
+    #GK-Spotify-{{ section.id }} .gk-spotify__card::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: 18px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.02) inset,
+        0 0 0 1px rgba(232,105,10,0.10);
+      opacity: 0.75;
+    }
+
+    /* Iframe styling */
+    #GK-Spotify-{{ section.id }} .gk-spotify__iframe{
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: 0; /* card handles rounding */
+      background: transparent;
+    }
+
+    /* Error state */
+    #GK-Spotify-{{ section.id }} .gk-spotify__error{
+      padding: 18px;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    #GK-Spotify-{{ section.id }} .gk-spotify__error code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--line);
+    }
+
+    /* CTA */
+    #GK-Spotify-{{ section.id }} .gk-spotify__cta{
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    #GK-Spotify-{{ section.id }} .gk-spotify__btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: rgba(255,255,255,0.92);
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 14px 44px rgba(0,0,0,0.35);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    @media (hover:hover){
+      #GK-Spotify-{{ section.id }} .gk-spotify__card{
+        transition: transform 160ms ease, border-color 160ms ease, box-shadow 200ms ease;
+      }
+      #GK-Spotify-{{ section.id }} .gk-spotify__card:hover{
+        transform: translateY(-1px);
+        border-color: rgba(232,105,10,0.22);
+        box-shadow: 0 22px 90px rgba(0,0,0,0.62);
+      }
+      #GK-Spotify-{{ section.id }} .gk-spotify__btn:hover{
+        transform: translateY(-1px);
+        border-color: rgba(232,105,10,0.35);
+        background: rgba(0,0,0,0.50);
+        box-shadow: 0 18px 58px rgba(0,0,0,0.45);
+      }
+    }
+
+    /* ============================
+      Motion: depth slide + fade (C)
+      ============================ */
+    #GK-Spotify-{{ section.id }}[data-gk-anim="true"] .gk-spotify__header,
+    #GK-Spotify-{{ section.id }}[data-gk-anim="true"] .gk-spotify__cardWrap{
+      opacity: 0;
+      transform: translateY(16px);
+      will-change: transform, opacity;
+    }
+
+    #GK-Spotify-{{ section.id }}.gk-in .gk-spotify__header{
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 650ms cubic-bezier(.16,.84,.44,1),
+                  transform 650ms cubic-bezier(.16,.84,.44,1);
+    }
+
+    #GK-Spotify-{{ section.id }}.gk-in .gk-spotify__cardWrap{
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 650ms cubic-bezier(.16,.84,.44,1) 120ms,
+                  transform 900ms cubic-bezier(.16,.84,.44,1) 120ms;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #GK-Spotify-{{ section.id }}[data-gk-anim="true"] .gk-spotify__header,
+      #GK-Spotify-{{ section.id }}[data-gk-anim="true"] .gk-spotify__cardWrap{
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+
+  <script>
+    (function(){
+      var root = document.getElementById('GK-Spotify-{{ section.id }}');
+      if (!root) return;
+
+      var animEnabled = root.getAttribute('data-gk-anim') === 'true';
+      if (!animEnabled) {
+        root.classList.add('gk-in');
+        return;
+      }
+
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        root.classList.add('gk-in');
+        return;
+      }
+
+      var revealed = false;
+      function reveal(){
+        if (revealed) return;
+        revealed = true;
+        root.classList.add('gk-in');
+      }
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (entry.isIntersecting) {
+              reveal();
+              io.disconnect();
+            }
+          });
+        }, { threshold: 0.22 });
+        io.observe(root);
+      } else {
+        requestAnimationFrame(reveal);
+      }
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "GK Spotify Embed",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_animation",
+      "default": true,
+      "label": "Enable fly-in animation"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Listen on Spotify"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading (optional)",
+      "default": "."
+    },
+    {
+      "type": "text",
+      "id": "spotify_embed_url",
+      "label": "Spotify embed URL (paste the iframe src)",
+      "default": "https://open.spotify.com/embed/artist/5Y6wPwVr2krTASRASpMLsC?utm_source=generator"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "min": 260,
+      "max": 520,
+      "step": 4,
+      "unit": "px",
+      "label": "Embed height",
+      "default": 380
+    },
+    {
+      "type": "checkbox",
+      "id": "show_open_button",
+      "default": true,
+      "label": "Show “Open on Spotify” button"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent color",
+      "default": "#E8690A"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 52
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Spotify Embed"
+    }
+  ]
+}
+{% endschema %}
