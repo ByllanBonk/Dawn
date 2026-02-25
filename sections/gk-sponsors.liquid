@@ -1,291 +1,268 @@
-{% comment %}
-  GK Sponsors Section
-  - Clean logo bar with subtle orange glow
-  - Stronger glow on hover
-  - Pressed feel on click
-  - Fully valid Shopify schema
-{% endcomment %}
+{%- comment -%}
+  GK Sponsors (logos only)
+  - No boxes/cards
+  - Subtle orange glow always on
+  - Slight scale + stronger glow on hover
+  - Accessible focus style (no ugly blue outline)
+{%- endcomment -%}
 
-<section
-  id="GK-Sponsors-{{ section.id }}"
-  class="gk-sponsors"
->
+{%- liquid
+  assign heading_val = section.settings.heading | strip
+  assign subheading_val = section.settings.subheading | strip
+  assign accent = section.settings.accent | default: '#E8690A'
+-%}
+
+<section id="GK-Sponsors-{{ section.id }}" class="gk-sponsors">
   <div class="page-width gk-sponsors__inner">
+    {%- if heading_val != blank -%}
+      <h2 class="gk-sponsors__heading">{{ heading_val }}</h2>
+    {%- endif -%}
 
-    {% if section.settings.heading != blank and section.settings.heading != '.' %}
-      <h2 class="gk-sponsors__heading">
-        {{ section.settings.heading }}
-      </h2>
-    {% endif %}
+    {%- if subheading_val != blank and subheading_val != '.' -%}
+      <div class="gk-sponsors__sub">{{ subheading_val }}</div>
+    {%- endif -%}
 
-    <div class="gk-sponsors__grid">
-      {% for block in section.blocks %}
+    <div
+      class="gk-sponsors__grid"
+      style="
+        --gk-cols-desktop: {{ section.settings.columns_desktop }};
+        --gk-cols-tablet: {{ section.settings.columns_tablet }};
+        --gk-cols-mobile: {{ section.settings.columns_mobile }};
+        --gk-gap: {{ section.settings.gap }}px;
+        --gk-logo-h: {{ section.settings.logo_height }}px;
+      "
+    >
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign logo = block.settings.logo
+          assign url = block.settings.url
+          assign label = block.settings.label | strip
+          assign open_new = block.settings.open_new
+          assign nofollow = block.settings.nofollow
+
+          assign rel = 'noopener'
+          if nofollow
+            assign rel = rel | append: ' nofollow'
+          endif
+        -%}
+
         <div class="gk-sponsors__item" {{ block.shopify_attributes }}>
-          {% if block.settings.url != blank %}
+          {%- if url != blank -%}
             <a
-              href="{{ block.settings.url }}"
-              {% if block.settings.open_new %}target="_blank"{% endif %}
-              rel="{% if block.settings.nofollow %}nofollow{% endif %}"
-              class="gk-sponsors__card"
+              class="gk-sponsors__link"
+              href="{{ url }}"
+              {%- if open_new -%} target="_blank" rel="{{ rel }}"{%- endif -%}
+              aria-label="{% if label != blank %}{{ label }}{% else %}Sponsor{% endif %}"
+              title="{% if label != blank %}{{ label }}{% endif %}"
             >
-          {% else %}
-            <div class="gk-sponsors__card">
-          {% endif %}
-
-              {% if block.settings.logo != blank %}
-                {{ block.settings.logo
-                  | image_url: width: 600
+              {%- if logo != blank -%}
+                {{ logo
+                  | image_url: width: 900
                   | image_tag:
-                    class: 'gk-sponsors__logo',
-                    loading: 'lazy',
-                    alt: block.settings.label
+                      class: 'gk-sponsors__logo',
+                      loading: 'lazy',
+                      alt: label
                 }}
-              {% else %}
-                <div class="gk-sponsors__placeholder">
-                  Add Logo
-                </div>
-              {% endif %}
-
-              {% if section.settings.show_labels and block.settings.label != blank and block.settings.label != '.' %}
-                <div class="gk-sponsors__label">
-                  {{ block.settings.label }}
-                </div>
-              {% endif %}
-
-          {% if block.settings.url != blank %}
+              {%- else -%}
+                <span class="gk-sponsors__placeholder">{{ label | default: 'Sponsor' }}</span>
+              {%- endif -%}
             </a>
-          {% else %}
+          {%- else -%}
+            <div class="gk-sponsors__link" aria-label="{% if label != blank %}{{ label }}{% else %}Sponsor{% endif %}">
+              {%- if logo != blank -%}
+                {{ logo
+                  | image_url: width: 900
+                  | image_tag:
+                      class: 'gk-sponsors__logo',
+                      loading: 'lazy',
+                      alt: label
+                }}
+              {%- else -%}
+                <span class="gk-sponsors__placeholder">{{ label | default: 'Sponsor' }}</span>
+              {%- endif -%}
             </div>
-          {% endif %}
+          {%- endif -%}
+
+          {%- if section.settings.show_labels and label != blank -%}
+            <div class="gk-sponsors__label">{{ label }}</div>
+          {%- endif -%}
         </div>
-      {% endfor %}
+      {%- endfor -%}
     </div>
   </div>
 
-<style>
-#GK-Sponsors-{{ section.id }} {
-  --accent: {{ section.settings.accent }};
-  padding-top: {{ section.settings.padding_top }}px;
-  padding-bottom: {{ section.settings.padding_bottom }}px;
-}
+  <style>
+    #GK-Sponsors-{{ section.id }}.gk-sponsors{
+      --accent: {{ accent }};
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.66);
 
-#GK-Sponsors-{{ section.id }} .gk-sponsors__heading {
-  text-align: center;
-  margin-bottom: 30px;
-  font-weight: 800;
-  font-size: clamp(24px, 3vw, 38px);
-}
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
 
-#GK-Sponsors-{{ section.id }} .gk-sponsors__grid {
-  display: grid;
-  grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
-  gap: {{ section.settings.gap }}px;
-  align-items: center;
-}
+    #GK-Sponsors-{{ section.id }} .gk-sponsors__inner{
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
 
-@media (max-width: 990px) {
-  #GK-Sponsors-{{ section.id }} .gk-sponsors__grid {
-    grid-template-columns: repeat({{ section.settings.columns_tablet }}, 1fr);
-  }
-}
+    #GK-Sponsors-{{ section.id }} .gk-sponsors__heading{
+      margin: 0 0 10px 0;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      line-height: 1.05;
+      font-size: clamp(26px, 3.2vw, 40px);
+      color: var(--text);
+      text-transform: uppercase;
+    }
 
-@media (max-width: 749px) {
-  #GK-Sponsors-{{ section.id }} .gk-sponsors__grid {
-    grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
-  }
-}
+    #GK-Sponsors-{{ section.id }} .gk-sponsors__sub{
+      margin: 0 0 20px 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
 
-#GK-Sponsors-{{ section.id }} .gk-sponsors__card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 18px;
-  padding: 20px;
-  background: rgba(20,20,20,0.6);
-  border: 1px solid rgba(255,255,255,0.08);
-  transition: all 160ms ease;
-  text-decoration: none;
-  overflow: hidden;
-}
+    #GK-Sponsors-{{ section.id }} .gk-sponsors__grid{
+      display: grid;
+      gap: var(--gk-gap);
+      grid-template-columns: repeat(var(--gk-cols-desktop), minmax(0, 1fr));
+      align-items: center;
+      justify-items: center;
+      padding-top: 6px;
+    }
 
-/* Subtle always-on glow */
-#GK-Sponsors-{{ section.id }} .gk-sponsors__card::after {
-  content: "";
-  position: absolute;
-  inset: -40px;
-  background: radial-gradient(circle at center, rgba(232,105,10,0.15), transparent 60%);
-  opacity: 0.6;
-  transition: opacity 160ms ease;
-  pointer-events: none;
-}
+    @media (max-width: 989px){
+      #GK-Sponsors-{{ section.id }} .gk-sponsors__grid{
+        grid-template-columns: repeat(var(--gk-cols-tablet), minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 749px){
+      #GK-Sponsors-{{ section.id }} .gk-sponsors__grid{
+        grid-template-columns: repeat(var(--gk-cols-mobile), minmax(0, 1fr));
+      }
+    }
 
-/* Hover effect */
-#GK-Sponsors-{{ section.id }} .gk-sponsors__card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(232,105,10,0.35);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.55);
-}
+    #GK-Sponsors-{{ section.id }} .gk-sponsors__item{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
 
-#GK-Sponsors-{{ section.id }} .gk-sponsors__card:hover::after {
-  opacity: 1;
-}
+    /* The “no boxes” link */
+    #GK-Sponsors-{{ section.id }} .gk-sponsors__link{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: calc(var(--gk-logo-h) + 12px);
+      text-decoration: none;
+      border: 0;
+      background: transparent;
+      padding: 6px 6px;
+      border-radius: 14px; /* only used for focus ring shaping */
+      transition: transform 160ms ease, filter 160ms ease, opacity 160ms ease;
+      outline: none;
+    }
 
-/* Pressed feel */
-#GK-Sponsors-{{ section.id }} .gk-sponsors__card:active {
-  transform: translateY(0px) scale(0.98);
-}
+    /* Logo sizing */
+    #GK-Sponsors-{{ section.id }} .gk-sponsors__logo{
+      height: var(--gk-logo-h);
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
 
-#GK-Sponsors-{{ section.id }} .gk-sponsors__logo {
-  height: {{ section.settings.logo_height }}px;
-  width: auto;
-  object-fit: contain;
-  filter: grayscale(1);
-  transition: all 160ms ease;
-}
+      /* always-on subtle glow */
+      filter:
+        drop-shadow(0 0 10px rgba(232,105,10,0.18))
+        drop-shadow(0 0 22px rgba(232,105,10,0.10));
+      opacity: 0.92;
+      transition: transform 160ms ease, filter 160ms ease, opacity 160ms ease;
+      transform: translateZ(0);
+    }
 
-#GK-Sponsors-{{ section.id }} .gk-sponsors__card:hover .gk-sponsors__logo {
-  filter: grayscale(0);
-}
+    @media (hover:hover){
+      #GK-Sponsors-{{ section.id }} .gk-sponsors__link:hover .gk-sponsors__logo{
+        opacity: 1;
+        transform: scale(1.05);
+        filter:
+          drop-shadow(0 0 14px rgba(232,105,10,0.30))
+          drop-shadow(0 0 34px rgba(232,105,10,0.18));
+      }
+    }
 
-#GK-Sponsors-{{ section.id }} .gk-sponsors__label {
-  margin-top: 10px;
-  font-size: 12px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  opacity: 0.7;
-}
+    /* Clean focus style (no browser blue box) */
+    #GK-Sponsors-{{ section.id }} .gk-sponsors__link:focus-visible{
+      box-shadow:
+        0 0 0 2px rgba(232,105,10,0.30),
+        0 0 0 6px rgba(232,105,10,0.10);
+    }
 
-#GK-Sponsors-{{ section.id }} .gk-sponsors__placeholder {
-  height: {{ section.settings.logo_height }}px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.6;
-}
-</style>
+    #GK-Sponsors-{{ section.id }} .gk-sponsors__label{
+      font-size: 12px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.70);
+    }
+
+    #GK-Sponsors-{{ section.id }} .gk-sponsors__placeholder{
+      color: rgba(255,255,255,0.75);
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      font-size: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #GK-Sponsors-{{ section.id }} .gk-sponsors__link,
+      #GK-Sponsors-{{ section.id }} .gk-sponsors__logo{
+        transition: none !important;
+      }
+    }
+  </style>
 </section>
 
 {% schema %}
 {
   "name": "GK Sponsors",
+  "tag": "section",
+  "class": "section",
   "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Sponsors"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_labels",
-      "label": "Show labels under logos",
-      "default": false
-    },
-    {
-      "type": "color",
-      "id": "accent",
-      "label": "Accent color",
-      "default": "#E8690A"
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "min": 3,
-      "max": 8,
-      "step": 1,
-      "label": "Columns (desktop)",
-      "default": 6
-    },
-    {
-      "type": "range",
-      "id": "columns_tablet",
-      "min": 2,
-      "max": 6,
-      "step": 1,
-      "label": "Columns (tablet)",
-      "default": 4
-    },
-    {
-      "type": "range",
-      "id": "columns_mobile",
-      "min": 2,
-      "max": 4,
-      "step": 1,
-      "label": "Columns (mobile)",
-      "default": 2
-    },
-    {
-      "type": "range",
-      "id": "gap",
-      "min": 8,
-      "max": 30,
-      "step": 1,
-      "label": "Gap",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "logo_height",
-      "min": 22,
-      "max": 80,
-      "step": 2,
-      "label": "Logo height",
-      "default": 34
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 140,
-      "step": 4,
-      "label": "Padding top",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 140,
-      "step": 4,
-      "label": "Padding bottom",
-      "default": 36
-    }
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Sponsors" },
+    { "type": "text", "id": "subheading", "label": "Subheading (optional)", "default": "." },
+
+    { "type": "checkbox", "id": "show_labels", "label": "Show labels under logos", "default": false },
+
+    { "type": "range", "id": "columns_desktop", "min": 3, "max": 8, "step": 1, "unit": "col", "label": "Columns (desktop)", "default": 6 },
+    { "type": "range", "id": "columns_tablet", "min": 2, "max": 6, "step": 1, "unit": "col", "label": "Columns (tablet)", "default": 3 },
+    { "type": "range", "id": "columns_mobile", "min": 2, "max": 4, "step": 1, "unit": "col", "label": "Columns (mobile)", "default": 2 },
+
+    { "type": "range", "id": "logo_height", "min": 28, "max": 96, "step": 2, "unit": "px", "label": "Logo height", "default": 46 },
+    { "type": "range", "id": "gap", "min": 8, "max": 42, "step": 2, "unit": "px", "label": "Gap", "default": 20 },
+
+    { "type": "color", "id": "accent", "label": "Accent glow color", "default": "#E8690A" },
+
+    { "type": "range", "id": "padding_top", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding top", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding bottom", "default": 36 }
   ],
   "blocks": [
     {
       "type": "sponsor",
       "name": "Sponsor",
       "settings": [
-        {
-          "type": "image_picker",
-          "id": "logo",
-          "label": "Logo"
-        },
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Label (optional)",
-          "default": "."
-        },
-        {
-          "type": "url",
-          "id": "url",
-          "label": "Sponsor URL"
-        },
-        {
-          "type": "checkbox",
-          "id": "open_new",
-          "label": "Open in new tab",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "nofollow",
-          "label": "Add nofollow",
-          "default": false
-        }
+        { "type": "image_picker", "id": "logo", "label": "Logo" },
+        { "type": "text", "id": "label", "label": "Label (optional)", "default": "." },
+        { "type": "url", "id": "url", "label": "Sponsor URL" },
+        { "type": "checkbox", "id": "open_new", "label": "Open in new tab", "default": true },
+        { "type": "checkbox", "id": "nofollow", "label": "Add nofollow", "default": false }
       ]
     }
   ],
