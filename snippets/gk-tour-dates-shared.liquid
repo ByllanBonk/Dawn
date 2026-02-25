@@ -1,0 +1,154 @@
+{% comment %}
+  gk-tour-dates-shared.liquid — SINGLE SOURCE OF TRUTH for all GK tour dates
+
+  USAGE — call this snippet in two modes:
+
+  1) COUNT MODE  (returns the integer count of upcoming shows as a string)
+     {%- capture _count_raw %}{%- render 'gk-tour-dates-shared', mode: 'count' -%}{% endcapture -%}
+     {%- assign upcoming_count = _count_raw | plus: 0 -%}
+
+  2) RENDER MODE (outputs the HTML rows for the list container)
+     Home section (gk-date-row class family, JS handles show/hide):
+       {%- render 'gk-tour-dates-shared',
+           mode: 'render',
+           row_prefix: 'gk-date-row',
+           visible_count: 3,
+           use_hidden_class: false
+       -%}
+
+     Page section (gk-date class family, CSS is-hidden class):
+       {%- render 'gk-tour-dates-shared',
+           mode: 'render',
+           row_prefix: 'gk-date',
+           visible_count: 10,
+           use_hidden_class: true
+       -%}
+
+  PARAMETERS (render mode):
+    row_prefix       — CSS class prefix: "gk-date-row" (home) | "gk-date" (page)
+    visible_count    — rows shown initially; rows beyond this get "is-hidden" when use_hidden_class is true
+    use_hidden_class — true: adds " is-hidden" on rows past visible_count (page section CSS approach)
+                       false: JS handles hiding (home section inline-script approach)
+
+  SAFE DATE FILTERING:
+    If Shopify cannot parse the date string (show_ts == 0) the row is treated as
+    upcoming so the section never goes fully blank on an unparseable format.
+
+  ════════════════════════════════════════════════════════════════════════════
+  TOUR DATE DATA  ←  EDIT THIS BLOCK TO ADD / REMOVE / CHANGE DATES
+  ════════════════════════════════════════════════════════════════════════════
+  Format per line:
+    Date String || Venue Name || City, State || Ticket URL || sold_out
+
+  Rules:
+    • Date String  — any format Shopify can parse, e.g. "March 15, 2026"
+    • Ticket URL   — leave blank to show a TBA pill
+    • sold_out     — "true" shows SOLD OUT pill and ignores ticket URL
+    • Keep entries in chronological order (oldest first).
+    • Blank lines are ignored.
+  ════════════════════════════════════════════════════════════════════════════
+{% endcomment %}
+
+{%- capture _gk_dates_raw -%}
+March 15, 2026||The Pabst Theater||Milwaukee, WI||||false
+March 22, 2026||Buddy Guy's Legends||Chicago, IL||||false
+April 5, 2026||The Birchmere||Alexandria, VA||||true
+April 12, 2026||City Winery||Nashville, TN||||false
+April 26, 2026||The Iridium||New York, NY||||false
+May 9, 2026||Antone's Nightclub||Austin, TX||||false
+{%- endcapture -%}
+
+{%- comment -%}── Parse & filter ─────────────────────────────────────────────────────────{%- endcomment -%}
+{%- liquid
+  assign _today_ymd = 'now' | date: '%Y-%m-%d'
+  assign _today_ts  = _today_ymd | date: '%s' | plus: 0
+  assign _count     = 0
+  assign _ridx      = 0
+-%}
+
+{%- comment -%}Capture a literal newline for splitting (Liquid string literals don't interpret \n){%- endcomment -%}
+{%- capture _nl %}
+{% endcapture -%}
+
+{%- assign _lines = _gk_dates_raw | split: _nl -%}
+
+{%- for _line in _lines -%}
+  {%- assign _line = _line | strip -%}
+  {%- if _line == blank -%}{%- continue -%}{%- endif -%}
+
+  {%- assign _p      = _line | split: "||" -%}
+  {%- assign _d_date = _p[0] | strip -%}
+  {%- if _d_date == blank -%}{%- continue -%}{%- endif -%}
+
+  {%- comment -%}
+    Safe date check:
+    - show_ts == 0 means Shopify couldn't parse the date → show it anyway (fail-open)
+    - show_ts >= today_midnight_ts means the show is today or in the future
+  {%- endcomment -%}
+  {%- liquid
+    assign _ts = _d_date | date: '%s' | plus: 0
+    assign _ok = false
+    if _ts == 0
+      assign _ok = true
+    elsif _ts >= _today_ts
+      assign _ok = true
+    endif
+  -%}
+
+  {%- if _ok -%}
+    {%- assign _count = _count | plus: 1 -%}
+
+    {%- if mode == 'render' -%}
+      {%- assign _d_venue   = _p[1] | strip -%}
+      {%- assign _d_city    = _p[2] | strip -%}
+      {%- assign _d_ticket  = _p[3] | strip -%}
+      {%- assign _d_soldout = _p[4] | strip -%}
+
+      {%- liquid
+        assign _hc = ''
+        if use_hidden_class and _ridx >= visible_count
+          assign _hc = ' is-hidden'
+        endif
+      -%}
+
+      <div class="{{ row_prefix }}{{ _hc }}" role="listitem" data-date-row data-index="{{ _ridx }}">
+        <div class="{{ row_prefix }}__date">{{- _d_date -}}</div>
+
+        <div class="{{ row_prefix }}__details">
+          {%- if _d_venue != blank -%}
+            <div class="{{ row_prefix }}__venue">{{- _d_venue -}}</div>
+          {%- endif -%}
+          {%- if _d_city != blank -%}
+            <div class="{{ row_prefix }}__city">{{- _d_city -}}</div>
+          {%- endif -%}
+        </div>
+
+        <div class="{{ row_prefix }}__cta">
+          {%- if _d_soldout == 'true' -%}
+            {%- if row_prefix == 'gk-date-row' -%}
+              <span class="gk-date-row__soldout" aria-label="Sold out">SOLD OUT</span>
+            {%- else -%}
+              <span class="gk-date__pill gk-date__pill--muted" aria-label="Sold out">SOLD OUT</span>
+            {%- endif -%}
+          {%- elsif _d_ticket != blank -%}
+            {%- if row_prefix == 'gk-date-row' -%}
+              <a class="gk-date-row__btn" href="{{ _d_ticket }}" target="_blank" rel="noopener">GET TICKETS</a>
+            {%- else -%}
+              <a class="gk-date__pill gk-date__pill--accent" href="{{ _d_ticket }}" target="_blank" rel="noopener">GET TICKETS</a>
+            {%- endif -%}
+          {%- else -%}
+            {%- if row_prefix == 'gk-date-row' -%}
+              <span class="gk-date-row__soldout" aria-label="Tickets unavailable">TBA</span>
+            {%- else -%}
+              <span class="gk-date__pill gk-date__pill--muted" aria-label="Tickets unavailable">TBA</span>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- assign _ridx = _ridx | plus: 1 -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if mode == 'count' -%}{{- _count -}}{%- endif -%}
