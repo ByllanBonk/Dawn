@@ -17,19 +17,115 @@
         "color_scheme": "scheme-1"
       }
     },
+    "gk_shop_categories_tfaetK": {
+      "type": "gk-shop-categories",
+      "blocks": {
+        "category_UMLxAC": {
+          "type": "category",
+          "settings": {
+            "title": "NEW!",
+            "desc": "Latest drops and fresh arrivals.",
+            "cta": "Explore",
+            "collection": "new"
+          }
+        },
+        "category_ityGCR": {
+          "type": "category",
+          "settings": {
+            "title": "CDs",
+            "desc": "Studio albums and live records.",
+            "cta": "Explore",
+            "collection": "cds"
+          }
+        },
+        "category_6BM7nV": {
+          "type": "category",
+          "settings": {
+            "title": "CDs",
+            "desc": "Studio albums and live records.",
+            "cta": "Explore",
+            "collection": ""
+          }
+        },
+        "category_AqaeTn": {
+          "type": "category",
+          "settings": {
+            "title": "Vinyl",
+            "desc": "Wax. Analog. Real.",
+            "cta": "Explore",
+            "collection": "vinyl"
+          }
+        },
+        "category_7bBD8L": {
+          "type": "category",
+          "settings": {
+            "title": "Merch",
+            "desc": "Wear the gristle.",
+            "cta": "Explore",
+            "collection": "merch"
+          }
+        },
+        "category_tmbJC9": {
+          "type": "category",
+          "settings": {
+            "title": "Gear",
+            "desc": "Pedals, pickups, tone tools.",
+            "cta": "Explore",
+            "collection": "gear"
+          }
+        },
+        "category_BkTJfQ": {
+          "type": "category",
+          "settings": {
+            "title": "Instructional Books",
+            "desc": "Learn from the Gristleman.",
+            "cta": "Explore",
+            "collection": "instructional-books"
+          }
+        },
+        "category_DgjBa6": {
+          "type": "category",
+          "settings": {
+            "title": "DVDs",
+            "desc": "Classic guitar instruction.",
+            "cta": "Explore",
+            "collection": "dvds"
+          }
+        }
+      },
+      "block_order": [
+        "category_UMLxAC",
+        "category_ityGCR",
+        "category_6BM7nV",
+        "category_AqaeTn",
+        "category_7bBD8L",
+        "category_tmbJC9",
+        "category_BkTJfQ",
+        "category_DgjBa6"
+      ],
+      "name": "GK Shop Categories",
+      "settings": {
+        "kicker": "Browse the goods",
+        "heading": "The Gristle Shop",
+        "subtext": "<p>Records. Gear. Tools of tone. Wear the sound.</p>"
+      }
+    },
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
         "products_per_page": 12,
         "columns_desktop": 3,
+        "columns_mobile": "2",
+        "color_scheme": "",
         "image_ratio": "portrait",
+        "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
         "quick_add": "none",
         "enable_filtering": true,
+        "filter_type": "horizontal",
         "enable_sorting": true,
-        "columns_mobile": "2",
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -37,6 +133,7 @@
   },
   "order": [
     "banner",
+    "gk_shop_categories_tfaetK",
     "product-grid"
   ]
 }
