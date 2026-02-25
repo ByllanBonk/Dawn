@@ -66,11 +66,18 @@
         "heading_size": "h1",
         "enable_video_looping": false,
         "video_url": "https://www.youtube.com/watch?v=L4Ntl4dRyp4",
+        "cover_image": "shopify://shop_images/Screenshot_2026-02-25_at_8.54.17_AM.png",
         "description": "",
         "full_width": false,
         "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 36
+      }
+    },
+    "1772034515a67f069c": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
       }
     }
   },
@@ -78,6 +85,7 @@
     "main",
     "gk_about_feature_NcbxQh",
     "gk_about_gallery_Yn9Rwx",
-    "video_RXDmDP"
+    "video_RXDmDP",
+    "1772034515a67f069c"
   ]
 }
