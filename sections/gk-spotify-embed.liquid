@@ -1,7 +1,7 @@
 {%- comment -%}
   GK Spotify Embed
-  - Premium “dates-style” glass card frame
-  - Orange accent glow + subtle 3D lift
+  - Premium metallic / Spotify-grey device frame
+  - Micro orange accent (rim + hover), not an orange wash
   - NOTE: Spotify iframe UI itself cannot be styled (cross-domain)
 {%- endcomment -%}
 
@@ -140,54 +140,113 @@
       }
     }
 
-    /* The “dates-style” frame */
+    /* ============================
+      Metallic / Spotify-grey 3D frame
+      ============================ */
     #GK-SpotifyEmbed-{{ section.id }} .gk-spotifyEmbed__frame{
       position: relative;
-      border-radius: 22px;
+      border-radius: 26px;
       padding: 14px;
+      overflow: hidden;
+
+      /* Metallic graphite shell (matches Spotify UI better) */
       background:
-        radial-gradient(800px 220px at 20% 10%, rgba(232,105,10,0.20), transparent 60%),
-        radial-gradient(800px 220px at 80% 0%, rgba(232,105,10,0.12), transparent 55%),
-        rgba(255,255,255,0.04);
+        radial-gradient(1200px 420px at 18% 0%,
+          rgba(255,255,255,0.10) 0%,
+          rgba(255,255,255,0.04) 38%,
+          rgba(0,0,0,0.00) 70%),
+        radial-gradient(900px 420px at 90% 100%,
+          rgba(0,0,0,0.55) 0%,
+          rgba(0,0,0,0.00) 55%),
+        linear-gradient(180deg,
+          rgba(255,255,255,0.06) 0%,
+          rgba(255,255,255,0.02) 35%,
+          rgba(0,0,0,0.28) 100%),
+        rgba(18,18,18,0.92);
+
       border: 1px solid rgba(255,255,255,0.10);
+
+      /* “Off the page” lift */
       box-shadow:
-        0 24px 80px rgba(0,0,0,0.55),
-        inset 0 1px 0 rgba(255,255,255,0.06);
+        0 26px 70px rgba(0,0,0,0.62),
+        0 8px 22px rgba(0,0,0,0.42),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+
       transform: translateZ(0);
     }
 
-    /* Extra “bezel” inside, like a premium device frame */
+    /* Inner bevel highlight line */
+    #GK-SpotifyEmbed-{{ section.id }} .gk-spotifyEmbed__frame::before{
+      content:"";
+      position:absolute;
+      inset: 1px;
+      border-radius: 25px;
+      pointer-events:none;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.10),
+        inset 0 -1px 0 rgba(0,0,0,0.45);
+      opacity: 0.9;
+    }
+
+    /* Micro orange rim accent only (ties to dates without orange-washing the whole panel) */
+    #GK-SpotifyEmbed-{{ section.id }} .gk-spotifyEmbed__frame::after{
+      content:"";
+      position:absolute;
+      inset: 0;
+      border-radius: 26px;
+      pointer-events:none;
+      box-shadow:
+        0 0 0 1px rgba(232,105,10,0.16),
+        inset 0 0 0 1px rgba(232,105,10,0.10);
+      opacity: 0.50;
+    }
+
+    /* Inner “device bezel” that the iframe sits inside */
     #GK-SpotifyEmbed-{{ section.id }} .gk-spotifyEmbed__frameInner{
-      border-radius: 16px;
+      position: relative;
+      z-index: 1;
+      border-radius: 18px;
       overflow: hidden;
+
+      /* slight “mounted” feel */
       background:
-        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+        linear-gradient(180deg,
+          rgba(255,255,255,0.05) 0%,
+          rgba(255,255,255,0.02) 30%,
+          rgba(0,0,0,0.30) 100%);
+
       border: 1px solid rgba(255,255,255,0.10);
       box-shadow:
-        inset 0 0 0 1px rgba(0,0,0,0.35),
-        0 12px 46px rgba(0,0,0,0.40);
+        inset 0 0 0 1px rgba(0,0,0,0.40),
+        0 14px 46px rgba(0,0,0,0.45);
     }
 
     #GK-SpotifyEmbed-{{ section.id }} .gk-spotifyEmbed__iframe{
       display: block;
       width: 100%;
       border: 0;
-      /* This is just for crisp rendering */
       transform: translateZ(0);
     }
 
-    /* Subtle 3D lift/glow on hover */
+    /* Hover: slightly more lift + a touch more orange on the rim */
     @media (hover:hover){
       #GK-SpotifyEmbed-{{ section.id }} .gk-spotifyEmbed__frame{
         transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
       }
       #GK-SpotifyEmbed-{{ section.id }} .gk-spotifyEmbed__frame:hover{
         transform: translateY(-1px);
-        border-color: rgba(232,105,10,0.26);
+        border-color: rgba(255,255,255,0.14);
         box-shadow:
-          0 30px 100px rgba(0,0,0,0.60),
+          0 32px 96px rgba(0,0,0,0.66),
           0 0 0 1px rgba(232,105,10,0.10),
-          inset 0 1px 0 rgba(255,255,255,0.06);
+          inset 0 1px 0 rgba(255,255,255,0.09);
+      }
+      #GK-SpotifyEmbed-{{ section.id }} .gk-spotifyEmbed__frame:hover::after{
+        opacity: 0.75;
+        box-shadow:
+          0 0 0 1px rgba(232,105,10,0.22),
+          inset 0 0 0 1px rgba(232,105,10,0.14);
       }
     }
 
