@@ -30,7 +30,7 @@
         "body": "<p>It is not a stretch to say that Milwaukee native Greg Koch is one of the most famous unknown guitar players in the world. His fierce creative spirit and crazed sense of fun fused with a tremendous degree of versatility has made him an island of six-stringed mirth in a sea of guitar warlords. Fifteen critically acclaimed CD’s featuring his unique and incendiary brand of playing and composing, international tours as band leader, fourteen best-selling guitar instructional materials for the Hal Leonard Publishing empire, articles and columns in some the biggest guitar magazines, a lengthy past tenure as an ambassador for Fender Guitars and a similar position in that capacity for Fishman Transducers has generated a respectable following for Greg throughout the world. Ultimately, Greg's 4000 plus videos exceeding 50 million views for Wildwood Guitars of Louisville Colorado showcasing Greg’s wild guitar test drives and random humorous commentary have made him a household name for guitar players throughout the galaxy.​<br/>​</p><p>Greg’s latest original music outlet, The Koch-Marshall Trio, is perhaps the best vehicle yet to convey his bold improvisational explorations and ever increasing arsenal of original material. The trio blends the explosive guitar manipulations of Greg, the groove-centric, power-pocket playing of his son Dylan on drums (who share many telepathic musical moments) and the glorious, Hammond organ stylings of the uber-talented Toby Marshall, Greg’s compositions are properly portrayed in the blues drenched, funk, chicken-fried, gospelly, jazz-rock panorama in which they were conceived. Their first release, “Toby Arrives” will be released in the February 23, 2018 on the Mascot Label Group / Players Club Imprint and features the first moments of their unexpected musical partnership captured at an extemporaneous jam session earlier in the year. </p>",
         "button_label": ".",
         "button_link": "",
-        "accent": "#E8690A",
+        "accent": "#e8690a",
         "padding_top": 40,
         "padding_bottom": 52
       }
@@ -53,15 +53,31 @@
         "thumb_4": "shopify://shop_images/Screenshot_2026-02-24_at_4.04.43_PM.png",
         "thumb_alt_4": ".",
         "body": "<p><strong>Koch-Marshall Trio</strong>, consists of American guitarist Greg Koch, his son Dylan Koch on drums and Hammond B3 specialist Toby Lee Marshall. At the heart of this organ trio is a blues sensibility - but Koch's compositions are an amalgam of rock, funk, jazz and country served up with heavy grooves and dynamic improvisations delivered with no small dose of humor and occasional wild abandon.​</p><p><br/>Milwaukee native Greg Koch has forged a successful career as a guitar player's guitarist. He has been called \"fiendishly talented\" by author and former editor- in-chief of Guitar Player Magazine Tom Wheeler and \"scary good\" by guitar phenom Joe Bonamassa. In addition to his 15 releases on multiple record labels which feature his unique take on a variety of American guitar styles and his versatile compositions, Koch is widely known for his lengthy tenure as an international ambassador for Fender Guitars which listed him in their “Top Ten Unsung Guitarists” on <a href=\"https://l.facebook.com/l.php?u=http%3A%2F%2FFender.com%2F&h=ATNh_TrfcDbPMvyxJJ3mJ0P5EUqOTAxTz9140c-CTbtX6tBh5zdZ7dE254olu4VhGJVbEI5FAIkZM2dmJ4kX4SbiEK-NfbJU0DmIihOlqv6bG3ggmhs9M1LwRNdCITfFNTa55xBvPycaXcxNXcbMetwPs8Hh9-hRthA-Kolz4TCE&enc=AZMUjBVzqT_JpPxAFZsd_loj6hwZSCqtIfL8Gczk2Z-s_oDO849L0P9ATA1sX9-61OQOYd1gVnBp8nz7efSt9pFSWWhTKBt0puu6g14xogYrXli0fZHOlztxKeLeTNtXO-mHdFUWiJxVkHgZo9YqN66dUWx5JXWciP-rDDimMm3tLsahuXLoBvL8Qorjq7MBOh0tmhy1skDS9njZcyCYrCxS&s=1\">Fender.com.</a> He is also a best-selling author and video instructor for music publisher Hal Leonard. Greg is a contributing columnist for a variety of guitar magazines including Guitar Player Magazine which listed Greg’s “Chief’s Blues” in their “40 Badass Blues Solos You Must Hear” and Premier Guitar. For the last few years Greg is renowned for his wildly popular internet videos (which number in the thousands with tens of millions of views) originating from the legendary Colorado guitar shop Wildwood Guitars. Furthermore, Koch is internationally known for his work with Fishman Transducers as a clinician and for his contributions to the development of the highly acclaimed Greg Koch Signature Gristletone Pickups for Telecaster guitar.​</p><p>Dylan Koch gravitated to the drums early on in his life using kitchen utensils to play along with music as soon as he could walk. After digesting an early diet of Ginger Baker, Keith Moon, Mitch Mitchell and John Bonham, Dylan was mentored by the legendary Tom Brechtlein (Chick Corea/Robben Ford). In high school Dylan participated in the Jazz Institute at the Wisconsin Conservatory of Music and furthered his studies at the McNally Smith School of Music in the Twin Cities. While still in his teens he performed with young guitar guns Tallan Noble Latz and Jared James Nichols and has performed alongside his father with such artists as Robben Ford, Little Feat's Paul Barrere, Jon Cleary, David Grissom, Roscoe Beck and Malford Milligan. Dylan was recently nominated for drummer of the year by the Wisconsin Area Music Awards (WAMI).​</p><p>Toby Lee Marshall's screaming B3 is the perfect compliment to the musical stew that is the Koch songbook. Hailing from the Twin Cities area he came from a musical family, playing piano for years until falling under the spell of the sound of the organ while at a baseball game at age seven. His fascination for the Hammond B3 took hold after his Dad took him to see Steve Cherewan playing with Dr. Mambo's Combo at their legendary residency at Bunker's in Minneapolis. Steve mentored Toby in the ways of the B3 and he hit the ground running landing a gig with bluesman Lonnie Brooks while still a teen. He would go on to travel the world as a member of Bernard Allison's band. After taking a hiatus to spend some family time, Toby is returning to music with a vehemence and the Koch-Marshall format gives him a long leash to let his freak flag fly, providing groovy bass lines, sinuous chordal work and incendiary solos.<br/>​</p>",
-        "accent": "#E8690A",
+        "accent": "#e8690a",
         "padding_top": 44,
         "padding_bottom": 52
+      }
+    },
+    "video_RXDmDP": {
+      "type": "video",
+      "name": "t:sections.video.presets.name",
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "enable_video_looping": false,
+        "video_url": "https://www.youtube.com/watch?v=L4Ntl4dRyp4",
+        "description": "",
+        "full_width": false,
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
   "order": [
     "main",
     "gk_about_feature_NcbxQh",
-    "gk_about_gallery_Yn9Rwx"
+    "gk_about_gallery_Yn9Rwx",
+    "video_RXDmDP"
   ]
 }
