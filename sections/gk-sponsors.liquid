@@ -1,0 +1,306 @@
+{% comment %}
+  GK Sponsors Section
+  - Clean logo bar with subtle orange glow
+  - Stronger glow on hover
+  - Pressed feel on click
+  - Fully valid Shopify schema
+{% endcomment %}
+
+<section
+  id="GK-Sponsors-{{ section.id }}"
+  class="gk-sponsors"
+>
+  <div class="page-width gk-sponsors__inner">
+
+    {% if section.settings.heading != blank and section.settings.heading != '.' %}
+      <h2 class="gk-sponsors__heading">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    <div class="gk-sponsors__grid">
+      {% for block in section.blocks %}
+        <div class="gk-sponsors__item" {{ block.shopify_attributes }}>
+          {% if block.settings.url != blank %}
+            <a
+              href="{{ block.settings.url }}"
+              {% if block.settings.open_new %}target="_blank"{% endif %}
+              rel="{% if block.settings.nofollow %}nofollow{% endif %}"
+              class="gk-sponsors__card"
+            >
+          {% else %}
+            <div class="gk-sponsors__card">
+          {% endif %}
+
+              {% if block.settings.logo != blank %}
+                {{ block.settings.logo
+                  | image_url: width: 600
+                  | image_tag:
+                    class: 'gk-sponsors__logo',
+                    loading: 'lazy',
+                    alt: block.settings.label
+                }}
+              {% else %}
+                <div class="gk-sponsors__placeholder">
+                  Add Logo
+                </div>
+              {% endif %}
+
+              {% if section.settings.show_labels and block.settings.label != blank and block.settings.label != '.' %}
+                <div class="gk-sponsors__label">
+                  {{ block.settings.label }}
+                </div>
+              {% endif %}
+
+          {% if block.settings.url != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+<style>
+#GK-Sponsors-{{ section.id }} {
+  --accent: {{ section.settings.accent }};
+  padding-top: {{ section.settings.padding_top }}px;
+  padding-bottom: {{ section.settings.padding_bottom }}px;
+}
+
+#GK-Sponsors-{{ section.id }} .gk-sponsors__heading {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 800;
+  font-size: clamp(24px, 3vw, 38px);
+}
+
+#GK-Sponsors-{{ section.id }} .gk-sponsors__grid {
+  display: grid;
+  grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+  gap: {{ section.settings.gap }}px;
+  align-items: center;
+}
+
+@media (max-width: 990px) {
+  #GK-Sponsors-{{ section.id }} .gk-sponsors__grid {
+    grid-template-columns: repeat({{ section.settings.columns_tablet }}, 1fr);
+  }
+}
+
+@media (max-width: 749px) {
+  #GK-Sponsors-{{ section.id }} .gk-sponsors__grid {
+    grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+  }
+}
+
+#GK-Sponsors-{{ section.id }} .gk-sponsors__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  padding: 20px;
+  background: rgba(20,20,20,0.6);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 160ms ease;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+/* Subtle always-on glow */
+#GK-Sponsors-{{ section.id }} .gk-sponsors__card::after {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  background: radial-gradient(circle at center, rgba(232,105,10,0.15), transparent 60%);
+  opacity: 0.6;
+  transition: opacity 160ms ease;
+  pointer-events: none;
+}
+
+/* Hover effect */
+#GK-Sponsors-{{ section.id }} .gk-sponsors__card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(232,105,10,0.35);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+}
+
+#GK-Sponsors-{{ section.id }} .gk-sponsors__card:hover::after {
+  opacity: 1;
+}
+
+/* Pressed feel */
+#GK-Sponsors-{{ section.id }} .gk-sponsors__card:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+#GK-Sponsors-{{ section.id }} .gk-sponsors__logo {
+  height: {{ section.settings.logo_height }}px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1);
+  transition: all 160ms ease;
+}
+
+#GK-Sponsors-{{ section.id }} .gk-sponsors__card:hover .gk-sponsors__logo {
+  filter: grayscale(0);
+}
+
+#GK-Sponsors-{{ section.id }} .gk-sponsors__label {
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+#GK-Sponsors-{{ section.id }} .gk-sponsors__placeholder {
+  height: {{ section.settings.logo_height }}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+}
+</style>
+</section>
+
+{% schema %}
+{
+  "name": "GK Sponsors",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sponsors"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_labels",
+      "label": "Show labels under logos",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent color",
+      "default": "#E8690A"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "label": "Columns (desktop)",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Columns (tablet)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Columns (mobile)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 8,
+      "max": 30,
+      "step": 1,
+      "label": "Gap",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 22,
+      "max": 80,
+      "step": 2,
+      "label": "Logo height",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "sponsor",
+      "name": "Sponsor",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label (optional)",
+          "default": "."
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Sponsor URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new",
+          "label": "Open in new tab",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "nofollow",
+          "label": "Add nofollow",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Sponsors",
+      "blocks": [
+        { "type": "sponsor" },
+        { "type": "sponsor" },
+        { "type": "sponsor" },
+        { "type": "sponsor" },
+        { "type": "sponsor" },
+        { "type": "sponsor" }
+      ]
+    }
+  ]
+}
+{% endschema %}
