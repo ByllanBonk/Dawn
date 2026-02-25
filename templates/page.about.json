@@ -79,6 +79,21 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "gk_spotify_embed_FgThYi": {
+      "type": "gk-spotify-embed",
+      "name": "GK Spotify Embed",
+      "settings": {
+        "enable_animation": true,
+        "heading": "Listen on Spotify",
+        "subheading": ".",
+        "spotify_embed_url": "https://open.spotify.com/embed/artist/5Y6wPwVr2krTASRASpMLsC?utm_source=generator",
+        "height": 380,
+        "show_open_button": true,
+        "accent": "#E8690A",
+        "padding_top": 44,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
@@ -86,6 +101,7 @@
     "gk_about_feature_NcbxQh",
     "gk_about_gallery_Yn9Rwx",
     "video_RXDmDP",
-    "1772034515a67f069c"
+    "1772034515a67f069c",
+    "gk_spotify_embed_FgThYi"
   ]
 }
