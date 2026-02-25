@@ -48,6 +48,7 @@
         "image_overlay_opacity": 40,
         "image_height": "large",
         "image_behavior": "none",
+        "gk_hero_bloom": true,
         "desktop_content_position": "bottom-center",
         "desktop_content_alignment": "center",
         "show_text_box": false,
@@ -148,61 +149,6 @@
         "bg_color": "#0d0d0d",
         "padding_top": 64,
         "padding_bottom": 64
-      }
-    },
-    "gk_featured_gristle_w9Up6E": {
-      "type": "gk-featured-gristle",
-      "blocks": {
-        "card_gPVNAw": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/lessons-cover_orig.jpg",
-            "label": "Lessons",
-            "title": "Virtual Lessons",
-            "description": "One-on-one virtual guitar lessons with Greg Koch via Zoom.",
-            "button_label": "BOOK NOW",
-            "link": ""
-          }
-        },
-        "card_JPQw3d": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/homepage-digital-lessons_orig.jpg",
-            "label": "On Demand",
-            "title": "On-Demand Courses",
-            "description": "Self-paced video courses covering technique, tone, and more.",
-            "button_label": "BROWSE COURSES",
-            "link": ""
-          }
-        },
-        "card_xDpydz": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/3CWSPtHqKbKH5WNFR9g6Rn.jpg",
-            "label": "TrueFire",
-            "title": "TrueFire Courses",
-            "description": "Full-length instructional courses on the TrueFire platform.",
-            "button_label": "VIEW ON TRUEFIRE",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "card_gPVNAw",
-        "card_JPQw3d",
-        "card_xDpydz"
-      ],
-      "name": "GK Featured Gristle",
-      "settings": {
-        "bg_color": "#0d0d0d",
-        "eyebrow": "Learn from the Gristleman",
-        "heading": "FEATURED GRISTLE",
-        "subtext": "Lessons, courses, and on-demand content from Greg Koch.",
-        "text_alignment": "center",
-        "columns_desktop": "3",
-        "image_ratio": "16/9",
-        "padding_top": 60,
-        "padding_bottom": 60
       }
     },
     "gk_stream_follow_GVbNme": {
@@ -414,6 +360,61 @@
         "text_color": "#ffffff"
       }
     },
+    "gk_featured_gristle_w9Up6E": {
+      "type": "gk-featured-gristle",
+      "blocks": {
+        "card_gPVNAw": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/lessons-cover_orig.jpg",
+            "label": "Lessons",
+            "title": "Virtual Lessons",
+            "description": "One-on-one virtual guitar lessons with Greg Koch via Zoom.",
+            "button_label": "BOOK NOW",
+            "link": ""
+          }
+        },
+        "card_JPQw3d": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/homepage-digital-lessons_orig.jpg",
+            "label": "On Demand",
+            "title": "On-Demand Courses",
+            "description": "Self-paced video courses covering technique, tone, and more.",
+            "button_label": "BROWSE COURSES",
+            "link": ""
+          }
+        },
+        "card_xDpydz": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/3CWSPtHqKbKH5WNFR9g6Rn.jpg",
+            "label": "TrueFire",
+            "title": "TrueFire Courses",
+            "description": "Full-length instructional courses on the TrueFire platform.",
+            "button_label": "VIEW ON TRUEFIRE",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_gPVNAw",
+        "card_JPQw3d",
+        "card_xDpydz"
+      ],
+      "name": "GK Featured Gristle",
+      "settings": {
+        "bg_color": "#0d0d0d",
+        "eyebrow": "Learn from the Gristleman",
+        "heading": "FEATURED GRISTLE",
+        "subtext": "Lessons, courses, and on-demand content from Greg Koch.",
+        "text_alignment": "center",
+        "columns_desktop": "3",
+        "image_ratio": "16/9",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
     "video": {
       "type": "video",
       "settings": {
@@ -480,15 +481,33 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "gk_spotify_embed_k4K4EF": {
+      "type": "gk-spotify-embed",
+      "name": "GK Spotify Embed",
+      "settings": {
+        "enable_animation": true,
+        "eyebrow": ".",
+        "heading": "Listen on Spotify",
+        "subheading": ".",
+        "embed_src": "https://open.spotify.com/embed/artist/5Y6wPwVr2krTASRASpMLsC?utm_source=generator",
+        "open_url": "https://open.spotify.com/artist/5Y6wPwVr2krTASRASpMLsC",
+        "show_open_button": true,
+        "height": 352,
+        "accent": "#E8690A",
+        "padding_top": 44,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
     "image_banner",
     "featured_collection",
     "gk_tour_dates_home_dLWg9B",
-    "gk_featured_gristle_w9Up6E",
     "gk_stream_follow_GVbNme",
+    "gk_featured_gristle_w9Up6E",
     "video",
-    "multicolumn"
+    "multicolumn",
+    "gk_spotify_embed_k4K4EF"
   ]
 }
