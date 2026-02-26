@@ -1,23 +1,60 @@
 {% comment %}
-  GK Shared Tour Dates (Single Source of Truth)
-  - Snippet ONLY (no schema allowed)
-  - Renders rows for either:
-      row_prefix: 'gk-date'     (dates page styles)
-      row_prefix: 'gk-date-row' (home styles)
-  - Safe date filtering:
-      show_ts == 0 => keep it (prevents blank if date parse fails)
+  GK Shared Tour Dates — single source of truth
+  Snippets cannot contain {% schema %}.
+
+  Calling conventions supported:
+
+    render 'gk-tour-dates-shared', mode: 'render_home'
+      → outputs .gk-date-row markup (home section CSS)
+      → all rows output; JS hides beyond initial_visible via style.display
+
+    render 'gk-tour-dates-shared', mode: 'render_page', visible_count: <n>
+      → outputs .gk-date markup
+      → rows beyond visible_count get class "is-hidden" (CSS hides, JS manages)
+
+    render 'gk-tour-dates-shared', mode: 'render', row_prefix: 'gk-date', visible_count: <n>, use_hidden_class: true
+      → legacy explicit mode (same output as render_page when row_prefix='gk-date')
+
+    render 'gk-tour-dates-shared', mode: 'count'
+      → outputs only the integer count of upcoming dates
+
+  Safe date filter:
+    show_ts == 0 → Liquid can't parse the date string → keep it visible
+    show_ts  > 0 → hide the row if show is before today midnight UTC
 {% endcomment %}
 
 {%- liquid
-  assign today_ymd = 'now' | date: '%Y-%m-%d'
+  assign today_ymd         = 'now' | date: '%Y-%m-%d'
   assign today_midnight_ts = today_ymd | date: '%s' | plus: 0
 
-  assign mode = mode | default: 'render'
-  assign row_prefix = row_prefix | default: 'gk-date'
+  assign mode          = mode | default: 'count'
   assign visible_count = visible_count | default: 10
-  assign use_hidden_class = use_hidden_class | default: false
+
+  if mode == 'render_home'
+    assign row_prefix   = 'gk-date-row'
+    assign apply_hidden = false
+  elsif mode == 'render_page'
+    assign row_prefix   = 'gk-date'
+    assign apply_hidden = true
+  elsif mode == 'render'
+    assign row_prefix   = row_prefix | default: 'gk-date'
+    assign apply_hidden = use_hidden_class | default: false
+  else
+    assign row_prefix   = 'gk-date'
+    assign apply_hidden = false
+  endif
 -%}
 
+{%- comment -%}
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  DATE LIST — edit here to update BOTH sections at once          ║
+  ║  Format per line:                                               ║
+  ║    Date || Venue || City, State || Ticket URL || sold_out       ║
+  ║  • Leave Ticket URL blank → shows "TBA"                         ║
+  ║  • Set sold_out = true   → shows "SOLD OUT"                     ║
+  ║  • Use parseable date format: "Month DD, YYYY"                  ║
+  ╚══════════════════════════════════════════════════════════════════╝
+{%- endcomment -%}
 {%- capture _gk_dates_raw -%}
 March 15, 2026 || The Gig Shack || Nashville, TN || https://tickets.com || false
 April 02, 2026 || Blues Hall || Chicago, IL || || false
@@ -25,23 +62,22 @@ April 02, 2026 || Blues Hall || Chicago, IL || || false
 
 {%- assign date_rows = _gk_dates_raw | newline_to_br | split: '<br />' -%}
 
-{%- assign render_index = 0 -%}
+{%- assign render_index   = 0 -%}
 {%- assign upcoming_count = 0 -%}
 
 {%- for row in date_rows -%}
   {%- assign trimmed = row | strip -%}
   {%- if trimmed != blank -%}
 
-    {%- assign parts = trimmed | split: ' || ' -%}
+    {%- assign parts    = trimmed | split: ' || ' -%}
     {%- assign raw_date = parts[0] | default: '' | strip -%}
-    {%- assign venue   = parts[1] | default: '' | strip -%}
-    {%- assign city    = parts[2] | default: '' | strip -%}
-    {%- assign url     = parts[3] | default: '' | strip -%}
-    {%- assign sold    = parts[4] | default: 'false' | strip -%}
+    {%- assign venue    = parts[1] | default: '' | strip -%}
+    {%- assign city     = parts[2] | default: '' | strip -%}
+    {%- assign url      = parts[3] | default: '' | strip -%}
+    {%- assign sold     = parts[4] | default: 'false' | strip -%}
 
     {%- liquid
-      assign show_ts = raw_date | date: '%s' | plus: 0
-
+      assign show_ts     = raw_date | date: '%s' | plus: 0
       assign is_upcoming = false
       if raw_date != blank
         if show_ts == 0
@@ -55,14 +91,15 @@ April 02, 2026 || Blues Hall || Chicago, IL || || false
     {%- if is_upcoming -%}
       {%- assign upcoming_count = upcoming_count | plus: 1 -%}
 
-      {%- if mode == 'render' -%}
-        {%- assign hidden_class = '' -%}
-        {%- if use_hidden_class and render_index >= visible_count -%}
-          {%- assign hidden_class = ' is-hidden' -%}
+      {%- if mode == 'render_home' or mode == 'render_page' or mode == 'render' -%}
+
+        {%- assign extra_class = '' -%}
+        {%- if apply_hidden and render_index >= visible_count -%}
+          {%- assign extra_class = ' is-hidden' -%}
         {%- endif -%}
 
         <div
-          class="{{ row_prefix }}{{ hidden_class }}"
+          class="{{ row_prefix }}{{ extra_class }}"
           role="listitem"
           data-date-row
           data-index="{{ render_index }}"
@@ -85,19 +122,17 @@ April 02, 2026 || Blues Hall || Chicago, IL || || false
               {%- else -%}
                 <span class="{{ row_prefix }}__soldout" aria-label="Sold out">SOLD OUT</span>
               {%- endif -%}
-            {%- else -%}
-              {%- if url != blank -%}
-                {%- if row_prefix == 'gk-date' -%}
-                  <a class="gk-date__pill gk-date__pill--accent" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
-                {%- else -%}
-                  <a class="{{ row_prefix }}__btn" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
-                {%- endif -%}
+            {%- elsif url != blank -%}
+              {%- if row_prefix == 'gk-date' -%}
+                <a class="gk-date__pill gk-date__pill--accent" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
               {%- else -%}
-                {%- if row_prefix == 'gk-date' -%}
-                  <span class="gk-date__pill gk-date__pill--muted" aria-label="Tickets unavailable">TBA</span>
-                {%- else -%}
-                  <span class="{{ row_prefix }}__soldout" aria-label="Tickets unavailable">TBA</span>
-                {%- endif -%}
+                <a class="{{ row_prefix }}__btn" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
+              {%- endif -%}
+            {%- else -%}
+              {%- if row_prefix == 'gk-date' -%}
+                <span class="gk-date__pill gk-date__pill--muted" aria-label="Tickets unavailable">TBA</span>
+              {%- else -%}
+                <span class="{{ row_prefix }}__soldout" aria-label="Tickets unavailable">TBA</span>
               {%- endif -%}
             {%- endif -%}
           </div>
