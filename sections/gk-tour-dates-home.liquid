@@ -1,22 +1,13 @@
 {% comment %}
   GK Tour Dates (HOME)
-  - Reads from snippets/gk-tour-dates-shared.liquid (single source of truth)
-  - Hides past shows (before today's midnight)
-  - Keeps show_ts == 0 fallback (never accidentally hides unparseable dates)
+  - Reads dates from snippets/gk-tour-dates-shared.liquid (single source of truth)
+  - Keeps the SAME glass row design + reveal button behavior
   - Shows first N, reveal more by button
 {% endcomment %}
 
 {% liquid
-  assign today_ymd = 'now' | date: '%Y-%m-%d'
-  assign today_midnight_ts = today_ymd | date: '%s' | plus: 0
-
   assign initial_visible = section.settings.initial_visible | default: 3
   assign reveal_step = section.settings.reveal_step | default: 3
-
-  capture _cnt
-    render 'gk-tour-dates-shared', mode: 'count', today_midnight_ts: today_midnight_ts
-  endcapture
-  assign upcoming_count = _cnt | strip | plus: 0
 %}
 
 <section class="gk-tour-dates gk-tour-dates--reveal" data-section-id="{{ section.id }}">
@@ -35,16 +26,29 @@
     {% endif %}
 
     <div class="gk-tour-dates__list" role="list">
-      {% render 'gk-tour-dates-shared', mode: 'rows', row_class: 'gk-date-row', today_midnight_ts: today_midnight_ts %}
+      {%- comment -%}
+        Render shared dates using the HOME markup/classes:
+        .gk-date-row, .gk-date-row__date, .gk-date-row__details, .gk-date-row__cta
+      {%- endcomment -%}
+
+      {% render 'gk-tour-dates-shared',
+        mode: 'render_home',
+        section_id: section.id
+      %}
     </div>
 
-    {% if upcoming_count == 0 %}
+    {% capture _gk_total %}
+      {% render 'gk-tour-dates-shared', mode: 'count' %}
+    {% endcapture %}
+    {% assign total_rows = _gk_total | strip | plus: 0 %}
+
+    {% if total_rows == 0 %}
       <div class="gk-tour-dates__empty">
         {{ section.settings.empty_text }}
       </div>
     {% endif %}
 
-    {% if upcoming_count > initial_visible %}
+    {% if total_rows > initial_visible %}
       <div class="gk-tour-dates__more-wrap">
         <button type="button" class="gk-tour-dates__more">
           {{ section.settings.more_label }}
@@ -54,7 +58,7 @@
 
   </div>
 
-  {% if upcoming_count > initial_visible %}
+  {% if total_rows > initial_visible %}
     <script>
       (function () {
         var section = document.querySelector('[data-section-id="{{ section.id }}"]');
