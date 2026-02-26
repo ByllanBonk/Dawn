@@ -1,16 +1,22 @@
 {% comment %}
   GK Tour Dates (HOME)
-  - Editable show blocks (date, venue, city, button URL, sold out)
+  - Reads from snippets/gk-tour-dates-shared.liquid (single source of truth)
   - Hides past shows (before today's midnight)
+  - Keeps show_ts == 0 fallback (never accidentally hides unparseable dates)
   - Shows first N, reveal more by button
 {% endcomment %}
 
 {% liquid
   assign today_ymd = 'now' | date: '%Y-%m-%d'
   assign today_midnight_ts = today_ymd | date: '%s' | plus: 0
-  assign upcoming_count = 0
+
   assign initial_visible = section.settings.initial_visible | default: 3
   assign reveal_step = section.settings.reveal_step | default: 3
+
+  capture _cnt
+    render 'gk-tour-dates-shared', mode: 'count', today_midnight_ts: today_midnight_ts
+  endcapture
+  assign upcoming_count = _cnt | strip | plus: 0
 %}
 
 <section class="gk-tour-dates gk-tour-dates--reveal" data-section-id="{{ section.id }}">
@@ -29,46 +35,7 @@
     {% endif %}
 
     <div class="gk-tour-dates__list" role="list">
-      {% for block in section.blocks %}
-        {% liquid
-          assign raw_date = block.settings.show_date | strip
-          assign show_ts = raw_date | date: '%s' | plus: 0
-        %}
-
-        {% if raw_date != blank and show_ts >= today_midnight_ts %}
-          {% assign upcoming_count = upcoming_count | plus: 1 %}
-
-          <div class="gk-date-row" role="listitem" {{ block.shopify_attributes }}>
-            <div class="gk-date-row__date">
-              {{ raw_date }}
-            </div>
-
-            <div class="gk-date-row__details">
-              {% if block.settings.venue_name != blank %}
-                <div class="gk-date-row__venue">{{ block.settings.venue_name }}</div>
-              {% endif %}
-
-              {% if block.settings.city_state != blank %}
-                <div class="gk-date-row__city">{{ block.settings.city_state }}</div>
-              {% endif %}
-            </div>
-
-            <div class="gk-date-row__cta">
-              {% if block.settings.is_sold_out %}
-                <span class="gk-date-row__soldout" aria-label="Sold out">SOLD OUT</span>
-              {% else %}
-                {% if block.settings.ticket_url != blank %}
-                  <a class="gk-date-row__btn" href="{{ block.settings.ticket_url }}" target="_blank" rel="noopener">
-                    GET TICKETS
-                  </a>
-                {% else %}
-                  <span class="gk-date-row__soldout" aria-label="Tickets unavailable">TBA</span>
-                {% endif %}
-              {% endif %}
-            </div>
-          </div>
-        {% endif %}
-      {% endfor %}
+      {% render 'gk-tour-dates-shared', mode: 'rows', row_class: 'gk-date-row', today_midnight_ts: today_midnight_ts %}
     </div>
 
     {% if upcoming_count == 0 %}
@@ -349,22 +316,8 @@
     { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 120, "step": 4, "default": 64 },
     { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 120, "step": 4, "default": 64 }
   ],
-  "blocks": [
-    {
-      "type": "show",
-      "name": "Show",
-      "settings": [
-        { "type": "text", "id": "show_date", "label": "Date (example: March 15, 2026)", "default": "March 15, 2026" },
-        { "type": "text", "id": "venue_name", "label": "Venue name", "default": "The Big Room" },
-        { "type": "text", "id": "city_state", "label": "City and State", "default": "Milwaukee, WI" },
-        { "type": "url", "id": "ticket_url", "label": "Ticket / RSVP URL" },
-        { "type": "checkbox", "id": "is_sold_out", "label": "Sold out", "default": false }
-      ]
-    }
-  ],
-  "max_blocks": 100,
   "presets": [
-    { "name": "GK Tour Dates Home", "blocks": [ { "type": "show" }, { "type": "show" }, { "type": "show" } ] }
+    { "name": "GK Tour Dates Home" }
   ]
 }
 {% endschema %}
