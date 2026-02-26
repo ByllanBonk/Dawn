@@ -18,6 +18,13 @@
     render 'gk-tour-dates-shared', mode: 'count'
       → outputs only the integer count of upcoming dates
 
+  Data source (priority order):
+    1. Shopify Metaobjects: type "tour_date"
+       Fields: date (date), descriptor (single_line_text_field), venue (single_line_text_field),
+               city (single_line_text_field), state (single_line_text_field),
+               ticket_url (url), sold_out (boolean)
+    2. Fallback: _gk_dates_raw capture block below (used when no metaobject entries exist)
+
   Safe date filter:
     show_ts == 0 → Liquid can't parse the date string → keep it visible
     show_ts  > 0 → hide the row if show is before today midnight UTC
@@ -47,7 +54,8 @@
 
 {%- comment -%}
   ╔══════════════════════════════════════════════════════════════════╗
-  ║  DATE LIST — edit here to update BOTH sections at once          ║
+  ║  FALLBACK DATE LIST — only used when no metaobject entries exist ║
+  ║  To manage dates, use Shopify Admin → Content → Metaobjects     ║
   ║  Format per line:                                               ║
   ║    Date || Venue || City, State || Ticket URL || sold_out       ║
   ║  • Leave Ticket URL blank → shows "TBA"                         ║
@@ -56,25 +64,69 @@
   ╚══════════════════════════════════════════════════════════════════╝
 {%- endcomment -%}
 {%- capture _gk_dates_raw -%}
-March 15, 2026 || The Gig Shack || Nashville, TN || https://tickets.com || false
-April 02, 2026 || Blues Hall || Chicago, IL || || false
+April 22, 2026 || Barnato || Omaha, NE || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-with-barnato-tickets/14277174 || false
+April 24, 2026 || Wooly's || Des Moines, IA || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-wooly-tickets/14277184 || false
+April 25, 2026 || Pabst Theater || Milwaukee, WI || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-pabst-tickets/14277194 || false
+April 26, 2026 || The Majestic || Madison, WI || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-majestic-tickets/14277204 || false
+April 28, 2026 || Tangent Gallery || Detroit, MI || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-tangent-tickets/14277214 || false
+April 29, 2026 || House of Blues || Cleveland, OH || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-hob-cleveland-tickets/14277224 || false
+April 30, 2026 || Mr. Smalls Theatre || Pittsburgh, PA || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-mr-smalls-tickets/14277234 || false
+May 02, 2026 || The Sinclair || Boston, MA || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-sinclair-tickets/14277244 || false
+May 03, 2026 || Warsaw || Brooklyn, NY || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-warsaw-tickets/14277254 || false
+May 05, 2026 || Union Transfer || Philadelphia, PA || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-union-transfer-tickets/14277264 || false
+May 06, 2026 || The Black Cat || Washington, DC || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-black-cat-tickets/14277274 || false
+May 08, 2026 || The Orange Peel || Asheville, NC || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-orange-peel-tickets/14277284 || false
+May 09, 2026 || Variety Playhouse || Atlanta, GA || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-variety-tickets/14277294 || false
+May 11, 2026 || Republic NOLA || New Orleans, LA || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-republic-tickets/14277304 || false
+May 12, 2026 || House of Blues || Houston, TX || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-hob-houston-tickets/14277314 || false
+May 13, 2026 || House of Blues || Dallas, TX || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-hob-dallas-tickets/14277324 || false
+May 15, 2026 || Marquee Theatre || Tempe, AZ || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-marquee-tickets/14277334 || false
+May 16, 2026 || Regent Theater || Los Angeles, CA || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-regent-tickets/14277344 || false
+May 19, 2026 || Regency Ballroom || San Francisco, CA || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-regency-tickets/14277354 || false
+May 30, 2026 || Showbox || Seattle, WA || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-showbox-tickets/14277364 || false
 {%- endcapture -%}
 
-{%- assign date_rows = _gk_dates_raw | newline_to_br | split: '<br />' -%}
+{%- comment -%}
+  ── METAOBJECT SOURCE ─────────────────────────────────────────────
+  Try to load entries from the "tour_date" metaobject type.
+  shop.metaobjects returns an empty collection when the type doesn't
+  exist yet, so this is safe before the Admin setup is complete.
+{%- endcomment -%}
+{%- assign _mo_entries = shop.metaobjects.tour_date.values -%}
+{%- assign _use_metaobjects = false -%}
+{%- if _mo_entries.size > 0 -%}
+  {%- assign _use_metaobjects = true -%}
+{%- endif -%}
 
 {%- assign render_index   = 0 -%}
 {%- assign upcoming_count = 0 -%}
 
-{%- for row in date_rows -%}
-  {%- assign trimmed = row | strip -%}
-  {%- if trimmed != blank -%}
+{%- if _use_metaobjects -%}
 
-    {%- assign parts    = trimmed | split: ' || ' -%}
-    {%- assign raw_date = parts[0] | default: '' | strip -%}
-    {%- assign venue    = parts[1] | default: '' | strip -%}
-    {%- assign city     = parts[2] | default: '' | strip -%}
-    {%- assign url      = parts[3] | default: '' | strip -%}
-    {%- assign sold     = parts[4] | default: 'false' | strip -%}
+  {%- comment -%}── METAOBJECT PATH ──────────────────────────────────────────────{%- endcomment -%}
+  {%- assign _mo_sorted = _mo_entries | sort: 'date' -%}
+
+  {%- for entry in _mo_sorted -%}
+    {%- liquid
+      assign raw_date   = entry.date.value | default: ''
+      assign descriptor = entry.descriptor.value | default: ''
+      assign venue      = entry.venue.value | default: ''
+      assign _ec        = entry.city.value | default: ''
+      assign _es        = entry.state.value | default: ''
+      if _ec != blank and _es != blank
+        assign city = _ec | append: ', ' | append: _es
+      elsif _ec != blank
+        assign city = _ec
+      else
+        assign city = _es
+      endif
+      assign url = entry.ticket_url.value | default: ''
+      if entry.sold_out.value
+        assign sold = 'true'
+      else
+        assign sold = 'false'
+      endif
+    -%}
 
     {%- liquid
       assign show_ts     = raw_date | date: '%s' | plus: 0
@@ -92,11 +144,13 @@ April 02, 2026 || Blues Hall || Chicago, IL || || false
       {%- assign upcoming_count = upcoming_count | plus: 1 -%}
 
       {%- if mode == 'render_home' or mode == 'render_page' or mode == 'render' -%}
-
         {%- assign extra_class = '' -%}
         {%- if apply_hidden and render_index >= visible_count -%}
           {%- assign extra_class = ' is-hidden' -%}
         {%- endif -%}
+
+        {%- comment -%}Format ISO date (YYYY-MM-DD) to human-readable{%- endcomment -%}
+        {%- assign display_date = raw_date | date: '%B %-d, %Y' -%}
 
         <div
           class="{{ row_prefix }}{{ extra_class }}"
@@ -104,11 +158,14 @@ April 02, 2026 || Blues Hall || Chicago, IL || || false
           data-date-row
           data-index="{{ render_index }}"
         >
-          <div class="{{ row_prefix }}__date">{{ raw_date }}</div>
+          <div class="{{ row_prefix }}__date">{{ display_date }}</div>
 
           <div class="{{ row_prefix }}__details">
             {%- if venue != blank -%}
               <div class="{{ row_prefix }}__venue">{{ venue }}</div>
+            {%- endif -%}
+            {%- if descriptor != blank -%}
+              <div class="{{ row_prefix }}__descriptor">{{ descriptor }}</div>
             {%- endif -%}
             {%- if city != blank -%}
               <div class="{{ row_prefix }}__city">{{ city }}</div>
@@ -140,11 +197,100 @@ April 02, 2026 || Blues Hall || Chicago, IL || || false
 
         {%- assign render_index = render_index | plus: 1 -%}
       {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+{%- else -%}
+
+  {%- comment -%}── FALLBACK PATH (raw capture block) ───────────────────────────{%- endcomment -%}
+  {%- assign date_rows = _gk_dates_raw | newline_to_br | split: '<br />' -%}
+
+  {%- for row in date_rows -%}
+    {%- assign trimmed = row | strip -%}
+    {%- if trimmed != blank -%}
+
+      {%- assign parts    = trimmed | split: ' || ' -%}
+      {%- assign raw_date = parts[0] | default: '' | strip -%}
+      {%- assign venue    = parts[1] | default: '' | strip -%}
+      {%- assign city     = parts[2] | default: '' | strip -%}
+      {%- assign url      = parts[3] | default: '' | strip -%}
+      {%- assign sold     = parts[4] | default: 'false' | strip -%}
+      {%- assign descriptor = '' -%}
+
+      {%- liquid
+        assign show_ts     = raw_date | date: '%s' | plus: 0
+        assign is_upcoming = false
+        if raw_date != blank
+          if show_ts == 0
+            assign is_upcoming = true
+          elsif show_ts >= today_midnight_ts
+            assign is_upcoming = true
+          endif
+        endif
+      -%}
+
+      {%- if is_upcoming -%}
+        {%- assign upcoming_count = upcoming_count | plus: 1 -%}
+
+        {%- if mode == 'render_home' or mode == 'render_page' or mode == 'render' -%}
+
+          {%- assign extra_class = '' -%}
+          {%- if apply_hidden and render_index >= visible_count -%}
+            {%- assign extra_class = ' is-hidden' -%}
+          {%- endif -%}
+
+          <div
+            class="{{ row_prefix }}{{ extra_class }}"
+            role="listitem"
+            data-date-row
+            data-index="{{ render_index }}"
+          >
+            <div class="{{ row_prefix }}__date">{{ raw_date }}</div>
+
+            <div class="{{ row_prefix }}__details">
+              {%- if venue != blank -%}
+                <div class="{{ row_prefix }}__venue">{{ venue }}</div>
+              {%- endif -%}
+              {%- if descriptor != blank -%}
+                <div class="{{ row_prefix }}__descriptor">{{ descriptor }}</div>
+              {%- endif -%}
+              {%- if city != blank -%}
+                <div class="{{ row_prefix }}__city">{{ city }}</div>
+              {%- endif -%}
+            </div>
+
+            <div class="{{ row_prefix }}__cta">
+              {%- if sold == 'true' -%}
+                {%- if row_prefix == 'gk-date' -%}
+                  <span class="gk-date__pill gk-date__pill--muted" aria-label="Sold out">SOLD OUT</span>
+                {%- else -%}
+                  <span class="{{ row_prefix }}__soldout" aria-label="Sold out">SOLD OUT</span>
+                {%- endif -%}
+              {%- elsif url != blank -%}
+                {%- if row_prefix == 'gk-date' -%}
+                  <a class="gk-date__pill gk-date__pill--accent" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
+                {%- else -%}
+                  <a class="{{ row_prefix }}__btn" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
+                {%- endif -%}
+              {%- else -%}
+                {%- if row_prefix == 'gk-date' -%}
+                  <span class="gk-date__pill gk-date__pill--muted" aria-label="Tickets unavailable">TBA</span>
+                {%- else -%}
+                  <span class="{{ row_prefix }}__soldout" aria-label="Tickets unavailable">TBA</span>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+          </div>
+
+          {%- assign render_index = render_index | plus: 1 -%}
+        {%- endif -%}
+
+      {%- endif -%}
 
     {%- endif -%}
+  {%- endfor -%}
 
-  {%- endif -%}
-{%- endfor -%}
+{%- endif -%}
 
 {%- if mode == 'count' -%}
   {{ upcoming_count }}
