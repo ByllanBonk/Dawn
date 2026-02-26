@@ -1,0 +1,25 @@
+{%- capture _gk_dates_raw -%}
+{% comment %} 
+ADD NEW DATES HERE IN THIS FORMAT:
+Date || Venue || City, State || Ticket Link || sold_out 
+{% endcomment %}
+March 15, 2026 || The Gig Shack || Nashville, TN || https://tickets.com || false
+April 02, 2026 || Blues Hall || Chicago, IL || || false
+{%- endcapture -%}
+
+{%- assign date_rows = _gk_dates_raw | newline_to_br | split: '<br />' -%}
+
+{%- if mode == 'count' -%}
+  {{ date_rows.size }}
+{%- else -%}
+  {%- for row in date_rows -%}
+    {%- assign details = row | split: ' || ' -%}
+    <div class="{{ row_prefix }} {% if use_hidden_class and forloop.index > visible_count %}is-hidden{% endif %}">
+       <span class="date">{{ details[0] }}</span>
+       <span class="venue">{{ details[1] }}</span>
+       <span class="location">{{ details[2] }}</span>
+       {% if details[3] != blank %}<a href="{{ details[3] }}">Tickets</a>{% endif %}
+       {% if details[4] == 'true' %}<span>SOLD OUT</span>{% endif %}
+    </div>
+  {%- endfor -%}
+{%- endif -%}
