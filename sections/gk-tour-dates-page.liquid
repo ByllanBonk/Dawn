@@ -1,23 +1,13 @@
 {% comment %}
   GK Tour Dates (PAGE)
-  - Same sleek/glass style as your homepage version
-  - Reads from snippets/gk-tour-dates-shared.liquid (single source of truth)
-  - Filters past shows when Shopify can parse the date
-  - If Shopify cannot parse the date (timestamp = 0), it will NOT hide it (prevents "nothing shows")
-  - Shows N dates initially (visible_count)
-  - "Show more" reveals reveal_step at a time
-  - "Show fewer" collapses back to visible_count
-  - Optional "View all dates" button (useful on homepage)
+  - Pulls rows from snippets/gk-tour-dates-shared.liquid (single source of truth)
+  - Keeps the SAME glass style + show more/show fewer UI
+  - visible_count controls how many show initially
+  - reveal_step controls how many are added per click
 {% endcomment %}
 
 {% liquid
-  assign today_ymd = 'now' | date: '%Y-%m-%d'
-  assign today_midnight_ts = today_ymd | date: '%s' | plus: 0
-
-  capture _cnt
-    render 'gk-tour-dates-shared', mode: 'count', today_midnight_ts: today_midnight_ts
-  endcapture
-  assign upcoming_count = _cnt | strip | plus: 0
+  assign upcoming_count = 0
 %}
 
 <section class="gk-dates" data-section-id="{{ section.id }}">
@@ -41,16 +31,32 @@
       data-visible-count="{{ section.settings.visible_count }}"
       data-reveal-step="{{ section.settings.reveal_step }}"
     >
-      {% render 'gk-tour-dates-shared', mode: 'rows', row_class: 'gk-date', today_midnight_ts: today_midnight_ts %}
+      {%- comment -%}
+        Render shared dates using the PAGE markup/classes:
+        .gk-date, .gk-date__date, .gk-date__details, .gk-date__cta
+        Must include:
+          - data-date-row on each row
+          - is-hidden class for rows beyond visible_count
+      {%- endcomment -%}
+
+      {% render 'gk-tour-dates-shared',
+        mode: 'render_page',
+        visible_count: section.settings.visible_count
+      %}
     </div>
 
-    {% if upcoming_count == 0 %}
+    {% capture _gk_total %}
+      {% render 'gk-tour-dates-shared', mode: 'count' %}
+    {% endcapture %}
+    {% assign total_rows = _gk_total | strip | plus: 0 %}
+
+    {% if total_rows == 0 %}
       <div class="gk-dates__empty">
         {{ section.settings.empty_text }}
       </div>
     {% endif %}
 
-    {% if upcoming_count > section.settings.visible_count %}
+    {% if total_rows > section.settings.visible_count %}
       <div class="gk-dates__controls">
         <button class="gk-dates__btn" type="button" data-dates-more>
           {{ section.settings.show_more_label }}
@@ -85,18 +91,15 @@
   var list = root.querySelector('.gk-dates__list');
   if (!list) return;
 
-  var rows = Array.prototype.slice.call(root.querySelectorAll('.gk-date'));
+  var rows = Array.prototype.slice.call(root.querySelectorAll('[data-date-row]'));
   if (!rows.length) return;
 
   var moreBtn = root.querySelector('[data-dates-more]');
   var lessBtn = root.querySelector('[data-dates-less]');
 
-  var visibleCount = parseInt(list.getAttribute('data-visible-count') || '3', 10);
+  var visibleCount = parseInt(list.getAttribute('data-visible-count') || '10', 10);
   var step = parseInt(list.getAttribute('data-reveal-step') || '10', 10);
 
-  // IMPORTANT:
-  // the shared snippet renders ALL upcoming rows.
-  // We apply initial hiding here, without needing the snippet to know counts.
   var shown = Math.min(visibleCount, rows.length);
 
   function apply() {
@@ -202,7 +205,6 @@
     transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
   }
 
-  /* ORANGE TINT on row hover (stronger + cleaner) */
   .gk-date::before{
     content: "";
     position: absolute;
@@ -296,7 +298,6 @@
     background: rgba(0,0,0,0.28);
   }
 
-  /* GET TICKETS hover highlight */
   .gk-date__pill--accent:hover{
     background: rgba(232,105,10,0.98);
     border-color: rgba(232,105,10,0.98);
@@ -380,7 +381,7 @@
 
 {% schema %}
 {
-  "name": "GK Tour Dates",
+  "name": "GK Tour Dates (Page)",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Tour Dates" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "GREG KOCH DATES" },
@@ -415,16 +416,7 @@
     { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E8690A" }
   ],
   "presets": [
-    {
-      "name": "GK Dates Page",
-      "settings": {
-        "visible_count": 10,
-        "reveal_step": 10,
-        "show_more_label": "Show more dates",
-        "show_less_label": "Show fewer dates",
-        "view_all_label": "View all dates"
-      }
-    }
+    { "name": "GK Tour Dates (Page)" }
   ]
 }
 {% endschema %}
