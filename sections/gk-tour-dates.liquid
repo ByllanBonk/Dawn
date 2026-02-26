@@ -86,6 +86,12 @@
   {%- if _p != blank -%}{%- assign upcoming_count = upcoming_count | plus: 1 -%}{%- endif -%}
 {%- endfor -%}
 
+{%- comment -%}── FALLBACK: no blocks yet → count from snippet (settings textarea / hardcoded list) ──{%- endcomment -%}
+{%- if section.blocks.size == 0 -%}
+  {%- capture _fc -%}{%- render 'gk-tour-dates-shared', mode: 'count' -%}{%- endcapture -%}
+  {%- assign upcoming_count = _fc | strip | plus: 0 -%}
+{%- endif -%}
+
 {%- comment -%} Shared section wrapper class {%- endcomment -%}
 {%- if is_home -%}
   {%- assign wrapper_class = 'gk-tour-dates gk-tour-dates--reveal' -%}
@@ -128,71 +134,80 @@
         data-reveal-step="{{ reveal_step }}"
       {%- endunless %}
     >
-      {%- assign render_idx = 0 -%}
-      {%- for _pair in _sorted_pairs -%}
-        {%- if _pair != blank -%}
-          {%- assign _block_idx = _pair | split: '_' | last | plus: 0 -%}
-          {%- assign _b = section.blocks[_block_idx] -%}
-
-          {%- assign show_date   = _b.settings.show_date   | default: '' | strip -%}
-          {%- assign venue_name  = _b.settings.venue_name  | default: '' | strip -%}
-          {%- assign city_state  = _b.settings.city_state  | default: '' | strip -%}
-          {%- assign descriptor  = _b.settings.descriptor  | default: '' | strip -%}
-          {%- assign ticket_url  = _b.settings.ticket_url  | default: '' | strip -%}
-          {%- assign is_sold_out = _b.settings.is_sold_out -%}
-
-          {%- assign extra_class = '' -%}
-          {%- if apply_hidden and render_idx >= initial_visible -%}
-            {%- assign extra_class = ' is-hidden' -%}
-          {%- endif -%}
-
-          <div
-            class="{{ row_prefix }}{{ extra_class }}"
-            role="listitem"
-            data-date-row
-            data-index="{{ render_idx }}"
-            {{ _b.shopify_attributes }}
-          >
-            <div class="{{ row_prefix }}__date">{{ show_date }}</div>
-
-            <div class="{{ row_prefix }}__details">
-              {%- if venue_name != blank -%}
-                <div class="{{ row_prefix }}__venue">{{ venue_name }}</div>
-              {%- endif -%}
-              {%- if descriptor != blank -%}
-                <div class="{{ row_prefix }}__descriptor">{{ descriptor }}</div>
-              {%- endif -%}
-              {%- if city_state != blank -%}
-                <div class="{{ row_prefix }}__city">{{ city_state }}</div>
-              {%- endif -%}
-            </div>
-
-            <div class="{{ row_prefix }}__cta">
-              {%- if is_sold_out -%}
-                {%- if is_home -%}
-                  <span class="{{ row_prefix }}__soldout" aria-label="Sold out">SOLD OUT</span>
-                {%- else -%}
-                  <span class="gk-date__pill gk-date__pill--muted" aria-label="Sold out">SOLD OUT</span>
-                {%- endif -%}
-              {%- elsif ticket_url != blank -%}
-                {%- if is_home -%}
-                  <a class="{{ row_prefix }}__btn" href="{{ ticket_url }}" target="_blank" rel="noopener">GET TICKETS</a>
-                {%- else -%}
-                  <a class="gk-date__pill gk-date__pill--accent" href="{{ ticket_url }}" target="_blank" rel="noopener">GET TICKETS</a>
-                {%- endif -%}
-              {%- else -%}
-                {%- if is_home -%}
-                  <span class="{{ row_prefix }}__soldout" aria-label="Tickets TBA">TBA</span>
-                {%- else -%}
-                  <span class="gk-date__pill gk-date__pill--muted" aria-label="Tickets TBA">TBA</span>
-                {%- endif -%}
-              {%- endif -%}
-            </div>
-          </div>
-
-          {%- assign render_idx = render_idx | plus: 1 -%}
+      {%- if section.blocks.size == 0 -%}
+        {%- comment -%}── FALLBACK: render from snippet until blocks are populated ──{%- endcomment -%}
+        {%- if is_home -%}
+          {%- render 'gk-tour-dates-shared', mode: 'render_home' -%}
+        {%- else -%}
+          {%- render 'gk-tour-dates-shared', mode: 'render', row_prefix: 'gk-date', visible_count: initial_visible, use_hidden_class: true -%}
         {%- endif -%}
-      {%- endfor -%}
+      {%- else -%}
+        {%- assign render_idx = 0 -%}
+        {%- for _pair in _sorted_pairs -%}
+          {%- if _pair != blank -%}
+            {%- assign _block_idx = _pair | split: '_' | last | plus: 0 -%}
+            {%- assign _b = section.blocks[_block_idx] -%}
+
+            {%- assign show_date   = _b.settings.show_date   | default: '' | strip -%}
+            {%- assign venue_name  = _b.settings.venue_name  | default: '' | strip -%}
+            {%- assign city_state  = _b.settings.city_state  | default: '' | strip -%}
+            {%- assign descriptor  = _b.settings.descriptor  | default: '' | strip -%}
+            {%- assign ticket_url  = _b.settings.ticket_url  | default: '' | strip -%}
+            {%- assign is_sold_out = _b.settings.is_sold_out -%}
+
+            {%- assign extra_class = '' -%}
+            {%- if apply_hidden and render_idx >= initial_visible -%}
+              {%- assign extra_class = ' is-hidden' -%}
+            {%- endif -%}
+
+            <div
+              class="{{ row_prefix }}{{ extra_class }}"
+              role="listitem"
+              data-date-row
+              data-index="{{ render_idx }}"
+              {{ _b.shopify_attributes }}
+            >
+              <div class="{{ row_prefix }}__date">{{ show_date }}</div>
+
+              <div class="{{ row_prefix }}__details">
+                {%- if venue_name != blank -%}
+                  <div class="{{ row_prefix }}__venue">{{ venue_name }}</div>
+                {%- endif -%}
+                {%- if descriptor != blank -%}
+                  <div class="{{ row_prefix }}__descriptor">{{ descriptor }}</div>
+                {%- endif -%}
+                {%- if city_state != blank -%}
+                  <div class="{{ row_prefix }}__city">{{ city_state }}</div>
+                {%- endif -%}
+              </div>
+
+              <div class="{{ row_prefix }}__cta">
+                {%- if is_sold_out -%}
+                  {%- if is_home -%}
+                    <span class="{{ row_prefix }}__soldout" aria-label="Sold out">SOLD OUT</span>
+                  {%- else -%}
+                    <span class="gk-date__pill gk-date__pill--muted" aria-label="Sold out">SOLD OUT</span>
+                  {%- endif -%}
+                {%- elsif ticket_url != blank -%}
+                  {%- if is_home -%}
+                    <a class="{{ row_prefix }}__btn" href="{{ ticket_url }}" target="_blank" rel="noopener">GET TICKETS</a>
+                  {%- else -%}
+                    <a class="gk-date__pill gk-date__pill--accent" href="{{ ticket_url }}" target="_blank" rel="noopener">GET TICKETS</a>
+                  {%- endif -%}
+                {%- else -%}
+                  {%- if is_home -%}
+                    <span class="{{ row_prefix }}__soldout" aria-label="Tickets TBA">TBA</span>
+                  {%- else -%}
+                    <span class="gk-date__pill gk-date__pill--muted" aria-label="Tickets TBA">TBA</span>
+                  {%- endif -%}
+                {%- endif -%}
+              </div>
+            </div>
+
+            {%- assign render_idx = render_idx | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
     </div>
 
     {%- if upcoming_count == 0 -%}
