@@ -19,11 +19,13 @@
       → outputs only the integer count of upcoming dates
 
   Data source (priority order):
-    1. Shopify Metaobjects: type "tour_date"
-       Fields: date (date), descriptor (single_line_text_field), venue (single_line_text_field),
-               city (single_line_text_field), state (single_line_text_field),
-               ticket_url (url), sold_out (boolean)
-    2. Fallback: _gk_dates_raw capture block below (used when no metaobject entries exist)
+    1. Theme Settings → settings.gk_tour_dates_data (textarea, one date per line)
+       Format per line:
+         YYYY-MM-DD | Descriptor (optional) | Venue | City | State | Ticket URL (optional) | sold_out (optional)
+       Example:
+         2026-04-22 | support for Paul Gilbert | Barnato | Omaha | NE | https://tickets.com | false
+    2. Fallback: _gk_dates_raw capture block below (used when settings textarea is blank)
+       Format: Date || Venue || City, State || Ticket URL || sold_out
 
   Safe date filter:
     show_ts == 0 → Liquid can't parse the date string → keep it visible
@@ -53,15 +55,12 @@
 -%}
 
 {%- comment -%}
-  ╔══════════════════════════════════════════════════════════════════╗
-  ║  FALLBACK DATE LIST — only used when no metaobject entries exist ║
-  ║  To manage dates, use Shopify Admin → Content → Metaobjects     ║
-  ║  Format per line:                                               ║
-  ║    Date || Venue || City, State || Ticket URL || sold_out       ║
-  ║  • Leave Ticket URL blank → shows "TBA"                         ║
-  ║  • Set sold_out = true   → shows "SOLD OUT"                     ║
-  ║  • Use parseable date format: "Month DD, YYYY"                  ║
-  ╚══════════════════════════════════════════════════════════════════╝
+  ── DATA SOURCE ───────────────────────────────────────────────────
+  Priority 1 — Theme Settings textarea (settings.gk_tour_dates_data)
+    Format per line: YYYY-MM-DD | Descriptor | Venue | City | State | Ticket URL | sold_out
+    (Descriptor and fields after State are optional; trailing pipes may be omitted)
+  Priority 2 — Hardcoded fallback capture block below
+    Format per line: Date || Venue || City, State || Ticket URL || sold_out
 {%- endcomment -%}
 {%- capture _gk_dates_raw -%}
 April 22, 2026 || Barnato || Omaha, NE || https://www.ticketweb.com/event/paul-gilbert-wroc-tour-with-barnato-tickets/14277174 || false
@@ -87,46 +86,54 @@ May 30, 2026 || Showbox || Seattle, WA || https://www.ticketweb.com/event/paul-g
 {%- endcapture -%}
 
 {%- comment -%}
-  ── METAOBJECT SOURCE ─────────────────────────────────────────────
-  Try to load entries from the "tour_date" metaobject type.
-  shop.metaobjects returns an empty collection when the type doesn't
-  exist yet, so this is safe before the Admin setup is complete.
+  Select active data source and whether to use the new pipe format.
 {%- endcomment -%}
-{%- assign _mo_entries = shop.metaobjects.tour_date.values -%}
-{%- assign _use_metaobjects = false -%}
-{%- if _mo_entries.size > 0 -%}
-  {%- assign _use_metaobjects = true -%}
+{%- if settings.gk_tour_dates_data != blank -%}
+  {%- assign _active_data   = settings.gk_tour_dates_data -%}
+  {%- assign _settings_fmt  = true -%}
+{%- else -%}
+  {%- assign _active_data   = _gk_dates_raw -%}
+  {%- assign _settings_fmt  = false -%}
 {%- endif -%}
 
+{%- assign _date_lines    = _active_data | newline_to_br | split: '<br />' -%}
 {%- assign render_index   = 0 -%}
 {%- assign upcoming_count = 0 -%}
 
-{%- if _use_metaobjects -%}
+{%- for _line in _date_lines -%}
+  {%- assign _trimmed = _line | strip -%}
+  {%- if _trimmed != blank -%}
 
-  {%- comment -%}── METAOBJECT PATH ──────────────────────────────────────────────{%- endcomment -%}
-  {%- assign _mo_sorted = _mo_entries | sort: 'date' -%}
-
-  {%- for entry in _mo_sorted -%}
-    {%- liquid
-      assign raw_date   = entry.date.value | default: ''
-      assign descriptor = entry.descriptor.value | default: ''
-      assign venue      = entry.venue.value | default: ''
-      assign _ec        = entry.city.value | default: ''
-      assign _es        = entry.state.value | default: ''
-      if _ec != blank and _es != blank
-        assign city = _ec | append: ', ' | append: _es
-      elsif _ec != blank
-        assign city = _ec
-      else
-        assign city = _es
-      endif
-      assign url = entry.ticket_url.value | default: ''
-      if entry.sold_out.value
-        assign sold = 'true'
-      else
-        assign sold = 'false'
-      endif
-    -%}
+    {%- if _settings_fmt -%}
+      {%- comment -%}── Settings format: YYYY-MM-DD | Descriptor | Venue | City | State | URL | sold_out ──{%- endcomment -%}
+      {%- assign _p        = _trimmed | split: ' | ' -%}
+      {%- assign raw_date  = _p[0] | default: '' | strip -%}
+      {%- assign descriptor = _p[1] | default: '' | strip -%}
+      {%- assign venue     = _p[2] | default: '' | strip -%}
+      {%- assign _city     = _p[3] | default: '' | strip -%}
+      {%- assign _state    = _p[4] | default: '' | strip -%}
+      {%- if _city != blank and _state != blank -%}
+        {%- assign city = _city | append: ', ' | append: _state -%}
+      {%- elsif _city != blank -%}
+        {%- assign city = _city -%}
+      {%- else -%}
+        {%- assign city = _state -%}
+      {%- endif -%}
+      {%- assign url       = _p[5] | default: '' | strip -%}
+      {%- assign sold      = _p[6] | default: 'false' | strip -%}
+      {%- assign display_date = raw_date | date: '%B %-d, %Y' -%}
+      {%- if display_date == blank -%}{%- assign display_date = raw_date -%}{%- endif -%}
+    {%- else -%}
+      {%- comment -%}── Fallback format: Date || Venue || City, State || URL || sold_out ──{%- endcomment -%}
+      {%- assign _p        = _trimmed | split: ' || ' -%}
+      {%- assign raw_date  = _p[0] | default: '' | strip -%}
+      {%- assign venue     = _p[1] | default: '' | strip -%}
+      {%- assign city      = _p[2] | default: '' | strip -%}
+      {%- assign url       = _p[3] | default: '' | strip -%}
+      {%- assign sold      = _p[4] | default: 'false' | strip -%}
+      {%- assign descriptor = '' -%}
+      {%- assign display_date = raw_date -%}
+    {%- endif -%}
 
     {%- liquid
       assign show_ts     = raw_date | date: '%s' | plus: 0
@@ -144,13 +151,11 @@ May 30, 2026 || Showbox || Seattle, WA || https://www.ticketweb.com/event/paul-g
       {%- assign upcoming_count = upcoming_count | plus: 1 -%}
 
       {%- if mode == 'render_home' or mode == 'render_page' or mode == 'render' -%}
+
         {%- assign extra_class = '' -%}
         {%- if apply_hidden and render_index >= visible_count -%}
           {%- assign extra_class = ' is-hidden' -%}
         {%- endif -%}
-
-        {%- comment -%}Format ISO date (YYYY-MM-DD) to human-readable{%- endcomment -%}
-        {%- assign display_date = raw_date | date: '%B %-d, %Y' -%}
 
         <div
           class="{{ row_prefix }}{{ extra_class }}"
@@ -198,99 +203,9 @@ May 30, 2026 || Showbox || Seattle, WA || https://www.ticketweb.com/event/paul-g
         {%- assign render_index = render_index | plus: 1 -%}
       {%- endif -%}
     {%- endif -%}
-  {%- endfor -%}
 
-{%- else -%}
-
-  {%- comment -%}── FALLBACK PATH (raw capture block) ───────────────────────────{%- endcomment -%}
-  {%- assign date_rows = _gk_dates_raw | newline_to_br | split: '<br />' -%}
-
-  {%- for row in date_rows -%}
-    {%- assign trimmed = row | strip -%}
-    {%- if trimmed != blank -%}
-
-      {%- assign parts    = trimmed | split: ' || ' -%}
-      {%- assign raw_date = parts[0] | default: '' | strip -%}
-      {%- assign venue    = parts[1] | default: '' | strip -%}
-      {%- assign city     = parts[2] | default: '' | strip -%}
-      {%- assign url      = parts[3] | default: '' | strip -%}
-      {%- assign sold     = parts[4] | default: 'false' | strip -%}
-      {%- assign descriptor = '' -%}
-
-      {%- liquid
-        assign show_ts     = raw_date | date: '%s' | plus: 0
-        assign is_upcoming = false
-        if raw_date != blank
-          if show_ts == 0
-            assign is_upcoming = true
-          elsif show_ts >= today_midnight_ts
-            assign is_upcoming = true
-          endif
-        endif
-      -%}
-
-      {%- if is_upcoming -%}
-        {%- assign upcoming_count = upcoming_count | plus: 1 -%}
-
-        {%- if mode == 'render_home' or mode == 'render_page' or mode == 'render' -%}
-
-          {%- assign extra_class = '' -%}
-          {%- if apply_hidden and render_index >= visible_count -%}
-            {%- assign extra_class = ' is-hidden' -%}
-          {%- endif -%}
-
-          <div
-            class="{{ row_prefix }}{{ extra_class }}"
-            role="listitem"
-            data-date-row
-            data-index="{{ render_index }}"
-          >
-            <div class="{{ row_prefix }}__date">{{ raw_date }}</div>
-
-            <div class="{{ row_prefix }}__details">
-              {%- if venue != blank -%}
-                <div class="{{ row_prefix }}__venue">{{ venue }}</div>
-              {%- endif -%}
-              {%- if descriptor != blank -%}
-                <div class="{{ row_prefix }}__descriptor">{{ descriptor }}</div>
-              {%- endif -%}
-              {%- if city != blank -%}
-                <div class="{{ row_prefix }}__city">{{ city }}</div>
-              {%- endif -%}
-            </div>
-
-            <div class="{{ row_prefix }}__cta">
-              {%- if sold == 'true' -%}
-                {%- if row_prefix == 'gk-date' -%}
-                  <span class="gk-date__pill gk-date__pill--muted" aria-label="Sold out">SOLD OUT</span>
-                {%- else -%}
-                  <span class="{{ row_prefix }}__soldout" aria-label="Sold out">SOLD OUT</span>
-                {%- endif -%}
-              {%- elsif url != blank -%}
-                {%- if row_prefix == 'gk-date' -%}
-                  <a class="gk-date__pill gk-date__pill--accent" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
-                {%- else -%}
-                  <a class="{{ row_prefix }}__btn" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
-                {%- endif -%}
-              {%- else -%}
-                {%- if row_prefix == 'gk-date' -%}
-                  <span class="gk-date__pill gk-date__pill--muted" aria-label="Tickets unavailable">TBA</span>
-                {%- else -%}
-                  <span class="{{ row_prefix }}__soldout" aria-label="Tickets unavailable">TBA</span>
-                {%- endif -%}
-              {%- endif -%}
-            </div>
-          </div>
-
-          {%- assign render_index = render_index | plus: 1 -%}
-        {%- endif -%}
-
-      {%- endif -%}
-
-    {%- endif -%}
-  {%- endfor -%}
-
-{%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
 
 {%- if mode == 'count' -%}
   {{ upcoming_count }}

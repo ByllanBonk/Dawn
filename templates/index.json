@@ -86,6 +86,23 @@
         "padding_bottom": 36
       }
     },
+    "gk_tour_dates_home_dLWg9B": {
+      "type": "gk-tour-dates-home",
+      "name": "GK Tour Dates Home",
+      "settings": {
+        "eyebrow": "Tour Dates",
+        "heading": "GREG KOCH DATES",
+        "subtext": "See upcoming dates below.",
+        "empty_text": "No upcoming dates. Check back soon.",
+        "more_label": "Show more dates",
+        "initial_visible": 3,
+        "reveal_step": 3,
+        "text_align": "left",
+        "bg_color": "#0d0d0d",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
     "gk_stream_follow_GVbNme": {
       "type": "gk-stream-follow",
       "blocks": {
@@ -523,6 +540,7 @@
   "order": [
     "image_banner",
     "featured_collection",
+    "gk_tour_dates_home_dLWg9B",
     "gk_stream_follow_GVbNme",
     "gk_featured_gristle_w9Up6E",
     "video",

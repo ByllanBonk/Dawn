@@ -1,17 +1,35 @@
 /*
  * ------------------------------------------------------------
- * GK Dates Page template
+ * IMPORTANT: The contents of this file are auto-generated.
  *
- * Tour dates are rendered by the shared static section
- * gk-tour-dates, called from layout/theme.liquid whenever
- * template.suffix == 'dates'.
- *
- * Edit the section (and its blocks) in Online Store → Customize
- * while viewing either the homepage or this page — they share
- * the exact same section instance.
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
 {
-  "sections": {},
-  "order": []
+  "sections": {
+    "gk_dates": {
+      "type": "gk-dates-page",
+      "settings": {
+        "bg_color": "#0D0D0D",
+        "accent_color": "#E8690A",
+        "eyebrow": "GRISTLE DATES",
+        "heading": "GREG KOCH DATES",
+        "subtext": "See upcoming dates below.",
+        "empty_text": "No upcoming dates. Check back soon.",
+        "text_align": "left",
+        "visible_count": 10,
+        "reveal_step": 10,
+        "show_more_label": "Show more dates",
+        "show_less_label": "Show fewer dates",
+        "view_all_label": "View all dates",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "gk_dates"
+  ]
 }

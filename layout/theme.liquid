@@ -319,16 +319,6 @@
       {{ content_for_layout }}
     </main>
 
-    {%- comment -%}
-      GK Tour Dates — ONE shared static section instance.
-      Renders on homepage (index) and the dates page (page.dates) only.
-      Because it is a static section it shares the same blocks/settings
-      on both pages: edit once, reflected everywhere.
-    {%- endcomment -%}
-    {%- if template.name == 'index' or template.suffix == 'dates' -%}
-      {%- section 'gk-tour-dates' -%}
-    {%- endif -%}
-
     {% sections 'footer-group' %}
 
     <ul hidden>
