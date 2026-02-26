@@ -86,71 +86,6 @@
         "padding_bottom": 36
       }
     },
-    "gk_tour_dates_home_dLWg9B": {
-      "type": "gk-tour-dates-home",
-      "blocks": {
-        "show_9zeBQQ": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
-          }
-        },
-        "show_aagr6E": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
-          }
-        },
-        "show_biBwQG": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
-          }
-        },
-        "show_rPncVR": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
-          }
-        }
-      },
-      "block_order": [
-        "show_9zeBQQ",
-        "show_aagr6E",
-        "show_biBwQG",
-        "show_rPncVR"
-      ],
-      "name": "GK Tour Dates Home",
-      "settings": {
-        "eyebrow": "Tour Dates",
-        "heading": "GREG KOCH DATES",
-        "subtext": "See upcoming dates below.",
-        "empty_text": "No upcoming dates. Check back soon.",
-        "more_label": "Show more dates",
-        "initial_visible": 3,
-        "reveal_step": 3,
-        "text_align": "left",
-        "bg_color": "#0d0d0d",
-        "padding_top": 64,
-        "padding_bottom": 64
-      }
-    },
     "gk_stream_follow_GVbNme": {
       "type": "gk-stream-follow",
       "blocks": {
@@ -588,7 +523,6 @@
   "order": [
     "image_banner",
     "featured_collection",
-    "gk_tour_dates_home_dLWg9B",
     "gk_stream_follow_GVbNme",
     "gk_featured_gristle_w9Up6E",
     "video",
