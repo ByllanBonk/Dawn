@@ -10,23 +10,8 @@
 {
   "sections": {
     "gk_dates": {
-      "type": "gk-dates-page",
-      "settings": {
-        "bg_color": "#0D0D0D",
-        "accent_color": "#E8690A",
-        "eyebrow": "GRISTLE DATES",
-        "heading": "GREG KOCH DATES",
-        "subtext": "See upcoming dates below.",
-        "empty_text": "No upcoming dates. Check back soon.",
-        "text_align": "left",
-        "visible_count": 10,
-        "reveal_step": 10,
-        "show_more_label": "Show more dates",
-        "show_less_label": "Show fewer dates",
-        "view_all_label": "View all dates",
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
+      "type": "gk-tour-dates-slot",
+      "settings": {}
     }
   },
   "order": [
