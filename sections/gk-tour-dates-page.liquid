@@ -1,6 +1,7 @@
 {% comment %}
-  GK Tour Dates (Home + Page)
+  GK Tour Dates (PAGE)
   - Same sleek/glass style as your homepage version
+  - Reads from snippets/gk-tour-dates-shared.liquid (single source of truth)
   - Filters past shows when Shopify can parse the date
   - If Shopify cannot parse the date (timestamp = 0), it will NOT hide it (prevents "nothing shows")
   - Shows N dates initially (visible_count)
@@ -12,7 +13,11 @@
 {% liquid
   assign today_ymd = 'now' | date: '%Y-%m-%d'
   assign today_midnight_ts = today_ymd | date: '%s' | plus: 0
-  assign upcoming_count = 0
+
+  capture _cnt
+    render 'gk-tour-dates-shared', mode: 'count', today_midnight_ts: today_midnight_ts
+  endcapture
+  assign upcoming_count = _cnt | strip | plus: 0
 %}
 
 <section class="gk-dates" data-section-id="{{ section.id }}">
@@ -36,72 +41,7 @@
       data-visible-count="{{ section.settings.visible_count }}"
       data-reveal-step="{{ section.settings.reveal_step }}"
     >
-      {% assign render_index = 0 %}
-
-      {% for block in section.blocks %}
-        {% liquid
-          assign raw_date = block.settings.show_date | strip
-          assign show_ts = raw_date | date: '%s' | plus: 0
-
-          comment
-            If Shopify can't parse the date string, show_ts becomes 0.
-            In that case, we treat it as "upcoming" so the section never goes blank.
-          endcomment
-
-          assign is_upcoming = false
-          if raw_date != blank
-            if show_ts == 0
-              assign is_upcoming = true
-            elsif show_ts >= today_midnight_ts
-              assign is_upcoming = true
-            endif
-          endif
-        %}
-
-        {% if is_upcoming %}
-          {% assign upcoming_count = upcoming_count | plus: 1 %}
-
-          {% assign hidden_class = "" %}
-          {% if render_index >= section.settings.visible_count %}
-            {% assign hidden_class = " is-hidden" %}
-          {% endif %}
-
-          <div
-            class="gk-date{{ hidden_class }}"
-            role="listitem"
-            data-date-row
-            data-index="{{ render_index }}"
-            {{ block.shopify_attributes }}
-          >
-            <div class="gk-date__date">{{ raw_date }}</div>
-
-            <div class="gk-date__details">
-              {% if block.settings.venue_name != blank %}
-                <div class="gk-date__venue">{{ block.settings.venue_name }}</div>
-              {% endif %}
-              {% if block.settings.city_state != blank %}
-                <div class="gk-date__city">{{ block.settings.city_state }}</div>
-              {% endif %}
-            </div>
-
-            <div class="gk-date__cta">
-              {% if block.settings.is_sold_out %}
-                <span class="gk-date__pill gk-date__pill--muted" aria-label="Sold out">SOLD OUT</span>
-              {% else %}
-                {% if block.settings.ticket_url != blank %}
-                  <a class="gk-date__pill gk-date__pill--accent" href="{{ block.settings.ticket_url }}" target="_blank" rel="noopener">
-                    GET TICKETS
-                  </a>
-                {% else %}
-                  <span class="gk-date__pill gk-date__pill--muted" aria-label="Tickets unavailable">TBA</span>
-                {% endif %}
-              {% endif %}
-            </div>
-          </div>
-
-          {% assign render_index = render_index | plus: 1 %}
-        {% endif %}
-      {% endfor %}
+      {% render 'gk-tour-dates-shared', mode: 'rows', row_class: 'gk-date', today_midnight_ts: today_midnight_ts %}
     </div>
 
     {% if upcoming_count == 0 %}
@@ -145,7 +85,7 @@
   var list = root.querySelector('.gk-dates__list');
   if (!list) return;
 
-  var rows = Array.prototype.slice.call(root.querySelectorAll('[data-date-row]'));
+  var rows = Array.prototype.slice.call(root.querySelectorAll('.gk-date'));
   if (!rows.length) return;
 
   var moreBtn = root.querySelector('[data-dates-more]');
@@ -154,6 +94,9 @@
   var visibleCount = parseInt(list.getAttribute('data-visible-count') || '3', 10);
   var step = parseInt(list.getAttribute('data-reveal-step') || '10', 10);
 
+  // IMPORTANT:
+  // the shared snippet renders ALL upcoming rows.
+  // We apply initial hiding here, without needing the snippet to know counts.
   var shown = Math.min(visibleCount, rows.length);
 
   function apply() {
@@ -457,7 +400,7 @@
       ]
     },
 
-    { "type": "range", "id": "visible_count", "label": "Visible dates", "min": 1, "max": 20, "step": 1, "default": 3 },
+    { "type": "range", "id": "visible_count", "label": "Visible dates", "min": 1, "max": 20, "step": 1, "default": 10 },
     { "type": "range", "id": "reveal_step", "label": "Reveal step", "min": 1, "max": 20, "step": 1, "default": 10 },
 
     { "type": "text", "id": "show_more_label", "label": "Show more label", "default": "Show more dates" },
@@ -471,36 +414,7 @@
     { "type": "color", "id": "bg_color", "label": "Background color", "default": "#0D0D0D" },
     { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E8690A" }
   ],
-  "blocks": [
-    {
-      "type": "show",
-      "name": "Show",
-      "settings": [
-        { "type": "text", "id": "show_date", "label": "Date (example: 2026-03-15 OR March 15, 2026)", "default": "March 15, 2026" },
-        { "type": "text", "id": "venue_name", "label": "Venue name", "default": "The Big Room" },
-        { "type": "text", "id": "city_state", "label": "City and State", "default": "Milwaukee, WI" },
-        { "type": "url", "id": "ticket_url", "label": "Ticket / RSVP URL" },
-        { "type": "checkbox", "id": "is_sold_out", "label": "Sold out", "default": false }
-      ]
-    }
-  ],
-  "max_blocks": 100,
   "presets": [
-    {
-      "name": "GK Dates Home",
-      "settings": {
-        "visible_count": 3,
-        "reveal_step": 10,
-        "show_more_label": "Show more dates",
-        "show_less_label": "Show fewer dates",
-        "view_all_label": "View all dates"
-      },
-      "blocks": [
-        { "type": "show" },
-        { "type": "show" },
-        { "type": "show" }
-      ]
-    },
     {
       "name": "GK Dates Page",
       "settings": {
@@ -509,12 +423,7 @@
         "show_more_label": "Show more dates",
         "show_less_label": "Show fewer dates",
         "view_all_label": "View all dates"
-      },
-      "blocks": [
-        { "type": "show" },
-        { "type": "show" },
-        { "type": "show" }
-      ]
+      }
     }
   ]
 }
