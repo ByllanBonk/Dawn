@@ -1,14 +1,11 @@
 {% comment %}
-  GK Shared Tour Dates (SNIPPET)
-  - Single source of truth for BOTH sections
-  - Outputs rows ONLY when mode == 'render'
-  - Outputs count ONLY when mode == 'count'
-
-  Params:
-    mode: 'render' | 'count'
-    row_prefix: 'gk-date-row' (home) OR 'gk-date' (dates page)
-    visible_count: number visible initially
-    use_hidden_class: true/false (adds .is-hidden after visible_count)
+  GK Shared Tour Dates (Single Source of Truth)
+  - Snippet ONLY (no schema allowed)
+  - Renders rows for either:
+      row_prefix: 'gk-date'     (dates page styles)
+      row_prefix: 'gk-date-row' (home styles)
+  - Safe date filtering:
+      show_ts == 0 => keep it (prevents blank if date parse fails)
 {% endcomment %}
 
 {%- liquid
@@ -22,97 +19,95 @@
 -%}
 
 {%- capture _gk_dates_raw -%}
-{% comment %}
-FORMAT (one per line):
-Date || Venue || City, State || Ticket URL || sold_out(true/false)
-
-Example:
-March 15, 2026 || The Gig Shack || Nashville, TN || https://tickets.com || false
-{% endcomment %}
 March 15, 2026 || The Gig Shack || Nashville, TN || https://tickets.com || false
 April 02, 2026 || Blues Hall || Chicago, IL || || false
 {%- endcapture -%}
 
 {%- assign date_rows = _gk_dates_raw | newline_to_br | split: '<br />' -%}
+
 {%- assign render_index = 0 -%}
 {%- assign upcoming_count = 0 -%}
 
 {%- for row in date_rows -%}
   {%- assign trimmed = row | strip -%}
-  {%- if trimmed == blank -%}{% continue %}{%- endif -%}
+  {%- if trimmed != blank -%}
 
-  {%- assign parts = trimmed | split: ' || ' -%}
-  {%- assign raw_date = parts[0] | default: '' | strip -%}
-  {%- assign venue    = parts[1] | default: '' | strip -%}
-  {%- assign city     = parts[2] | default: '' | strip -%}
-  {%- assign url      = parts[3] | default: '' | strip -%}
-  {%- assign sold     = parts[4] | default: 'false' | strip -%}
+    {%- assign parts = trimmed | split: ' || ' -%}
+    {%- assign raw_date = parts[0] | default: '' | strip -%}
+    {%- assign venue   = parts[1] | default: '' | strip -%}
+    {%- assign city    = parts[2] | default: '' | strip -%}
+    {%- assign url     = parts[3] | default: '' | strip -%}
+    {%- assign sold    = parts[4] | default: 'false' | strip -%}
 
-  {%- liquid
-    assign show_ts = raw_date | date: '%s' | plus: 0
+    {%- liquid
+      assign show_ts = raw_date | date: '%s' | plus: 0
 
-    assign is_upcoming = false
-    if raw_date != blank
-      if show_ts == 0
-        assign is_upcoming = true
-      elsif show_ts >= today_midnight_ts
-        assign is_upcoming = true
+      assign is_upcoming = false
+      if raw_date != blank
+        if show_ts == 0
+          assign is_upcoming = true
+        elsif show_ts >= today_midnight_ts
+          assign is_upcoming = true
+        endif
       endif
-    endif
-  -%}
+    -%}
 
-  {%- if is_upcoming -%}
-    {%- assign upcoming_count = upcoming_count | plus: 1 -%}
+    {%- if is_upcoming -%}
+      {%- assign upcoming_count = upcoming_count | plus: 1 -%}
 
-    {%- if mode == 'render' -%}
-      {%- assign hidden_class = '' -%}
-      {%- if use_hidden_class and render_index >= visible_count -%}
-        {%- assign hidden_class = ' is-hidden' -%}
+      {%- if mode == 'render' -%}
+        {%- assign hidden_class = '' -%}
+        {%- if use_hidden_class and render_index >= visible_count -%}
+          {%- assign hidden_class = ' is-hidden' -%}
+        {%- endif -%}
+
+        <div
+          class="{{ row_prefix }}{{ hidden_class }}"
+          role="listitem"
+          data-date-row
+          data-index="{{ render_index }}"
+        >
+          <div class="{{ row_prefix }}__date">{{ raw_date }}</div>
+
+          <div class="{{ row_prefix }}__details">
+            {%- if venue != blank -%}
+              <div class="{{ row_prefix }}__venue">{{ venue }}</div>
+            {%- endif -%}
+            {%- if city != blank -%}
+              <div class="{{ row_prefix }}__city">{{ city }}</div>
+            {%- endif -%}
+          </div>
+
+          <div class="{{ row_prefix }}__cta">
+            {%- if sold == 'true' -%}
+              {%- if row_prefix == 'gk-date' -%}
+                <span class="gk-date__pill gk-date__pill--muted" aria-label="Sold out">SOLD OUT</span>
+              {%- else -%}
+                <span class="{{ row_prefix }}__soldout" aria-label="Sold out">SOLD OUT</span>
+              {%- endif -%}
+            {%- else -%}
+              {%- if url != blank -%}
+                {%- if row_prefix == 'gk-date' -%}
+                  <a class="gk-date__pill gk-date__pill--accent" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
+                {%- else -%}
+                  <a class="{{ row_prefix }}__btn" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
+                {%- endif -%}
+              {%- else -%}
+                {%- if row_prefix == 'gk-date' -%}
+                  <span class="gk-date__pill gk-date__pill--muted" aria-label="Tickets unavailable">TBA</span>
+                {%- else -%}
+                  <span class="{{ row_prefix }}__soldout" aria-label="Tickets unavailable">TBA</span>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- assign render_index = render_index | plus: 1 -%}
       {%- endif -%}
 
-      <div
-        class="{{ row_prefix }}{{ hidden_class }}"
-        role="listitem"
-        {%- if row_prefix == 'gk-date' -%} data-date-row data-index="{{ render_index }}"{%- endif -%}
-      >
-        <div class="{{ row_prefix }}__date">{{ raw_date }}</div>
-
-        <div class="{{ row_prefix }}__details">
-          {%- if venue != blank -%}
-            <div class="{{ row_prefix }}__venue">{{ venue }}</div>
-          {%- endif -%}
-          {%- if city != blank -%}
-            <div class="{{ row_prefix }}__city">{{ city }}</div>
-          {%- endif -%}
-        </div>
-
-        <div class="{{ row_prefix }}__cta">
-          {%- if sold == 'true' -%}
-            {%- if row_prefix == 'gk-date' -%}
-              <span class="gk-date__pill gk-date__pill--muted" aria-label="Sold out">SOLD OUT</span>
-            {%- else -%}
-              <span class="gk-date-row__soldout" aria-label="Sold out">SOLD OUT</span>
-            {%- endif -%}
-          {%- else -%}
-            {%- if url != blank -%}
-              {%- if row_prefix == 'gk-date' -%}
-                <a class="gk-date__pill gk-date__pill--accent" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
-              {%- else -%}
-                <a class="gk-date-row__btn" href="{{ url }}" target="_blank" rel="noopener">GET TICKETS</a>
-              {%- endif -%}
-            {%- else -%}
-              {%- if row_prefix == 'gk-date' -%}
-                <span class="gk-date__pill gk-date__pill--muted" aria-label="Tickets unavailable">TBA</span>
-              {%- else -%}
-                <span class="gk-date-row__soldout" aria-label="Tickets unavailable">TBA</span>
-              {%- endif -%}
-            {%- endif -%}
-          {%- endif -%}
-        </div>
-      </div>
     {%- endif -%}
 
-    {%- assign render_index = render_index | plus: 1 -%}
   {%- endif -%}
 {%- endfor -%}
 
