@@ -1,109 +1,310 @@
 {% comment %}
-  GK Bandsintown (Home)
-  Shows first N live Bandsintown events; "Show More" reveals more each click.
+  GK Bandsintown – Home Strip
+  Official Bandsintown widget for Greg Koch, restyled to match dark glass aesthetic.
+  Shows N events initially; each "Show More" click reveals reveal_step more.
 
-  MERCHANT: Theme Editor > this section > "Events shown on load" / "Events revealed per click"
+  MERCHANT: Theme Editor › this section › Bandsintown › Artist name
+             Display settings › Events shown on load / Events revealed per click
 {% endcomment %}
 
 {%- liquid
   assign bit_artist          = section.settings.artist_name
   assign bit_initial_visible = section.settings.initial_visible_count
   assign bit_reveal_step     = section.settings.reveal_step
-  assign bit_more_label      = section.settings.show_more_label
+  assign bit_more_label      = section.settings.show_more_label | default: 'SHOW MORE DATES'
   assign bit_uid             = section.id | prepend: 'gkbit-home-'
 -%}
 
 <style>
+/* ═══════════════════════════════════════════════════════════
+   GK BANDSINTOWN HOME — all selectors scoped to .gk-bit-home
+   ═══════════════════════════════════════════════════════════ */
 .gk-bit-home {
+  --gkb-bg:            {{ section.settings.bg_color }};
+  --gkb-accent:        #E8690A;
+  --gkb-accent-glow:   rgba(232,105,10,0.22);
+  --gkb-accent-strong: rgba(232,105,10,0.38);
+  --gkb-text:          #ffffff;
+  --gkb-muted:         rgba(255,255,255,0.60);
+  --gkb-ring:          rgba(255,255,255,0.10);
+
   box-sizing: border-box;
   width: 100%;
-  background-color: {{ section.settings.bg_color }};
+  background-color: var(--gkb-bg);
   padding-top: {{ section.settings.padding_top }}px;
   padding-bottom: {{ section.settings.padding_bottom }}px;
+  color: var(--gkb-text);
 }
 .gk-bit-home__inner {
-  max-width: 860px;
+  max-width: {{ section.settings.max_width }}px;
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
 }
 .gk-bit-home__eyebrow {
-  color: #ff6a00;
-  font-size: 0.72em;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
   text-transform: uppercase;
-  margin: 0 0 8px;
+  letter-spacing: 0.16em;
+  font-size: 12px;
+  color: rgba(255,255,255,0.62);
+  margin: 0 0 10px;
+  display: block;
 }
 .gk-bit-home__heading {
-  color: #ffffff;
-  font-size: clamp(1.6em, 4vw, 2.4em);
-  font-weight: 800;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
   letter-spacing: 0.03em;
-  text-transform: uppercase;
+  line-height: 1;
+  font-size: clamp(44px, 5vw, 64px);
+  color: var(--gkb-text);
   margin: 0 0 8px;
-  line-height: 1.1;
+  text-transform: uppercase;
 }
 .gk-bit-home__subtext {
-  color: rgba(255,255,255,0.5);
-  font-size: 0.9em;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--gkb-muted);
+  font-size: 16px;
+  line-height: 1.4;
   margin: 0 0 28px;
 }
 .gk-bit-home__embed {
   width: 100%;
 }
 
-/* Hide BIT artist header, footer, RSVP */
-.gk-bit-home [class*="bit-top-track"],
+/* ── Editor notice (informational only; widget still attempts to load) ── */
+.gk-bit-home .gk-bit-editor-notice {
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.40);
+  background: rgba(232,105,10,0.06);
+  border: 1px dashed rgba(232,105,10,0.28);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+/* ── BIT widget wrapper – strip its default chrome ── */
+.gk-bit-home .bit-widget-container,
+.gk-bit-home .bit-widget {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ── Hide BIT elements we replace with our own headings / buttons ── */
 .gk-bit-home [class*="bit-header"],
-.gk-bit-home .bit-powered-by,
-.gk-bit-home .bit-footer,
-.gk-bit-home .bit-social-share,
-.gk-bit-home .bit-share-button,
+.gk-bit-home [class*="bit-top-track"],
+.gk-bit-home [class*="bit-logo"],
+.gk-bit-home [class*="bit-powered"],
+.gk-bit-home [class*="bit-footer"],
+.gk-bit-home [class*="bit-social"],
+.gk-bit-home [class*="bit-share"],
+.gk-bit-home [class*="bit-follow"],
 .gk-bit-home [class*="rsvp"],
+.gk-bit-home [class*="bit-rsvp"],
 .gk-bit-home a[data-bit-action="rsvp"] {
   display: none !important;
 }
 
-/* Show-more button */
+/* ── Event list container ── */
+.gk-bit-home .bit-event-list,
+.gk-bit-home ul[class*="bit-event-list"],
+.gk-bit-home [class*="bit-event-list"]:not([class*="item"]):not(li) {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+/* ── Individual event rows – dark glass card ── */
+.gk-bit-home .bit-event,
+.gk-bit-home .bit-event-list-item,
+.gk-bit-home li[class*="bit-event"],
+.gk-bit-home [class*="bit-event"][class*="item"] {
+  position: relative !important;
+  list-style: none !important;
+  border-radius: 18px !important;
+  border: 1px solid var(--gkb-ring) !important;
+  background:
+    radial-gradient(1200px 200px at 20% 0%, rgba(255,255,255,0.06), transparent 50%),
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)) !important;
+  box-shadow: 0 18px 42px rgba(0,0,0,0.32) !important;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease !important;
+  padding: 16px 20px !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+/* Hover glow overlay */
+.gk-bit-home .bit-event::before,
+.gk-bit-home .bit-event-list-item::before,
+.gk-bit-home li[class*="bit-event"]::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 18px !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  transition: opacity 160ms ease !important;
+  background:
+    radial-gradient(800px 160px at 20% 50%, var(--gkb-accent-strong), transparent 65%),
+    linear-gradient(90deg, rgba(232,105,10,0.10), rgba(232,105,10,0.00) 55%) !important;
+  z-index: 0 !important;
+}
+
+.gk-bit-home .bit-event:hover,
+.gk-bit-home .bit-event-list-item:hover,
+.gk-bit-home li[class*="bit-event"]:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgba(232,105,10,0.45) !important;
+  box-shadow:
+    0 22px 58px rgba(0,0,0,0.40),
+    0 0 0 1px rgba(232,105,10,0.18) inset !important;
+}
+
+.gk-bit-home .bit-event:hover::before,
+.gk-bit-home .bit-event-list-item:hover::before,
+.gk-bit-home li[class*="bit-event"]:hover::before {
+  opacity: 1 !important;
+}
+
+/* ── Date text ── */
+.gk-bit-home [class*="bit-event"] [class*="bit-date"],
+.gk-bit-home [class*="bit-event"] .bit-event-date,
+.gk-bit-home [class*="bit-event"] time {
+  font-family: "Bebas Neue", sans-serif !important;
+  font-size: 28px !important;
+  line-height: 1 !important;
+  color: var(--gkb-accent) !important;
+  letter-spacing: 0.02em !important;
+  white-space: nowrap !important;
+}
+
+/* ── Venue / show name ── */
+.gk-bit-home [class*="bit-event"] [class*="bit-venue"],
+.gk-bit-home [class*="bit-event"] [class*="bit-title"],
+.gk-bit-home [class*="bit-event"] [class*="bit-name"]:not([class*="artist"]) {
+  font-family: "DM Sans", system-ui, -apple-system, sans-serif !important;
+  font-size: 18px !important;
+  color: var(--gkb-text) !important;
+  font-weight: 500 !important;
+  line-height: 1.3 !important;
+}
+
+/* ── Location / city ── */
+.gk-bit-home [class*="bit-event"] [class*="bit-location"],
+.gk-bit-home [class*="bit-event"] [class*="bit-city"],
+.gk-bit-home [class*="bit-event"] [class*="bit-region"],
+.gk-bit-home [class*="bit-event"] [class*="bit-country"] {
+  font-family: "DM Mono", ui-monospace, monospace !important;
+  font-size: 12px !important;
+  letter-spacing: 0.10em !important;
+  text-transform: uppercase !important;
+  color: rgba(255,255,255,0.65) !important;
+}
+
+/* ── Ticket / CTA button – orange pill ── */
+.gk-bit-home [class*="bit-event"] a[class*="bit-btn"]:not([class*="rsvp"]),
+.gk-bit-home [class*="bit-event"] a[data-bit-action="tickets"],
+.gk-bit-home [class*="bit-event"] a[class*="bit-ticket"],
+.gk-bit-home [class*="bit-event"] [class*="bit-cta"] a:not([class*="rsvp"]) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 40px !important;
+  padding: 8px 20px !important;
+  border-radius: 999px !important;
+  background: rgba(232,105,10,0.90) !important;
+  border: 1px solid rgba(232,105,10,0.90) !important;
+  color: #0D0D0D !important;
+  font-family: "DM Mono", ui-monospace, monospace !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease !important;
+}
+.gk-bit-home [class*="bit-event"] a[class*="bit-btn"]:not([class*="rsvp"]):hover,
+.gk-bit-home [class*="bit-event"] a[data-bit-action="tickets"]:hover {
+  transform: translateY(-1px) !important;
+  background: rgba(232,105,10,1) !important;
+  box-shadow: 0 10px 26px rgba(232,105,10,0.30) !important;
+}
+
+/* ── "No upcoming dates" message from BIT ── */
+.gk-bit-home [class*="bit-no-dates"],
+.gk-bit-home [class*="bit-empty-state"] {
+  font-family: "DM Sans", system-ui, sans-serif !important;
+  color: var(--gkb-muted) !important;
+  text-align: center !important;
+  padding: 24px 0 !important;
+  font-size: 15px !important;
+  background: transparent !important;
+}
+
+/* ── Show-more button ── */
 .gk-bit-home .gk-bit-more-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
-  color: #ff6a00;
-  border: 1px solid rgba(255,106,0,0.5);
-  border-radius: 999px;
+  min-height: 44px;
   padding: 10px 28px;
-  font-size: 0.78em;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--gkb-accent);
+  border: 1px solid rgba(232,105,10,0.45);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
-  font-family: inherit;
-  transition: background 150ms ease, border-color 150ms ease;
+  transition: background 150ms ease, border-color 150ms ease, transform 140ms ease, box-shadow 140ms ease;
 }
 .gk-bit-home .gk-bit-more-btn:hover {
-  background: rgba(255,106,0,0.12);
-  border-color: #ff6a00;
+  background: rgba(232,105,10,0.10);
+  border-color: #E8690A;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(232,105,10,0.14);
+}
+.gk-bit-home .gk-bit-more-btn:active {
+  transform: translateY(0);
+}
+.gk-bit-home .gk-bit-more-btn:focus-visible {
+  outline: 2px solid rgba(232,105,10,0.75);
+  outline-offset: 3px;
 }
 
-/* Fallback + editor notice */
+/* ── Fallback message (shown only if BIT fails to load after timeout) ── */
 .gk-bit-home .gk-bit-fallback {
   display: none;
-  color: rgba(255,255,255,0.4);
-  font-size: 0.9em;
+  font-family: "DM Sans", system-ui, sans-serif;
+  color: var(--gkb-muted);
+  font-size: 15px;
   padding: 24px 0;
   text-align: center;
 }
-.gk-bit-home .gk-bit-editor-notice {
-  background: rgba(255,106,0,0.08);
-  border: 1px dashed rgba(255,106,0,0.35);
-  border-radius: 12px;
-  color: rgba(255,255,255,0.5);
-  font-size: 0.85em;
-  padding: 20px 24px;
-  text-align: center;
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .gk-bit-home .bit-event,
+  .gk-bit-home .bit-event-list-item,
+  .gk-bit-home li[class*="bit-event"] {
+    padding: 14px 16px !important;
+  }
+  .gk-bit-home [class*="bit-event"] [class*="bit-date"] {
+    font-size: 22px !important;
+  }
+  .gk-bit-home [class*="bit-event"] [class*="bit-venue"] {
+    font-size: 15px !important;
+  }
 }
 </style>
 
@@ -120,35 +321,73 @@
       <p class="gk-bit-home__subtext">{{ section.settings.subtext }}</p>
     {%- endif -%}
 
-    <div id="{{ bit_uid }}" class="gk-bit-home__embed">
-      {%- if request.design_mode -%}
-        <div class="gk-bit-editor-notice">
-          Bandsintown events load on the live site. Save and preview to see them.
-        </div>
-      {%- else -%}
-        {%- render 'gk-bandsintown-embed', bit_artist: bit_artist -%}
-        <div class="gk-bit-fallback">Check back soon for upcoming dates.</div>
-      {%- endif -%}
+    {%- if request.design_mode -%}
+      <div class="gk-bit-editor-notice">
+        &#9432;&nbsp; Theme Editor: Bandsintown events load live. Click "View" or open the published site to see them.
+      </div>
+    {%- endif -%}
+
+    <div id="{{ bit_uid }}" class="gk-bit-home__embed" data-bit-wrap>
+      {%- comment -%}
+        Official Bandsintown anchor-initializer. BIT script below finds this element
+        and replaces it with the rendered widget (event list + ticket links).
+      {%- endcomment -%}
+      <a class="bit-widget-initializer"
+         data-artist-name="{{ bit_artist | escape }}"
+         data-display-local-dates="false"
+         data-display-past-dates="false"
+         data-auto-style="false"
+         data-button-label-upcoming-events=""
+         data-button-label-expired-token="Refresh"
+         data-lang="en"
+         data-popup-background-color="#111111"
+         data-text-color="#ffffff"
+         data-link-color="#E8690A"
+         data-background-color="rgba(0,0,0,0)"
+         data-separator-color="rgba(255,255,255,0.08)"
+         data-display-limit="40"
+      ></a>
+      <div class="gk-bit-fallback">Check back soon for upcoming dates.</div>
     </div>
 
   </div>
 </section>
 
+{%- comment -%}
+  Load BIT script once per page (guarded by window.__gkBitLoaded).
+  Placed after the initializer anchor so BIT finds it immediately.
+{%- endcomment -%}
+<script>
+if (!window.__gkBitLoaded) {
+  window.__gkBitLoaded = true;
+  var _s = document.createElement('script');
+  _s.charset = 'utf-8';
+  _s.src = 'https://widget.bandsintown.com/main.min.js';
+  document.head.appendChild(_s);
+}
+</script>
+
 <script>
 (function () {
+  'use strict';
+
   var WRAP_ID   = {{ bit_uid | json }};
   var INIT      = {{ bit_initial_visible | plus: 0 }};
   var STEP      = {{ bit_reveal_step | plus: 0 }};
-  var BTN_LABEL = {{ bit_more_label | default: 'SHOW MORE DATES' | json }};
+  var BTN_LABEL = {{ bit_more_label | json }};
 
   var wrap = document.getElementById(WRAP_ID);
   if (!wrap) return;
 
+  /* Prevent double-init if section is re-rendered by theme editor */
+  if (wrap.getAttribute('data-bit-initialized') === '1') return;
+  wrap.setAttribute('data-bit-initialized', '1');
+
   var applied     = false;
   var moreBtnWrap = null;
 
-  /* Priority-ordered selectors to find event rows */
-  var SEL = [
+  /* Priority-ordered selectors – tries each until it finds event nodes */
+  var EVENT_SELS = [
     '.bit-event',
     '.bit-event-list-item',
     'li[class*="bit-event"]',
@@ -158,17 +397,19 @@
   ];
 
   function findEvents() {
-    for (var i = 0; i < SEL.length; i++) {
-      var els = wrap.querySelectorAll(SEL[i]);
-      if (els.length) return [].slice.call(els);
+    for (var i = 0; i < EVENT_SELS.length; i++) {
+      var els = wrap.querySelectorAll(EVENT_SELS[i]);
+      if (els.length) return Array.prototype.slice.call(els);
     }
     return [];
   }
 
   function ensureMoreBtn() {
     if (moreBtnWrap) return moreBtnWrap;
+
     moreBtnWrap = document.createElement('div');
-    moreBtnWrap.style.cssText = 'margin-top:20px;text-align:center';
+    moreBtnWrap.style.cssText = 'margin-top:20px;text-align:center;';
+
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'gk-bit-more-btn';
@@ -183,8 +424,18 @@
       });
       syncBtn();
     });
+
     moreBtnWrap.appendChild(btn);
-    wrap.appendChild(moreBtnWrap);
+
+    /* Append after the BIT container, or fall back to inside wrap */
+    var bitContainer = wrap.querySelector('.bit-widget-container') ||
+                       wrap.querySelector('.bit-widget');
+    if (bitContainer && bitContainer.parentNode === wrap) {
+      wrap.insertBefore(moreBtnWrap, bitContainer.nextSibling);
+    } else {
+      wrap.appendChild(moreBtnWrap);
+    }
+
     return moreBtnWrap;
   }
 
@@ -203,6 +454,7 @@
 
     applied = true;
 
+    /* Hide events beyond the initial visible count */
     events.forEach(function (el, i) {
       if (i >= INIT) {
         el.setAttribute('data-gk-hidden', '1');
@@ -214,37 +466,48 @@
       ensureMoreBtn();
       syncBtn();
     }
+
+    /* BIT succeeded – suppress the fallback text */
+    var fb = wrap.querySelector('.gk-bit-fallback');
+    if (fb) fb.style.display = 'none';
+
     return true;
   }
 
+  /* Try immediately (BIT may have already rendered) */
   if (setup()) return;
 
-  var debounce;
+  /* Watch for BIT's async DOM injection */
+  var debounceTimer;
   var obs = new MutationObserver(function () {
-    clearTimeout(debounce);
-    debounce = setTimeout(function () {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function () {
       if (setup()) {
-        clearInterval(retryTimer);
         obs.disconnect();
+        clearInterval(retryTimer);
       }
-    }, 200);
+    }, 180);
   });
   obs.observe(wrap, { childList: true, subtree: true });
 
-  /* Retry every 250ms for up to 10 seconds */
+  /* Belt-and-suspenders: poll every 300 ms for up to 12 s */
   var elapsed = 0;
   var retryTimer = setInterval(function () {
-    elapsed += 250;
-    if (setup() || elapsed >= 10000) {
-      clearInterval(retryTimer);
+    elapsed += 300;
+    if (setup()) {
       obs.disconnect();
+      clearInterval(retryTimer);
+    } else if (elapsed >= 12000) {
+      obs.disconnect();
+      clearInterval(retryTimer);
       if (!applied) {
         var fb = wrap.querySelector('.gk-bit-fallback');
         if (fb) fb.style.display = '';
       }
     }
-  }, 250);
-})();
+  }, 300);
+
+}());
 </script>
 
 {% schema %}
@@ -259,19 +522,19 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "Tour Dates"
+      "default": "On Tour"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "GREG KOCH DATES"
+      "default": "LIVE DATES"
     },
     {
       "type": "text",
       "id": "subtext",
       "label": "Subtext",
-      "default": "See upcoming dates below."
+      "default": "Catch Greg live on the road."
     },
     {
       "type": "header",
@@ -281,7 +544,7 @@
       "type": "text",
       "id": "artist_name",
       "label": "Artist name",
-      "info": "Must match exactly as listed on Bandsintown, e.g. Greg Koch",
+      "info": "Must match your Bandsintown artist page exactly, e.g. Greg Koch",
       "default": "Greg Koch"
     },
     {
@@ -321,6 +584,15 @@
       "id": "bg_color",
       "label": "Background color",
       "default": "#0D0D0D"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max content width (px)",
+      "min": 600,
+      "max": 1400,
+      "step": 20,
+      "default": 900
     },
     {
       "type": "range",
