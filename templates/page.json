@@ -17,67 +17,25 @@
         "padding_bottom": 28
       }
     },
-    "gk_tour_dates_page_tJ74y3": {
-      "type": "gk-tour-dates-page",
-      "blocks": {
-        "show_RCYUxR": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "https://www.bandsintown.com/t/107664965?affil_code=js_www.gregkoch.com&app_id=js_www.gregkoch.com&came_from=242&utm_campaign=ticket&utm_medium=web&utm_source=widget",
-            "is_sold_out": false
-          }
-        },
-        "show_KkW66L": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
-          }
-        },
-        "show_tQQCt3": {
-          "type": "show",
-          "settings": {
-            "show_date": "March 15, 2026",
-            "venue_name": "The Big Room",
-            "city_state": "Milwaukee, WI",
-            "ticket_url": "",
-            "is_sold_out": false
-          }
-        }
-      },
-      "block_order": [
-        "show_RCYUxR",
-        "show_KkW66L",
-        "show_tQQCt3"
-      ],
-      "name": "GK Dates Page",
+    "gk_bandsintown_page_y47w9C": {
+      "type": "gk-bandsintown-page",
+      "name": "GK Bandsintown (Page)",
       "settings": {
         "eyebrow": "Tour Dates",
-        "heading": "GREG KOCH DATES",
+        "heading": "TOUR DATES",
         "subtext": "See upcoming dates below.",
-        "empty_text": "No upcoming dates. Check back soon.",
-        "text_align": "left",
-        "visible_count": 10,
+        "artist_name": "Greg Koch",
+        "initial_visible_count": 10,
         "reveal_step": 10,
-        "show_more_label": "Show more dates",
-        "show_less_label": "Show fewer dates",
-        "view_all_label": "View all dates",
-        "view_all_url": "",
+        "show_more_label": "SHOW MORE DATES",
+        "bg_color": "#0D0D0D",
         "padding_top": 64,
-        "padding_bottom": 64,
-        "bg_color": "#0d0d0d",
-        "accent_color": "#e8690a"
+        "padding_bottom": 64
       }
     }
   },
   "order": [
     "main",
-    "gk_tour_dates_page_tJ74y3"
+    "gk_bandsintown_page_y47w9C"
   ]
 }
