@@ -1,11 +1,8 @@
 {% comment %}
   GK Bandsintown (Home)
-  Live Bandsintown events widget — dark/orange site aesthetic.
-  Shows the first N events on load; "Show More" reveals more each click.
+  Shows first N live Bandsintown events; "Show More" reveals more each click.
 
-  MERCHANT: to change how many events show on load, go to
-  Theme Editor > click this section > "Events shown on load" (under Display settings).
-  To change how many are revealed per click, adjust "Events revealed per click".
+  MERCHANT: Theme Editor > this section > "Events shown on load" / "Events revealed per click"
 {% endcomment %}
 
 {%- liquid
@@ -17,11 +14,6 @@
 -%}
 
 <style>
-/* =================================================================
-   GK Bandsintown Home — layout/structure only
-   BIT widget renders with its own native styling
-   ================================================================= */
-
 .gk-bit-home {
   box-sizing: border-box;
   width: 100%;
@@ -61,31 +53,19 @@
   width: 100%;
 }
 
-/* ---- Hide BIT internal header / artist block ---- */
-.gk-bit-home .bit-top-track-header,
-.gk-bit-home .bit-header,
-.gk-bit-home .bit-header-future,
-.gk-bit-home .bit-header-past,
+/* Hide BIT artist header, footer, RSVP */
 .gk-bit-home [class*="bit-top-track"],
 .gk-bit-home [class*="bit-header"],
 .gk-bit-home .bit-powered-by,
 .gk-bit-home .bit-footer,
 .gk-bit-home .bit-social-share,
-.gk-bit-home .bit-share-button {
-  display: none !important;
-}
-
-/* ---- Hide RSVP everywhere ---- */
-.gk-bit-home .bit-rsvp-pst,
-.gk-bit-home .bit-rsvp-container,
-.gk-bit-home .bit-not-attending-container,
-.gk-bit-home .bit-notgoing-btn,
+.gk-bit-home .bit-share-button,
 .gk-bit-home [class*="rsvp"],
 .gk-bit-home a[data-bit-action="rsvp"] {
   display: none !important;
 }
 
-/* ---- Show-more button (injected by JS) ---- */
+/* Show-more button */
 .gk-bit-home .gk-bit-more-btn {
   display: inline-flex;
   align-items: center;
@@ -93,6 +73,7 @@
   background: transparent;
   color: #ff6a00;
   border: 1px solid rgba(255,106,0,0.5);
+  border-radius: 999px;
   padding: 10px 28px;
   font-size: 0.78em;
   font-weight: 700;
@@ -107,7 +88,7 @@
   border-color: #ff6a00;
 }
 
-/* ---- Fallback message ---- */
+/* Fallback + editor notice */
 .gk-bit-home .gk-bit-fallback {
   display: none;
   color: rgba(255,255,255,0.4);
@@ -115,11 +96,10 @@
   padding: 24px 0;
   text-align: center;
 }
-
-/* ---- Editor placeholder ---- */
 .gk-bit-home .gk-bit-editor-notice {
   background: rgba(255,106,0,0.08);
   border: 1px dashed rgba(255,106,0,0.35);
+  border-radius: 12px;
   color: rgba(255,255,255,0.5);
   font-size: 0.85em;
   padding: 20px 24px;
@@ -156,25 +136,25 @@
 
 <script>
 (function () {
-  /* MERCHANT: change visible count in Theme Editor > this section > "Events shown on load"   */
-  /* MERCHANT: change reveal step in Theme Editor > this section > "Events revealed per click" */
   var WRAP_ID   = {{ bit_uid | json }};
   var INIT      = {{ bit_initial_visible | plus: 0 }};
   var STEP      = {{ bit_reveal_step | plus: 0 }};
   var BTN_LABEL = {{ bit_more_label | default: 'SHOW MORE DATES' | json }};
 
   var wrap = document.getElementById(WRAP_ID);
-  if (!wrap || wrap.dataset.bitInit) return;
+  if (!wrap) return;
 
   var applied     = false;
   var moreBtnWrap = null;
 
-  /* Selectors tried in priority order to find event rows */
+  /* Priority-ordered selectors to find event rows */
   var SEL = [
     '.bit-event',
     '.bit-event-list-item',
     'li[class*="bit-event"]',
-    '[class*="bit-event"]'
+    '[class*="bit-event"][class*="item"]',
+    '.bit-widget li',
+    '.bit-widget-container li'
   ];
 
   function findEvents() {
@@ -195,9 +175,12 @@
     btn.textContent = BTN_LABEL;
     btn.addEventListener('click', function () {
       var hidden = findEvents().filter(function (el) {
-        return el.style.display === 'none';
+        return el.getAttribute('data-gk-hidden') === '1';
       });
-      hidden.slice(0, STEP).forEach(function (el) { el.style.display = ''; });
+      hidden.slice(0, STEP).forEach(function (el) {
+        el.removeAttribute('data-gk-hidden');
+        el.style.removeProperty('display');
+      });
       syncBtn();
     });
     moreBtnWrap.appendChild(btn);
@@ -208,7 +191,7 @@
   function syncBtn() {
     if (!moreBtnWrap) return;
     var anyHidden = findEvents().some(function (el) {
-      return el.style.display === 'none';
+      return el.getAttribute('data-gk-hidden') === '1';
     });
     moreBtnWrap.style.display = anyHidden ? '' : 'none';
   }
@@ -219,10 +202,12 @@
     if (applied) { syncBtn(); return true; }
 
     applied = true;
-    wrap.dataset.bitInit = '1';
 
     events.forEach(function (el, i) {
-      el.style.display = i < INIT ? '' : 'none';
+      if (i >= INIT) {
+        el.setAttribute('data-gk-hidden', '1');
+        el.style.setProperty('display', 'none', 'important');
+      }
     });
 
     if (events.length > INIT) {
@@ -232,10 +217,8 @@
     return true;
   }
 
-  /* Run immediately if widget already rendered */
   if (setup()) return;
 
-  /* MutationObserver with 200ms debounce (waits for full render burst) */
   var debounce;
   var obs = new MutationObserver(function () {
     clearTimeout(debounce);
@@ -248,11 +231,11 @@
   });
   obs.observe(wrap, { childList: true, subtree: true });
 
-  /* setInterval retry every 250ms for up to 5 seconds */
+  /* Retry every 250ms for up to 10 seconds */
   var elapsed = 0;
   var retryTimer = setInterval(function () {
     elapsed += 250;
-    if (setup() || elapsed >= 5000) {
+    if (setup() || elapsed >= 10000) {
       clearInterval(retryTimer);
       obs.disconnect();
       if (!applied) {
