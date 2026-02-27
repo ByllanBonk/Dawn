@@ -60,19 +60,31 @@
 {%- assign _pairs = '' -%}
 {%- for block in section.blocks -%}
   {%- if block.type == 'show' -%}
-    {%- assign _raw    = block.settings.show_date | default: '' | strip -%}
+    {%- assign _raw     = block.settings.show_date | default: '' | strip -%}
     {%- assign _show_ts = _raw | date: '%s' | plus: 0 -%}
-    {%- assign _keep   = false -%}
-    {%- if _raw != blank -%}
-      {%- if _show_ts == 0 -%}
-        {%- assign _keep = true -%}
-      {%- elsif _show_ts >= today_ts -%}
-        {%- assign _keep = true -%}
+    {%- assign _keep    = true -%}
+
+    {%- comment -%} Only hide dates we can CONFIRM are in the past (valid year ≥ 2020 + before today) {%- endcomment -%}
+    {%- if _raw == blank -%}
+      {%- assign _has_other = block.settings.venue_name | default: '' | append: block.settings.city_state | default: '' | strip -%}
+      {%- if _has_other == blank -%}
+        {%- assign _keep = false -%}
+      {%- endif -%}
+    {%- elsif _show_ts != 0 -%}
+      {%- assign _parsed_year = _raw | date: '%Y' | plus: 0 -%}
+      {%- if _parsed_year >= 2020 and _show_ts < today_ts -%}
+        {%- assign _keep = false -%}
       {%- endif -%}
     {%- endif -%}
+
     {%- if _keep -%}
       {%- assign _sort_key = _raw | date: '%Y%m%d' -%}
-      {%- if _sort_key == blank -%}{%- assign _sort_key = '99999999' -%}{%- endif -%}
+      {%- if _sort_key == blank -%}
+        {%- assign _sort_key = '99999999' -%}
+      {%- else -%}
+        {%- assign _sk_year = _sort_key | slice: 0, 4 | plus: 0 -%}
+        {%- if _sk_year < 2020 -%}{%- assign _sort_key = '99999999' -%}{%- endif -%}
+      {%- endif -%}
       {%- assign _pairs = _pairs | append: _sort_key | append: '_' | append: forloop.index0 | append: '|' -%}
     {%- endif -%}
   {%- endif -%}
@@ -781,7 +793,7 @@
           "type": "text",
           "id": "show_date",
           "label": "Date",
-          "info": "e.g. April 22, 2026 — use a standard date format so past dates are filtered automatically"
+          "info": "IMPORTANT: Include the full year — e.g. February 28, 2026. Dates without a year may not display correctly. Past dates are hidden automatically."
         },
         {
           "type": "text",
