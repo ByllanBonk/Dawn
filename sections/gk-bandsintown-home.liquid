@@ -1,11 +1,8 @@
 {% comment %}
   GK Bandsintown (Home)
-  Live Bandsintown events widget — dark/orange site aesthetic.
-  Shows the first N events on load; "Show More" reveals more each click.
+  Shows first N live Bandsintown events; "Show More" reveals more each click.
 
-  MERCHANT: to change how many events show on load, go to
-  Theme Editor > click this section > "Events shown on load" (under Display settings).
-  To change how many are revealed per click, adjust "Events revealed per click".
+  MERCHANT: Theme Editor > this section > "Events shown on load" / "Events revealed per click"
 {% endcomment %}
 
 {%- liquid
@@ -17,10 +14,6 @@
 -%}
 
 <style>
-/* =================================================================
-   GK Bandsintown Home — all rules scoped to .gk-bit-home
-   ================================================================= */
-
 .gk-bit-home {
   box-sizing: border-box;
   width: 100%;
@@ -60,209 +53,19 @@
   width: 100%;
 }
 
-/* ---- Transparent widget root ---- */
-.gk-bit-home .bit-widget,
-.gk-bit-home .bit-widget-container,
-.gk-bit-home .bit-widget > div,
-.gk-bit-home .bit-widget-container > div {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  font-family: inherit !important;
-}
-
-/* ---- Hide BIT internal header / artist block ---- */
-.gk-bit-home .bit-top-track-header,
-.gk-bit-home .bit-header,
-.gk-bit-home .bit-header-future,
-.gk-bit-home .bit-header-past,
+/* Hide BIT artist header, footer, RSVP */
 .gk-bit-home [class*="bit-top-track"],
 .gk-bit-home [class*="bit-header"],
 .gk-bit-home .bit-powered-by,
 .gk-bit-home .bit-footer,
 .gk-bit-home .bit-social-share,
-.gk-bit-home .bit-share-button {
-  display: none !important;
-}
-
-/* ---- Hide RSVP everywhere ---- */
-.gk-bit-home .bit-rsvp-pst,
-.gk-bit-home .bit-rsvp-container,
-.gk-bit-home .bit-not-attending-container,
-.gk-bit-home .bit-notgoing-btn,
+.gk-bit-home .bit-share-button,
 .gk-bit-home [class*="rsvp"],
 .gk-bit-home a[data-bit-action="rsvp"] {
   display: none !important;
 }
 
-/* ---- Event list wrapper ---- */
-.gk-bit-home .bit-event-list,
-.gk-bit-home ul.bit-event-list,
-.gk-bit-home ol.bit-event-list,
-.gk-bit-home [class*="bit-event-list"],
-.gk-bit-home .bit-events {
-  list-style: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 8px !important;
-}
-
-/* ---- Glass card — each event row ---- */
-.gk-bit-home .bit-event,
-.gk-bit-home .bit-event-list-item,
-.gk-bit-home li.bit-event,
-.gk-bit-home li[class*="bit-event"],
-.gk-bit-home [class*="bit-event"][class*="item"] {
-  list-style: none !important;
-  background: rgba(0,0,0,0.35) !important;
-  border: 1px solid rgba(255,255,255,0.08) !important;
-  border-radius: 16px !important;
-  padding: 18px 24px !important;
-  margin: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 16px !important;
-  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  box-sizing: border-box !important;
-  cursor: default !important;
-}
-
-/* Hover: lift + orange glow */
-.gk-bit-home .bit-event:hover,
-.gk-bit-home .bit-event-list-item:hover,
-.gk-bit-home li.bit-event:hover,
-.gk-bit-home li[class*="bit-event"]:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 28px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,106,0,0.22) !important;
-  border-color: rgba(255,106,0,0.28) !important;
-}
-
-/* ---- Date ---- */
-.gk-bit-home .bit-date,
-.gk-bit-home .bit-event-date,
-.gk-bit-home .bit-event__date,
-.gk-bit-home .bit-event__dates,
-.gk-bit-home [class*="bit-event"][class*="date"] {
-  color: #ff6a00 !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  font-size: 0.88em !important;
-  line-height: 1.3 !important;
-  flex-shrink: 0 !important;
-  min-width: 64px !important;
-}
-.gk-bit-home .bit-date *,
-.gk-bit-home .bit-event-date *,
-.gk-bit-home .bit-event__date *,
-.gk-bit-home .bit-event__dates * {
-  color: #ff6a00 !important;
-  font-weight: 700 !important;
-}
-
-/* ---- Details (venue + city) ---- */
-.gk-bit-home .bit-details,
-.gk-bit-home .bit-event__details,
-.gk-bit-home .bit-event-details,
-.gk-bit-home [class*="bit-event"][class*="details"] {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 2px !important;
-  flex: 1 !important;
-  min-width: 0 !important;
-}
-.gk-bit-home .bit-venue,
-.gk-bit-home .bit-event__venue,
-.gk-bit-home [class*="bit-venue"],
-.gk-bit-home [class*="venue-title"],
-.gk-bit-home [class*="venue-name"],
-.gk-bit-home [class*="bit-event"][class*="name"] {
-  color: #ffffff !important;
-  font-size: 1.05em !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.01em !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-.gk-bit-home .bit-location,
-.gk-bit-home .bit-event__location,
-.gk-bit-home [class*="bit-location"],
-.gk-bit-home [class*="location-info"] {
-  color: rgba(255,255,255,0.5) !important;
-  font-size: 0.82em !important;
-  letter-spacing: 0.02em !important;
-}
-
-/* ---- Buttons wrapper ---- */
-.gk-bit-home .bit-event__buttons,
-.gk-bit-home .bit-event-buttons,
-.gk-bit-home .bit-actions,
-.gk-bit-home .bit-offers {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  flex-shrink: 0 !important;
-}
-
-/* ---- Ticket / CTA pill button ---- */
-.gk-bit-home .bit-cta-button,
-.gk-bit-home .bit-cta-button a,
-.gk-bit-home a.bit-cta-button,
-.gk-bit-home .bit-cta,
-.gk-bit-home .bit-offers a,
-.gk-bit-home .bit-button,
-.gk-bit-home a.bit-button,
-.gk-bit-home button.bit-button,
-.gk-bit-home [class*="bit-cta"],
-.gk-bit-home [class*="ticket-btn"],
-.gk-bit-home a[class*="bit-button"],
-.gk-bit-home [class*="bit-button--primary"] {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: #ff6a00 !important;
-  color: #0b0b0b !important;
-  border-radius: 999px !important;
-  padding: 12px 22px !important;
-  font-size: 0.75em !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.06em !important;
-  text-transform: uppercase !important;
-  text-decoration: none !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-  box-shadow: 0 0 0 1px rgba(255,106,0,0.35), 0 10px 26px rgba(255,106,0,0.18) !important;
-  transition: filter 140ms ease, transform 140ms ease, box-shadow 140ms ease !important;
-  cursor: pointer !important;
-  line-height: 1 !important;
-  min-width: 110px !important;
-}
-.gk-bit-home .bit-cta-button:hover,
-.gk-bit-home .bit-cta-button a:hover,
-.gk-bit-home a.bit-cta-button:hover,
-.gk-bit-home .bit-offers a:hover,
-.gk-bit-home .bit-button:hover,
-.gk-bit-home a.bit-button:hover,
-.gk-bit-home [class*="bit-cta"]:hover,
-.gk-bit-home [class*="ticket-btn"]:hover,
-.gk-bit-home a[class*="bit-button"]:hover,
-.gk-bit-home [class*="bit-button--primary"]:hover {
-  filter: brightness(1.12) !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 0 0 1px rgba(255,106,0,0.55), 0 14px 32px rgba(255,106,0,0.30) !important;
-  text-decoration: none !important;
-  color: #0b0b0b !important;
-}
-
-/* ---- Show-more button (injected by JS) ---- */
+/* Show-more button */
 .gk-bit-home .gk-bit-more-btn {
   display: inline-flex;
   align-items: center;
@@ -285,7 +88,7 @@
   border-color: #ff6a00;
 }
 
-/* ---- Fallback message ---- */
+/* Fallback + editor notice */
 .gk-bit-home .gk-bit-fallback {
   display: none;
   color: rgba(255,255,255,0.4);
@@ -293,8 +96,6 @@
   padding: 24px 0;
   text-align: center;
 }
-
-/* ---- Editor placeholder ---- */
 .gk-bit-home .gk-bit-editor-notice {
   background: rgba(255,106,0,0.08);
   border: 1px dashed rgba(255,106,0,0.35);
@@ -303,36 +104,6 @@
   font-size: 0.85em;
   padding: 20px 24px;
   text-align: center;
-}
-
-/* ---- Mobile ---- */
-@media screen and (max-width: 640px) {
-  .gk-bit-home .bit-event,
-  .gk-bit-home .bit-event-list-item,
-  .gk-bit-home li.bit-event,
-  .gk-bit-home li[class*="bit-event"] {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    padding: 16px 18px !important;
-    gap: 12px !important;
-  }
-  .gk-bit-home .bit-event__buttons,
-  .gk-bit-home .bit-event-buttons,
-  .gk-bit-home .bit-actions,
-  .gk-bit-home .bit-offers {
-    width: 100% !important;
-  }
-  .gk-bit-home .bit-cta-button,
-  .gk-bit-home .bit-cta-button a,
-  .gk-bit-home a.bit-cta-button,
-  .gk-bit-home .bit-button,
-  .gk-bit-home a.bit-button,
-  .gk-bit-home [class*="bit-cta"],
-  .gk-bit-home [class*="ticket-btn"],
-  .gk-bit-home a[class*="bit-button"] {
-    width: 100% !important;
-    min-width: unset !important;
-  }
 }
 </style>
 
@@ -365,20 +136,18 @@
 
 <script>
 (function () {
-  /* MERCHANT: change visible count in Theme Editor > this section > "Events shown on load"   */
-  /* MERCHANT: change reveal step in Theme Editor > this section > "Events revealed per click" */
   var WRAP_ID   = {{ bit_uid | json }};
   var INIT      = {{ bit_initial_visible | plus: 0 }};
   var STEP      = {{ bit_reveal_step | plus: 0 }};
   var BTN_LABEL = {{ bit_more_label | default: 'SHOW MORE DATES' | json }};
 
   var wrap = document.getElementById(WRAP_ID);
-  if (!wrap || wrap.dataset.bitInit) return;
+  if (!wrap) return;
 
   var applied     = false;
   var moreBtnWrap = null;
 
-  /* Selectors tried in priority order to find event rows */
+  /* Priority-ordered selectors to find event rows */
   var SEL = [
     '.bit-event',
     '.bit-event-list-item',
@@ -406,9 +175,12 @@
     btn.textContent = BTN_LABEL;
     btn.addEventListener('click', function () {
       var hidden = findEvents().filter(function (el) {
-        return el.style.display === 'none';
+        return el.getAttribute('data-gk-hidden') === '1';
       });
-      hidden.slice(0, STEP).forEach(function (el) { el.style.display = ''; });
+      hidden.slice(0, STEP).forEach(function (el) {
+        el.removeAttribute('data-gk-hidden');
+        el.style.removeProperty('display');
+      });
       syncBtn();
     });
     moreBtnWrap.appendChild(btn);
@@ -419,7 +191,7 @@
   function syncBtn() {
     if (!moreBtnWrap) return;
     var anyHidden = findEvents().some(function (el) {
-      return el.style.display === 'none';
+      return el.getAttribute('data-gk-hidden') === '1';
     });
     moreBtnWrap.style.display = anyHidden ? '' : 'none';
   }
@@ -430,10 +202,12 @@
     if (applied) { syncBtn(); return true; }
 
     applied = true;
-    wrap.dataset.bitInit = '1';
 
     events.forEach(function (el, i) {
-      el.style.display = i < INIT ? '' : 'none';
+      if (i >= INIT) {
+        el.setAttribute('data-gk-hidden', '1');
+        el.style.setProperty('display', 'none', 'important');
+      }
     });
 
     if (events.length > INIT) {
@@ -443,10 +217,8 @@
     return true;
   }
 
-  /* Run immediately if widget already rendered */
   if (setup()) return;
 
-  /* MutationObserver with 200ms debounce (waits for full render burst) */
   var debounce;
   var obs = new MutationObserver(function () {
     clearTimeout(debounce);
@@ -459,11 +231,11 @@
   });
   obs.observe(wrap, { childList: true, subtree: true });
 
-  /* setInterval retry every 250ms for up to 5 seconds */
+  /* Retry every 250ms for up to 10 seconds */
   var elapsed = 0;
   var retryTimer = setInterval(function () {
     elapsed += 250;
-    if (setup() || elapsed >= 5000) {
+    if (setup() || elapsed >= 10000) {
       clearInterval(retryTimer);
       obs.disconnect();
       if (!applied) {
