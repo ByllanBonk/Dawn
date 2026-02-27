@@ -363,158 +363,194 @@
 </section>
 
 {%- comment -%}
-  Load BIT script once per page (guarded by window.__gkBitLoaded).
-  Placed after the initializer anchor so BIT finds it immediately.
+  Load / re-trigger Bandsintown widget script.
+  On initial page load BIT isn't loaded yet, so we inject it.
+  On Shopify theme-editor re-render (save / setting change) the section HTML
+  is replaced but window globals survive — so we must remove the old <script>
+  and inject a fresh one to force main.min.js to re-execute and process the
+  new .bit-widget-initializer anchor that just appeared in the DOM.
 {%- endcomment -%}
 <script>
-if (!window.__gkBitLoaded) {
-  window.__gkBitLoaded = true;
-  var _s = document.createElement('script');
-  _s.charset = 'utf-8';
-  _s.src = 'https://widget.bandsintown.com/main.min.js';
-  document.head.appendChild(_s);
-}
+(function(){
+  var ATTR = 'data-gk-bit';
+  var prev = document.querySelector('script[' + ATTR + ']');
+  if (prev) prev.parentNode.removeChild(prev);
+  var s = document.createElement('script');
+  s.charset = 'utf-8';
+  s.src = 'https://widget.bandsintown.com/main.min.js';
+  s.setAttribute(ATTR, '');
+  document.head.appendChild(s);
+})();
 </script>
 
 <script>
 (function () {
   'use strict';
 
-  var WRAP_ID   = {{ bit_uid | json }};
-  var INIT      = {{ bit_initial_visible | plus: 0 }};
-  var STEP      = {{ bit_reveal_step | plus: 0 }};
-  var BTN_LABEL = {{ bit_more_label | json }};
+  var SECTION_ID = {{ section.id | json }};
+  var WRAP_ID    = {{ bit_uid | json }};
+  var INIT       = {{ bit_initial_visible | plus: 0 }};
+  var STEP       = {{ bit_reveal_step | plus: 0 }};
+  var BTN_LABEL  = {{ bit_more_label | json }};
 
-  var wrap = document.getElementById(WRAP_ID);
-  if (!wrap) return;
+  /* ── Reusable init function (called on first load + editor re-renders) ── */
+  function bootShowMore() {
+    var wrap = document.getElementById(WRAP_ID);
+    if (!wrap) return;
 
-  /* Prevent double-init if section is re-rendered by theme editor */
-  if (wrap.getAttribute('data-bit-initialized') === '1') return;
-  wrap.setAttribute('data-bit-initialized', '1');
+    /* Prevent double-init within the same render cycle */
+    if (wrap.getAttribute('data-bit-initialized') === '1') return;
+    wrap.setAttribute('data-bit-initialized', '1');
 
-  var applied     = false;
-  var moreBtnWrap = null;
+    var applied     = false;
+    var moreBtnWrap = null;
 
-  /* Priority-ordered selectors – tries each until it finds event nodes */
-  var EVENT_SELS = [
-    '.bit-event',
-    '.bit-event-list-item',
-    'li[class*="bit-event"]',
-    '[class*="bit-event"][class*="item"]',
-    '.bit-widget li',
-    '.bit-widget-container li'
-  ];
+    /* Priority-ordered selectors – tries each until it finds event nodes */
+    var EVENT_SELS = [
+      '.bit-event',
+      '.bit-event-list-item',
+      'li[class*="bit-event"]',
+      '[class*="bit-event"][class*="item"]',
+      '.bit-widget li',
+      '.bit-widget-container li'
+    ];
 
-  function findEvents() {
-    for (var i = 0; i < EVENT_SELS.length; i++) {
-      var els = wrap.querySelectorAll(EVENT_SELS[i]);
-      if (els.length) return Array.prototype.slice.call(els);
+    function findEvents() {
+      for (var i = 0; i < EVENT_SELS.length; i++) {
+        var els = wrap.querySelectorAll(EVENT_SELS[i]);
+        if (els.length) return Array.prototype.slice.call(els);
+      }
+      return [];
     }
-    return [];
-  }
 
-  function ensureMoreBtn() {
-    if (moreBtnWrap) return moreBtnWrap;
+    function ensureMoreBtn() {
+      if (moreBtnWrap) return moreBtnWrap;
 
-    moreBtnWrap = document.createElement('div');
-    moreBtnWrap.style.cssText = 'margin-top:24px;text-align:center;';
+      moreBtnWrap = document.createElement('div');
+      moreBtnWrap.style.cssText = 'margin-top:24px;text-align:center;';
 
-    var btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'gk-bit-more-btn';
-    btn.textContent = BTN_LABEL;
-    btn.addEventListener('click', function () {
-      var hidden = findEvents().filter(function (el) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'gk-bit-more-btn';
+      btn.textContent = BTN_LABEL;
+      btn.addEventListener('click', function () {
+        var hidden = findEvents().filter(function (el) {
+          return el.getAttribute('data-gk-hidden') === '1';
+        });
+        hidden.slice(0, STEP).forEach(function (el) {
+          el.removeAttribute('data-gk-hidden');
+          el.style.removeProperty('display');
+        });
+        syncBtn();
+      });
+
+      moreBtnWrap.appendChild(btn);
+
+      /* Append after the BIT container, or fall back to inside wrap */
+      var bitContainer = wrap.querySelector('.bit-widget-container') ||
+                         wrap.querySelector('.bit-widget');
+      if (bitContainer && bitContainer.parentNode === wrap) {
+        wrap.insertBefore(moreBtnWrap, bitContainer.nextSibling);
+      } else {
+        wrap.appendChild(moreBtnWrap);
+      }
+
+      return moreBtnWrap;
+    }
+
+    function syncBtn() {
+      if (!moreBtnWrap) return;
+      var anyHidden = findEvents().some(function (el) {
         return el.getAttribute('data-gk-hidden') === '1';
       });
-      hidden.slice(0, STEP).forEach(function (el) {
-        el.removeAttribute('data-gk-hidden');
-        el.style.removeProperty('display');
+      moreBtnWrap.style.display = anyHidden ? '' : 'none';
+    }
+
+    function setup() {
+      var events = findEvents();
+      if (!events.length) return false;
+      if (applied) { syncBtn(); return true; }
+
+      applied = true;
+
+      /* Hide events beyond the initial visible count */
+      events.forEach(function (el, i) {
+        if (i >= INIT) {
+          el.setAttribute('data-gk-hidden', '1');
+          el.style.setProperty('display', 'none', 'important');
+        }
       });
-      syncBtn();
-    });
 
-    moreBtnWrap.appendChild(btn);
-
-    /* Append after the BIT container, or fall back to inside wrap */
-    var bitContainer = wrap.querySelector('.bit-widget-container') ||
-                       wrap.querySelector('.bit-widget');
-    if (bitContainer && bitContainer.parentNode === wrap) {
-      wrap.insertBefore(moreBtnWrap, bitContainer.nextSibling);
-    } else {
-      wrap.appendChild(moreBtnWrap);
-    }
-
-    return moreBtnWrap;
-  }
-
-  function syncBtn() {
-    if (!moreBtnWrap) return;
-    var anyHidden = findEvents().some(function (el) {
-      return el.getAttribute('data-gk-hidden') === '1';
-    });
-    moreBtnWrap.style.display = anyHidden ? '' : 'none';
-  }
-
-  function setup() {
-    var events = findEvents();
-    if (!events.length) return false;
-    if (applied) { syncBtn(); return true; }
-
-    applied = true;
-
-    /* Hide events beyond the initial visible count */
-    events.forEach(function (el, i) {
-      if (i >= INIT) {
-        el.setAttribute('data-gk-hidden', '1');
-        el.style.setProperty('display', 'none', 'important');
+      if (events.length > INIT) {
+        ensureMoreBtn();
+        syncBtn();
       }
-    });
 
-    if (events.length > INIT) {
-      ensureMoreBtn();
-      syncBtn();
+      /* BIT succeeded – suppress the fallback text */
+      var fb = wrap.querySelector('.gk-bit-fallback');
+      if (fb) fb.style.display = 'none';
+
+      return true;
     }
 
-    /* BIT succeeded – suppress the fallback text */
-    var fb = wrap.querySelector('.gk-bit-fallback');
-    if (fb) fb.style.display = 'none';
+    /* Try immediately (BIT may have already rendered) */
+    if (setup()) return;
 
-    return true;
-  }
+    /* Watch for BIT's async DOM injection */
+    var debounceTimer;
+    var obs = new MutationObserver(function () {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(function () {
+        if (setup()) {
+          obs.disconnect();
+          clearInterval(retryTimer);
+        }
+      }, 180);
+    });
+    obs.observe(wrap, { childList: true, subtree: true });
 
-  /* Try immediately (BIT may have already rendered) */
-  if (setup()) return;
-
-  /* Watch for BIT's async DOM injection */
-  var debounceTimer;
-  var obs = new MutationObserver(function () {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(function () {
+    /* Belt-and-suspenders: poll every 300 ms for up to 15 s */
+    var elapsed = 0;
+    var retryTimer = setInterval(function () {
+      elapsed += 300;
       if (setup()) {
         obs.disconnect();
         clearInterval(retryTimer);
+      } else if (elapsed >= 15000) {
+        obs.disconnect();
+        clearInterval(retryTimer);
+        if (!applied) {
+          var fb = wrap.querySelector('.gk-bit-fallback');
+          if (fb) fb.style.display = '';
+        }
       }
-    }, 180);
-  });
-  obs.observe(wrap, { childList: true, subtree: true });
+    }, 300);
+  }
 
-  /* Belt-and-suspenders: poll every 300 ms for up to 12 s */
-  var elapsed = 0;
-  var retryTimer = setInterval(function () {
-    elapsed += 300;
-    if (setup()) {
-      obs.disconnect();
-      clearInterval(retryTimer);
-    } else if (elapsed >= 12000) {
-      obs.disconnect();
-      clearInterval(retryTimer);
-      if (!applied) {
-        var fb = wrap.querySelector('.gk-bit-fallback');
-        if (fb) fb.style.display = '';
-      }
-    }
-  }, 300);
+  /* ── Run on initial page load ── */
+  bootShowMore();
+
+  /* ── Shopify theme editor: re-init on section reload after save ── */
+  var listenerKey = '__gkBitEvt_' + SECTION_ID;
+  if (window.Shopify && window.Shopify.designMode && !window[listenerKey]) {
+    window[listenerKey] = true;
+    document.addEventListener('shopify:section:load', function (evt) {
+      if (!evt.detail || evt.detail.sectionId !== SECTION_ID) return;
+
+      /* Re-trigger BIT for the freshly-rendered anchor */
+      var ATTR = 'data-gk-bit';
+      var prev = document.querySelector('script[' + ATTR + ']');
+      if (prev) prev.parentNode.removeChild(prev);
+      var s = document.createElement('script');
+      s.charset = 'utf-8';
+      s.src = 'https://widget.bandsintown.com/main.min.js';
+      s.setAttribute(ATTR, '');
+      document.head.appendChild(s);
+
+      /* Re-run show-more init (BIT needs a moment to render) */
+      setTimeout(bootShowMore, 600);
+    });
+  }
 
 }());
 </script>
