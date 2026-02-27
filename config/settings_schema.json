@@ -1451,5 +1451,16 @@
         "default": "scheme-1"
       }
     ]
+  },
+  {
+    "name": "GK Tour Dates",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "gk_tour_dates_data",
+        "label": "Tour dates (one per line)",
+        "info": "Format: YYYY-MM-DD | Descriptor (optional) | Venue | City | State | Ticket URL (optional) | sold_out true/false (optional). Example: 2026-04-22 | support for Paul Gilbert | Barnato | Omaha | NE | https://tickets.com | false"
+      }
+    ]
   }
 ]

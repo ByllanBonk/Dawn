@@ -319,6 +319,21 @@
       {{ content_for_layout }}
     </main>
 
+    {%- if template.name == 'index' or template.suffix == 'dates' -%}
+      <div id="gk-tour-dates-mount" style="display:none">{%- section 'gk-tour-dates' -%}</div>
+      <script>
+      (function() {
+        var mount = document.getElementById('gk-tour-dates-mount');
+        var slot  = document.getElementById('gk-tour-dates-slot');
+        if (!mount || !slot) return;
+        var el = mount.firstElementChild;
+        if (!el) return;
+        slot.parentNode.insertBefore(el, slot);
+        slot.remove();
+      })();
+      </script>
+    {%- endif -%}
+
     {% sections 'footer-group' %}
 
     <ul hidden>

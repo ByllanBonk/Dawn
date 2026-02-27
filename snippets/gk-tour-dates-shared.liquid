@@ -18,6 +18,15 @@
     render 'gk-tour-dates-shared', mode: 'count'
       → outputs only the integer count of upcoming dates
 
+  Data source (priority order):
+    1. Theme Settings → settings.gk_tour_dates_data (textarea, one date per line)
+       Format per line:
+         YYYY-MM-DD | Descriptor (optional) | Venue | City | State | Ticket URL (optional) | sold_out (optional)
+       Example:
+         2026-04-22 | support for Paul Gilbert | Barnato | Omaha | NE | https://tickets.com | false
+    2. Fallback: _gk_dates_raw capture block below (used when settings textarea is blank)
+       Format: Date || Venue || City, State || Ticket URL || sold_out
+
   Safe date filter:
     show_ts == 0 → Liquid can't parse the date string → keep it visible
     show_ts  > 0 → hide the row if show is before today midnight UTC
@@ -46,14 +55,12 @@
 -%}
 
 {%- comment -%}
-  ╔══════════════════════════════════════════════════════════════════╗
-  ║  DATE LIST — edit here to update BOTH sections at once          ║
-  ║  Format per line:                                               ║
-  ║    Date || Venue || City, State || Ticket URL || sold_out       ║
-  ║  • Leave Ticket URL blank → shows "TBA"                         ║
-  ║  • Set sold_out = true   → shows "SOLD OUT"                     ║
-  ║  • Use parseable date format: "Month DD, YYYY"                  ║
-  ╚══════════════════════════════════════════════════════════════════╝
+  ── DATA SOURCE ───────────────────────────────────────────────────
+  Priority 1 — Theme Settings textarea (settings.gk_tour_dates_data)
+    Format per line: YYYY-MM-DD | Descriptor | Venue | City | State | Ticket URL | sold_out
+    (Descriptor and fields after State are optional; trailing pipes may be omitted)
+  Priority 2 — Hardcoded fallback capture block below
+    Format per line: Date || Venue || City, State || Ticket URL || sold_out
 {%- endcomment -%}
 {%- capture _gk_dates_raw -%}
 April 22, 2026 || Barnato || Omaha, NE || https://www.bandsintown.com/a/28503-greg-koch || false
@@ -78,21 +85,55 @@ May 28, 2026 || Warehouse Live Midtown || Houston, TX || https://warehouselivemi
 May 30, 2026 || Granada Theater || Dallas, TX || https://www.prekindle.com/event/32661-paul-gilbert-with-special-guest-greg-koch-dallas || false
 {%- endcapture -%}
 
-{%- assign date_rows = _gk_dates_raw | newline_to_br | split: '<br />' -%}
+{%- comment -%}
+  Select active data source and whether to use the new pipe format.
+{%- endcomment -%}
+{%- if settings.gk_tour_dates_data != blank -%}
+  {%- assign _active_data   = settings.gk_tour_dates_data -%}
+  {%- assign _settings_fmt  = true -%}
+{%- else -%}
+  {%- assign _active_data   = _gk_dates_raw -%}
+  {%- assign _settings_fmt  = false -%}
+{%- endif -%}
 
+{%- assign _date_lines    = _active_data | newline_to_br | split: '<br />' -%}
 {%- assign render_index   = 0 -%}
 {%- assign upcoming_count = 0 -%}
 
-{%- for row in date_rows -%}
-  {%- assign trimmed = row | strip -%}
-  {%- if trimmed != blank -%}
+{%- for _line in _date_lines -%}
+  {%- assign _trimmed = _line | strip -%}
+  {%- if _trimmed != blank -%}
 
-    {%- assign parts    = trimmed | split: ' || ' -%}
-    {%- assign raw_date = parts[0] | default: '' | strip -%}
-    {%- assign venue    = parts[1] | default: '' | strip -%}
-    {%- assign city     = parts[2] | default: '' | strip -%}
-    {%- assign url      = parts[3] | default: '' | strip -%}
-    {%- assign sold     = parts[4] | default: 'false' | strip -%}
+    {%- if _settings_fmt -%}
+      {%- comment -%}── Settings format: YYYY-MM-DD | Descriptor | Venue | City | State | URL | sold_out ──{%- endcomment -%}
+      {%- assign _p        = _trimmed | split: ' | ' -%}
+      {%- assign raw_date  = _p[0] | default: '' | strip -%}
+      {%- assign descriptor = _p[1] | default: '' | strip -%}
+      {%- assign venue     = _p[2] | default: '' | strip -%}
+      {%- assign _city     = _p[3] | default: '' | strip -%}
+      {%- assign _state    = _p[4] | default: '' | strip -%}
+      {%- if _city != blank and _state != blank -%}
+        {%- assign city = _city | append: ', ' | append: _state -%}
+      {%- elsif _city != blank -%}
+        {%- assign city = _city -%}
+      {%- else -%}
+        {%- assign city = _state -%}
+      {%- endif -%}
+      {%- assign url       = _p[5] | default: '' | strip -%}
+      {%- assign sold      = _p[6] | default: 'false' | strip -%}
+      {%- assign display_date = raw_date | date: '%B %-d, %Y' -%}
+      {%- if display_date == blank -%}{%- assign display_date = raw_date -%}{%- endif -%}
+    {%- else -%}
+      {%- comment -%}── Fallback format: Date || Venue || City, State || URL || sold_out ──{%- endcomment -%}
+      {%- assign _p        = _trimmed | split: ' || ' -%}
+      {%- assign raw_date  = _p[0] | default: '' | strip -%}
+      {%- assign venue     = _p[1] | default: '' | strip -%}
+      {%- assign city      = _p[2] | default: '' | strip -%}
+      {%- assign url       = _p[3] | default: '' | strip -%}
+      {%- assign sold      = _p[4] | default: 'false' | strip -%}
+      {%- assign descriptor = '' -%}
+      {%- assign display_date = raw_date -%}
+    {%- endif -%}
 
     {%- liquid
       assign show_ts     = raw_date | date: '%s' | plus: 0
@@ -122,11 +163,14 @@ May 30, 2026 || Granada Theater || Dallas, TX || https://www.prekindle.com/event
           data-date-row
           data-index="{{ render_index }}"
         >
-          <div class="{{ row_prefix }}__date">{{ raw_date }}</div>
+          <div class="{{ row_prefix }}__date">{{ display_date }}</div>
 
           <div class="{{ row_prefix }}__details">
             {%- if venue != blank -%}
               <div class="{{ row_prefix }}__venue">{{ venue }}</div>
+            {%- endif -%}
+            {%- if descriptor != blank -%}
+              <div class="{{ row_prefix }}__descriptor">{{ descriptor }}</div>
             {%- endif -%}
             {%- if city != blank -%}
               <div class="{{ row_prefix }}__city">{{ city }}</div>
@@ -158,7 +202,6 @@ May 30, 2026 || Granada Theater || Dallas, TX || https://www.prekindle.com/event
 
         {%- assign render_index = render_index | plus: 1 -%}
       {%- endif -%}
-
     {%- endif -%}
 
   {%- endif -%}
