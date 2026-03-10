@@ -16,9 +16,59 @@
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "gk_press_media_4FUTwT": {
+      "type": "gk-press-media",
+      "blocks": {
+        "article_card_BJTgTw": {
+          "type": "article_card",
+          "settings": {
+            "publication": "Relix Magazine",
+            "title": "All Blues: Greg Koch Connects with Devon Allman and Revisits His Record Collection",
+            "description": "A deep dive into Greg Koch's influences, record collection, and connection with Devon Allman.",
+            "url": "https://relix.com/articles/detail/all-blues-greg-koch-connects-with-devon-allman-and-revisits-his-record-collection/"
+          }
+        },
+        "article_card_zhyEQM": {
+          "type": "article_card",
+          "settings": {
+            "publication": "Vintage Guitar Magazine",
+            "title": "Greg Koch Feature Interview",
+            "description": "Vintage Guitar Magazine explores Greg Koch's career, tone philosophy, and unique playing style.",
+            "url": "https://www.vintageguitar.com/88432/greg-koch-3/"
+          }
+        },
+        "article_card_dbxeKw": {
+          "type": "article_card",
+          "settings": {
+            "publication": "Palm Beach Arts Paper",
+            "title": "The Best Guitarist Working Today? That Might Be Greg Koch",
+            "description": "A feature exploring Greg Koch's reputation as one of the most dynamic guitarists performing today.",
+            "url": "https://palmbeachartspaper.com/the-best-guitarist-working-today-that-might-be-greg-koch/"
+          }
+        }
+      },
+      "block_order": [
+        "article_card_BJTgTw",
+        "article_card_zhyEQM",
+        "article_card_dbxeKw"
+      ],
+      "name": "GK Press Media",
+      "settings": {
+        "video_eyebrow": "Featured Interview",
+        "video_heading": "Greg Koch Interview with Rick Beato",
+        "video_description": "Legendary guitar educator and YouTube creator Rick Beato sits down with Greg Koch for a wide-ranging conversation about tone, technique, and the pursuit of musical truth.",
+        "video_url": "https://www.youtube.com/watch?v=oLOg9ZLiHtg",
+        "articles_eyebrow": "In the Press",
+        "articles_heading": "Featured Coverage",
+        "section_gap": 64,
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "gk_press_media_4FUTwT"
   ]
 }
