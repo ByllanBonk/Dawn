@@ -1,0 +1,417 @@
+{%- style -%}
+  .gk-press-media {
+    background-color: #0D0D0D;
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  .gk-press-media__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Shared section header ── */
+  .gk-press-media__section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.72rem;
+    color: #E8690A;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .gk-press-media__section-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 14px 0;
+    line-height: 1;
+  }
+
+  .gk-press-media__section-desc {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 1rem;
+    line-height: 1.72;
+    max-width: 700px;
+    margin: 0;
+  }
+
+  /* ── Video block ── */
+  .gk-press-media__video-wrap {
+    margin-bottom: {{ section.settings.section_gap }}px;
+  }
+
+  .gk-press-media__video-header {
+    margin-bottom: 28px;
+  }
+
+  .gk-press-media__video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background-color: #111111;
+    border: 1px solid #272727;
+    overflow: hidden;
+  }
+
+  .gk-press-media__video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  /* ── Divider between video and articles ── */
+  .gk-press-media__section-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #272727, transparent);
+    margin-bottom: {{ section.settings.section_gap }}px;
+  }
+
+  /* ── Articles header ── */
+  .gk-press-media__articles-header {
+    margin-bottom: 32px;
+  }
+
+  /* ── Article grid ── */
+  .gk-press-media__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .gk-press-media__card {
+    background-color: #141414;
+    border: 1px solid #272727;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+    position: relative;
+  }
+
+  .gk-press-media__card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(232, 105, 10, 0.03) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 150ms ease;
+    pointer-events: none;
+  }
+
+  .gk-press-media__card:hover {
+    border-color: rgba(232, 105, 10, 0.5);
+    box-shadow: 0 8px 32px rgba(232, 105, 10, 0.10), 0 2px 8px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .gk-press-media__card:hover::before {
+    opacity: 1;
+  }
+
+  .gk-press-media__card-pub {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.64rem;
+    color: #E8690A;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .gk-press-media__card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    color: #E8E8E8;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    margin: 0 0 14px 0;
+  }
+
+  .gk-press-media__card-desc {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 0.9rem;
+    line-height: 1.68;
+    margin: 0;
+    flex: 1;
+  }
+
+  .gk-press-media__card-cta {
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: #E8690A;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms ease;
+    display: inline-block;
+    margin-top: 24px;
+  }
+
+  .gk-press-media__card:hover .gk-press-media__card-cta {
+    border-bottom-color: #E8690A;
+  }
+
+  @media screen and (max-width: 989px) {
+    .gk-press-media__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .gk-press-media__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .gk-press-media__card {
+      padding: 24px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign video_url = section.settings.video_url
+  if video_url contains 'youtu.be/'
+    assign video_id = video_url | split: 'youtu.be/' | last | split: '?' | first
+  elsif video_url contains 'v='
+    assign video_id = video_url | split: 'v=' | last | split: '&' | first
+  else
+    assign video_id = video_url
+  endif
+-%}
+
+<section class="gk-press-media" id="section-{{ section.id }}">
+  <div class="gk-press-media__inner">
+
+    {%- if video_id != blank -%}
+      <div class="gk-press-media__video-wrap">
+        <div class="gk-press-media__video-header">
+          {%- if section.settings.video_eyebrow != blank -%}
+            <span class="gk-press-media__section-eyebrow">{{ section.settings.video_eyebrow }}</span>
+          {%- endif -%}
+          {%- if section.settings.video_heading != blank -%}
+            <h2 class="gk-press-media__section-heading">{{ section.settings.video_heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.video_description != blank -%}
+            <p class="gk-press-media__section-desc">{{ section.settings.video_description }}</p>
+          {%- endif -%}
+        </div>
+        <div class="gk-press-media__video-container">
+          <iframe
+            src="https://www.youtube.com/embed/{{ video_id }}"
+            title="{{ section.settings.video_heading | escape }}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      {%- if video_id != blank -%}
+        <div class="gk-press-media__section-divider"></div>
+      {%- endif -%}
+
+      <div class="gk-press-media__articles-header">
+        {%- if section.settings.articles_eyebrow != blank -%}
+          <span class="gk-press-media__section-eyebrow">{{ section.settings.articles_eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.articles_heading != blank -%}
+          <h2 class="gk-press-media__section-heading">{{ section.settings.articles_heading }}</h2>
+        {%- endif -%}
+      </div>
+
+      <div class="gk-press-media__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'article_card' -%}
+            <a
+              href="{{ block.settings.url }}"
+              class="gk-press-media__card"
+              target="_blank"
+              rel="noopener noreferrer"
+              {{ block.shopify_attributes }}>
+              {%- if block.settings.publication != blank -%}
+                <span class="gk-press-media__card-pub">{{ block.settings.publication }}</span>
+              {%- endif -%}
+              {%- if block.settings.title != blank -%}
+                <h3 class="gk-press-media__card-title">{{ block.settings.title }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <p class="gk-press-media__card-desc">{{ block.settings.description }}</p>
+              {%- endif -%}
+              <span class="gk-press-media__card-cta">Read Article →</span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GK Press Media",
+  "tag": "section",
+  "class": "gk-press-media-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Featured Video"
+    },
+    {
+      "type": "text",
+      "id": "video_eyebrow",
+      "label": "Video Eyebrow",
+      "default": "Featured Interview"
+    },
+    {
+      "type": "text",
+      "id": "video_heading",
+      "label": "Video Heading",
+      "default": "Greg Koch Interview with Rick Beato"
+    },
+    {
+      "type": "textarea",
+      "id": "video_description",
+      "label": "Video Description",
+      "default": "Legendary guitar educator and YouTube creator Rick Beato sits down with Greg Koch for a wide-ranging conversation about tone, technique, and the pursuit of musical truth."
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "YouTube Video URL",
+      "default": "https://www.youtube.com/watch?v=oLOg9ZLiHtg",
+      "info": "Paste the full YouTube URL (e.g. https://www.youtube.com/watch?v=...). Leave blank to hide the video block."
+    },
+    {
+      "type": "header",
+      "content": "Article Grid"
+    },
+    {
+      "type": "text",
+      "id": "articles_eyebrow",
+      "label": "Articles Eyebrow",
+      "default": "In the Press"
+    },
+    {
+      "type": "text",
+      "id": "articles_heading",
+      "label": "Articles Heading",
+      "default": "Featured Coverage"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_gap",
+      "label": "Gap Between Video & Articles",
+      "min": 32,
+      "max": 120,
+      "step": 8,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "default": 64,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article_card",
+      "name": "Article Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "publication",
+          "label": "Publication Name",
+          "default": "Publication Name"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Article Title",
+          "default": "Article Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Short Description",
+          "default": "A brief description of the article and what makes it worth reading."
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Article URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Press Media",
+      "blocks": [
+        {
+          "type": "article_card",
+          "settings": {
+            "publication": "Relix Magazine",
+            "title": "All Blues: Greg Koch Connects with Devon Allman and Revisits His Record Collection",
+            "description": "A deep dive into Greg Koch's influences, record collection, and connection with Devon Allman.",
+            "url": "https://relix.com/articles/detail/all-blues-greg-koch-connects-with-devon-allman-and-revisits-his-record-collection/"
+          }
+        },
+        {
+          "type": "article_card",
+          "settings": {
+            "publication": "Vintage Guitar Magazine",
+            "title": "Greg Koch Feature Interview",
+            "description": "Vintage Guitar Magazine explores Greg Koch's career, tone philosophy, and unique playing style.",
+            "url": "https://www.vintageguitar.com/88432/greg-koch-3/"
+          }
+        },
+        {
+          "type": "article_card",
+          "settings": {
+            "publication": "Palm Beach Arts Paper",
+            "title": "The Best Guitarist Working Today? That Might Be Greg Koch",
+            "description": "A feature exploring Greg Koch's reputation as one of the most dynamic guitarists performing today.",
+            "url": "https://palmbeachartspaper.com/the-best-guitarist-working-today-that-might-be-greg-koch/"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
