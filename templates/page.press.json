@@ -17,6 +17,10 @@
         "padding_bottom": 28
       }
     },
+    "gk_press_hero": {
+      "type": "gk-press-hero",
+      "settings": {}
+    },
     "gk_press_media_4FUTwT": {
       "type": "gk-press-media",
       "blocks": {
@@ -65,10 +69,16 @@
         "padding_top": 64,
         "padding_bottom": 64
       }
+    },
+    "gk_press_quotes": {
+      "type": "gk-press-quotes",
+      "settings": {}
     }
   },
   "order": [
     "main",
-    "gk_press_media_4FUTwT"
+    "gk_press_hero",
+    "gk_press_media_4FUTwT",
+    "gk_press_quotes"
   ]
 }
