@@ -17,6 +17,27 @@
         "padding_bottom": 28
       }
     },
+    "gk_press_hero_QATeQj": {
+      "type": "gk-press-hero",
+      "name": "GK Press Hero",
+      "settings": {
+        "eyebrow": "In the Press",
+        "heading": "Press & Media",
+        "subheading": "Greg Koch has been featured in leading guitar publications, interviews, and music media outlets around the world.",
+        "intro_text": "",
+        "press_kit_url": "",
+        "press_kit_label": "Download Press Kit",
+        "show_featured_in": true,
+        "pub_1": "Relix Magazine",
+        "pub_2": "Vintage Guitar Magazine",
+        "pub_3": "Guitar Player",
+        "pub_4": "Premier Guitar",
+        "pub_5": "Guitar World",
+        "pub_6": "Palm Beach Arts Paper",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
     "gk_press_media_4FUTwT": {
       "type": "gk-press-media",
       "blocks": {
@@ -66,31 +87,56 @@
         "padding_bottom": 64
       }
     },
-    "gk_press_hero_QATeQj": {
-      "type": "gk-press-hero",
-      "name": "GK Press Hero",
+    "gk_press_quotes_nHhdmE": {
+      "type": "gk-press-quotes",
+      "blocks": {
+        "quote_block_AgmtfQ": {
+          "type": "quote_block",
+          "settings": {
+            "quote": "The best guitarist working today.",
+            "attribution": "Palm Beach Arts Paper",
+            "source": "",
+            "emphasis": true
+          }
+        },
+        "quote_block_g7FGhy": {
+          "type": "quote_block",
+          "settings": {
+            "quote": "A master of tone, groove, and musical personality.",
+            "attribution": "Vintage Guitar Magazine",
+            "source": "",
+            "emphasis": false
+          }
+        },
+        "quote_block_gF6PVg": {
+          "type": "quote_block",
+          "settings": {
+            "quote": "I believe Greg Koch is pound for pound the\nbest guitar player in the world today. His, tone,\nfeel and style are unrivaled in today’s guitar\nplaying community. He is scary good.",
+            "attribution": "Joe Bonamassa",
+            "source": "",
+            "emphasis": false
+          }
+        }
+      },
+      "block_order": [
+        "quote_block_AgmtfQ",
+        "quote_block_g7FGhy",
+        "quote_block_gF6PVg"
+      ],
+      "name": "GK Press Quotes",
       "settings": {
-        "eyebrow": "In the Press",
-        "heading": "Press & Media",
-        "subheading": "Greg Koch has been featured in leading guitar publications, interviews, and music media outlets around the world.",
-        "intro_text": "",
-        "press_kit_url": "",
-        "press_kit_label": "Download Press Kit",
-        "show_featured_in": true,
-        "pub_1": "Relix Magazine",
-        "pub_2": "Vintage Guitar Magazine",
-        "pub_3": "Guitar Player",
-        "pub_4": "Premier Guitar",
-        "pub_5": "Guitar World",
-        "pub_6": "Palm Beach Arts Paper",
-        "padding_top": 96,
-        "padding_bottom": 96
+        "show_header": true,
+        "eyebrow": "What They're Saying",
+        "heading": "Press Praise",
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     }
   },
   "order": [
     "main",
+    "gk_press_hero_QATeQj",
     "gk_press_media_4FUTwT",
-    "gk_press_hero_QATeQj"
+    "gk_press_quotes_nHhdmE"
   ]
 }
