@@ -106,6 +106,41 @@
     margin: 0 auto 40px;
   }
 
+  /* ── Press Kit Button ── */
+  .gk-press-hero__cta {
+    margin: 0 auto 8px;
+  }
+
+  .gk-press-hero__kit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #E8690A;
+    border: 1px solid rgba(232, 105, 10, 0.55);
+    padding: 14px 28px;
+    text-decoration: none;
+    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .gk-press-hero__kit-btn:hover {
+    background-color: #E8690A;
+    color: #0D0D0D;
+    border-color: #E8690A;
+    box-shadow: 0 0 24px rgba(232, 105, 10, 0.25);
+  }
+
+  .gk-press-hero__kit-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+
   /* ── Featured In ── */
   .gk-press-hero__featured-in {
     margin-top: 52px;
@@ -198,6 +233,19 @@
         <p class="gk-press-hero__intro">{{ section.settings.intro_text }}</p>
       {%- endif -%}
 
+      {%- if section.settings.press_kit_url != blank -%}
+        <div class="gk-press-hero__cta">
+          <a
+            href="{{ section.settings.press_kit_url }}"
+            class="gk-press-hero__kit-btn"
+            {% unless section.settings.press_kit_url contains 'files.' or section.settings.press_kit_url contains '.pdf' %}target="_blank" rel="noopener noreferrer"{% endunless %}
+            download>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13.5l-4-4h2.5V3h3v6.5H14l-4 4zm-6 3.5h12v-1.5H4V17z"/></svg>
+            {{ section.settings.press_kit_label | default: 'Download Press Kit' }}
+          </a>
+        </div>
+      {%- endif -%}
+
       {%- if section.settings.show_featured_in -%}
         {%- assign has_pubs = false -%}
         {%- if section.settings.pub_1 != blank or section.settings.pub_2 != blank or section.settings.pub_3 != blank or section.settings.pub_4 != blank or section.settings.pub_5 != blank or section.settings.pub_6 != blank -%}
@@ -264,6 +312,22 @@
       "id": "intro_text",
       "label": "Intro Paragraph (optional)",
       "info": "Optional second line of supporting copy beneath the subheading."
+    },
+    {
+      "type": "header",
+      "content": "Press Kit Download"
+    },
+    {
+      "type": "url",
+      "id": "press_kit_url",
+      "label": "Press Kit File URL",
+      "info": "Upload your press kit PDF to Files in Shopify admin, then paste the URL here. Leave blank to hide the button."
+    },
+    {
+      "type": "text",
+      "id": "press_kit_label",
+      "label": "Button Label",
+      "default": "Download Press Kit"
     },
     {
       "type": "header",
