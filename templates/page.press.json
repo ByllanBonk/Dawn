@@ -17,10 +17,6 @@
         "padding_bottom": 28
       }
     },
-    "gk_press_hero": {
-      "type": "gk-press-hero",
-      "settings": {}
-    },
     "gk_press_media_4FUTwT": {
       "type": "gk-press-media",
       "blocks": {
@@ -70,15 +66,31 @@
         "padding_bottom": 64
       }
     },
-    "gk_press_quotes": {
-      "type": "gk-press-quotes",
-      "settings": {}
+    "gk_press_hero_QATeQj": {
+      "type": "gk-press-hero",
+      "name": "GK Press Hero",
+      "settings": {
+        "eyebrow": "In the Press",
+        "heading": "Press & Media",
+        "subheading": "Greg Koch has been featured in leading guitar publications, interviews, and music media outlets around the world.",
+        "intro_text": "",
+        "press_kit_url": "",
+        "press_kit_label": "Download Press Kit",
+        "show_featured_in": true,
+        "pub_1": "Relix Magazine",
+        "pub_2": "Vintage Guitar Magazine",
+        "pub_3": "Guitar Player",
+        "pub_4": "Premier Guitar",
+        "pub_5": "Guitar World",
+        "pub_6": "Palm Beach Arts Paper",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
     }
   },
   "order": [
     "main",
-    "gk_press_hero",
     "gk_press_media_4FUTwT",
-    "gk_press_quotes"
+    "gk_press_hero_QATeQj"
   ]
 }
