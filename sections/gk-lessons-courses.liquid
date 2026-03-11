@@ -1,0 +1,325 @@
+{%- style -%}
+  .gk-lessons-courses {
+    background-color: #0D0D0D;
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  .gk-lessons-courses__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gk-lessons-courses__header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .gk-lessons-courses__heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0 0 14px 0;
+    line-height: 1;
+  }
+
+  .gk-lessons-courses__subheading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    color: #666666;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .gk-lessons-courses__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .gk-lessons-courses__card {
+    background-color: rgba(20, 20, 20, 0.85);
+    border: 1px solid #272727;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    padding: 32px 28px;
+    transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+    position: relative;
+  }
+
+  .gk-lessons-courses__card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(232, 105, 10, 0.55);
+    box-shadow: 0 8px 32px rgba(232, 105, 10, 0.1);
+  }
+
+  .gk-lessons-courses__card-label {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.7rem;
+    color: #E8690A;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .gk-lessons-courses__card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.65rem;
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 14px 0;
+    line-height: 1.1;
+  }
+
+  .gk-lessons-courses__card-desc {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin: 0 0 28px 0;
+    flex: 1;
+  }
+
+  .gk-lessons-courses__card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #E8690A;
+    border: 1px solid rgba(232, 105, 10, 0.5);
+    padding: 12px 22px;
+    text-decoration: none;
+    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+    align-self: flex-start;
+  }
+
+  .gk-lessons-courses__card-btn:hover {
+    background-color: #E8690A;
+    color: #0D0D0D;
+    border-color: #E8690A;
+    box-shadow: 0 0 20px rgba(232, 105, 10, 0.2);
+  }
+
+  @media screen and (max-width: 989px) {
+    .gk-lessons-courses__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .gk-lessons-courses__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .gk-lessons-courses__card {
+      padding: 26px 22px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="gk-lessons-courses" id="section-{{ section.id }}">
+  <div class="gk-lessons-courses__inner">
+
+    <div class="gk-lessons-courses__header">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="gk-lessons-courses__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="gk-lessons-courses__subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="gk-lessons-courses__grid">
+        {%- for block in section.blocks -%}
+          <div class="gk-lessons-courses__card" {{ block.shopify_attributes }}>
+            <span class="gk-lessons-courses__card-label">TrueFire</span>
+            {%- if block.settings.title != blank -%}
+              <h3 class="gk-lessons-courses__card-title">{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.description != blank -%}
+              <p class="gk-lessons-courses__card-desc">{{ block.settings.description }}</p>
+            {%- endif -%}
+            {%- if block.settings.url != blank -%}
+              <a
+                href="{{ block.settings.url }}"
+                class="gk-lessons-courses__card-btn"
+                target="_blank"
+                rel="noopener noreferrer">
+                {{ block.settings.button_label | default: 'View Course →' }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GK Lessons Courses",
+  "tag": "section",
+  "class": "gk-lessons-courses-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "TrueFire Courses"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "Interactive video masterclasses with Greg Koch."
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "default": 72,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "default": 72,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "course",
+      "name": "Course Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Course Title",
+          "default": "Course Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Course Description",
+          "default": "Short description of this course."
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Course URL"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "View Course \u2192"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Lessons Courses",
+      "blocks": [
+        {
+          "type": "course",
+          "settings": {
+            "title": "Gristleman Guitar",
+            "description": "A full School of Gristle masterclass covering hybrid picking, vibrato, bends, comping, double-stops, slide, solo construction, and more.",
+            "url": "https://www.gregkoch.com/gristleman-guitar.html",
+            "button_label": "View Course \u2192"
+          }
+        },
+        {
+          "type": "course",
+          "settings": {
+            "title": "Hybrid Picking from the Gristle Shop",
+            "description": "A focused TrueFire course on hybrid picking rhythm patterns, chicken pickin\u2019, Travis picking, banjo rolls, double stops, and harp harmonics.",
+            "url": "https://www.gregkoch.com/hybrid-picking-from-the-gristle-shop.html",
+            "button_label": "View Course \u2192"
+          }
+        },
+        {
+          "type": "course",
+          "settings": {
+            "title": "30 Gristleman Guitar Licks",
+            "description": "Thirty signature Greg Koch-style licks and phrases for players wanting more vocabulary and phrasing ideas.",
+            "url": "https://www.gregkoch.com/30-gristleman-guitar-licks.html",
+            "button_label": "View Course \u2192"
+          }
+        },
+        {
+          "type": "course",
+          "settings": {
+            "title": "Rhythm Chops from the Gristle Shop",
+            "description": "A rhythm course packed with funky sixths, triple stops, pentatonic triads, stacked fourths, shuffles, and chordal gristle.",
+            "url": "https://www.gregkoch.com/rhythm-chops-from-the-gristle-shop.html",
+            "button_label": "View Course \u2192"
+          }
+        },
+        {
+          "type": "course",
+          "settings": {
+            "title": "My Guitar Heroes",
+            "description": "Greg breaks down approaches inspired by some of his guitar heroes and shows how those influences shape his playing.",
+            "url": "https://www.gregkoch.com/my-guitar-heros.html",
+            "button_label": "View Course \u2192"
+          }
+        },
+        {
+          "type": "course",
+          "settings": {
+            "title": "Exotic Blues from the Gristle Shop",
+            "description": "A blues-focused course exploring Greg\u2019s approach to exotic phrasing and modern blues vocabulary.",
+            "url": "https://www.gregkoch.com/exotic-blues-from-the-gristle-shop.html",
+            "button_label": "View Course \u2192"
+          }
+        },
+        {
+          "type": "course",
+          "settings": {
+            "title": "Solo Gristleman Guitar",
+            "description": "A course on chord inversions, solo arrangements, and turning harmonic ideas into standalone guitar performances.",
+            "url": "https://www.gregkoch.com/solo-gristleman-guitar.html",
+            "button_label": "View Course \u2192"
+          }
+        },
+        {
+          "type": "course",
+          "settings": {
+            "title": "In The Jam with The Koch Marshall Trio",
+            "description": "Jump into a jam experience with Greg Koch, Dylan Koch, and Toby Lee Marshall.",
+            "url": "https://www.gregkoch.com/in-the-jam-with-the-koch-marshall-trio.html",
+            "button_label": "View Course \u2192"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

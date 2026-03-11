@@ -1,0 +1,417 @@
+{%- style -%}
+  .gk-lessons-resources {
+    background-color: #0D0D0D;
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    border-top: 1px solid #191919;
+  }
+
+  .gk-lessons-resources__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gk-lessons-resources__header {
+    text-align: center;
+    margin-bottom: 52px;
+  }
+
+  .gk-lessons-resources__heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0 0 14px 0;
+    line-height: 1;
+  }
+
+  .gk-lessons-resources__subheading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    color: #666666;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .gk-lessons-resources__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  /* ── Card Base ── */
+  .gk-lessons-resources__card {
+    background-color: rgba(20, 20, 20, 0.85);
+    border: 1px solid #272727;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    padding: 36px 28px;
+    transition: transform 155ms ease, border-color 155ms ease, box-shadow 155ms ease;
+  }
+
+  .gk-lessons-resources__card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(232, 105, 10, 0.45);
+    box-shadow: 0 8px 32px rgba(232, 105, 10, 0.09);
+  }
+
+  /* Unavailable card: no hover lift */
+  .gk-lessons-resources__card--unavailable {
+    border-color: #202020;
+    opacity: 0.7;
+  }
+
+  .gk-lessons-resources__card--unavailable:hover {
+    transform: none;
+    border-color: #272727;
+    box-shadow: none;
+  }
+
+  .gk-lessons-resources__card-eyebrow {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.7rem;
+    color: #E8690A;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .gk-lessons-resources__card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.55rem;
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 10px 0;
+    line-height: 1.1;
+  }
+
+  .gk-lessons-resources__card-subtitle {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.7rem;
+    color: #555555;
+    margin: 0 0 14px 0;
+    display: block;
+  }
+
+  .gk-lessons-resources__card-body {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin: 0 0 10px 0;
+    flex: 1;
+  }
+
+  /* ── Unavailable badge ── */
+  .gk-lessons-resources__unavailable-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.68rem;
+    color: #444444;
+    border: 1px solid #2A2A2A;
+    padding: 6px 14px;
+    margin-top: 18px;
+    align-self: flex-start;
+  }
+
+  .gk-lessons-resources__unavailable-note {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    color: #3D3D3D;
+    margin: 12px 0 0 0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* ── CTA Button ── */
+  .gk-lessons-resources__card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #E8690A;
+    border: 1px solid rgba(232, 105, 10, 0.5);
+    padding: 12px 22px;
+    text-decoration: none;
+    margin-top: 24px;
+    align-self: flex-start;
+    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .gk-lessons-resources__card-btn:hover {
+    background-color: #E8690A;
+    color: #0D0D0D;
+    border-color: #E8690A;
+    box-shadow: 0 0 20px rgba(232, 105, 10, 0.2);
+  }
+
+  @media screen and (max-width: 1199px) {
+    .gk-lessons-resources__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .gk-lessons-resources__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .gk-lessons-resources__card {
+      padding: 28px 22px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="gk-lessons-resources" id="section-{{ section.id }}">
+  <div class="gk-lessons-resources__inner">
+
+    <div class="gk-lessons-resources__header">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="gk-lessons-resources__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="gk-lessons-resources__subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="gk-lessons-resources__grid">
+
+      <!-- Card 1: Private Lessons (unavailable) -->
+      <div class="gk-lessons-resources__card gk-lessons-resources__card--unavailable">
+        <span class="gk-lessons-resources__card-eyebrow">Private</span>
+        <h3 class="gk-lessons-resources__card-title">{{ section.settings.private_title }}</h3>
+        <p class="gk-lessons-resources__card-body">{{ section.settings.private_body }}</p>
+        <span class="gk-lessons-resources__unavailable-badge">Currently Unavailable</span>
+        {%- if section.settings.private_note != blank -%}
+          <p class="gk-lessons-resources__unavailable-note">{{ section.settings.private_note }}</p>
+        {%- endif -%}
+      </div>
+
+      <!-- Card 2: Instructional Books -->
+      <div class="gk-lessons-resources__card">
+        <span class="gk-lessons-resources__card-eyebrow">Books</span>
+        <h3 class="gk-lessons-resources__card-title">{{ section.settings.books_title }}</h3>
+        <p class="gk-lessons-resources__card-body">{{ section.settings.books_body }}</p>
+        {%- if section.settings.books_url != blank -%}
+          <a href="{{ section.settings.books_url }}" class="gk-lessons-resources__card-btn">
+            {{ section.settings.books_btn | default: 'Shop Books →' }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      <!-- Card 3: Instructional DVDs -->
+      <div class="gk-lessons-resources__card">
+        <span class="gk-lessons-resources__card-eyebrow">DVDs</span>
+        <h3 class="gk-lessons-resources__card-title">{{ section.settings.dvds_title }}</h3>
+        <p class="gk-lessons-resources__card-body">{{ section.settings.dvds_body }}</p>
+        {%- if section.settings.dvds_url != blank -%}
+          <a href="{{ section.settings.dvds_url }}" class="gk-lessons-resources__card-btn">
+            {{ section.settings.dvds_btn | default: 'Shop DVDs →' }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      <!-- Card 4: GuitarInstructor.com -->
+      <div class="gk-lessons-resources__card">
+        <span class="gk-lessons-resources__card-eyebrow">On Demand</span>
+        <h3 class="gk-lessons-resources__card-title">{{ section.settings.gi_title }}</h3>
+        {%- if section.settings.gi_subtitle != blank -%}
+          <span class="gk-lessons-resources__card-subtitle">{{ section.settings.gi_subtitle }}</span>
+        {%- endif -%}
+        <p class="gk-lessons-resources__card-body">{{ section.settings.gi_body }}</p>
+        {%- if section.settings.gi_url != blank -%}
+          <a
+            href="{{ section.settings.gi_url }}"
+            class="gk-lessons-resources__card-btn"
+            target="_blank"
+            rel="noopener noreferrer">
+            {{ section.settings.gi_btn | default: 'Visit GuitarInstructor.com →' }}
+          </a>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GK Lessons Resources",
+  "tag": "section",
+  "class": "gk-lessons-resources-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "More Ways to Learn"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "Books, DVDs, and on-demand video resources from Greg Koch."
+    },
+    {
+      "type": "header",
+      "content": "Private Lessons Card"
+    },
+    {
+      "type": "text",
+      "id": "private_title",
+      "label": "Title",
+      "default": "Private Lessons"
+    },
+    {
+      "type": "textarea",
+      "id": "private_body",
+      "label": "Body Text",
+      "default": "Virtual lessons with Greg."
+    },
+    {
+      "type": "text",
+      "id": "private_note",
+      "label": "Availability Note",
+      "default": "Check back for future availability."
+    },
+    {
+      "type": "header",
+      "content": "Instructional Books Card"
+    },
+    {
+      "type": "text",
+      "id": "books_title",
+      "label": "Title",
+      "default": "Instructional Books"
+    },
+    {
+      "type": "textarea",
+      "id": "books_body",
+      "label": "Body Text",
+      "default": "Explore Greg\u2019s instructional books, guitar methods, play-alongs, and learning resources."
+    },
+    {
+      "type": "url",
+      "id": "books_url",
+      "label": "Books Collection URL",
+      "info": "Link to your Shopify instructional books collection, e.g. /collections/instructional-books"
+    },
+    {
+      "type": "text",
+      "id": "books_btn",
+      "label": "Button Label",
+      "default": "Shop Books \u2192"
+    },
+    {
+      "type": "header",
+      "content": "Instructional DVDs Card"
+    },
+    {
+      "type": "text",
+      "id": "dvds_title",
+      "label": "Title",
+      "default": "Instructional DVDs"
+    },
+    {
+      "type": "textarea",
+      "id": "dvds_body",
+      "label": "Body Text",
+      "default": "Browse Greg\u2019s instructional DVD catalog and video learning resources."
+    },
+    {
+      "type": "url",
+      "id": "dvds_url",
+      "label": "DVDs Collection URL",
+      "info": "Link to your Shopify instructional DVDs collection, e.g. /collections/instructional-dvds"
+    },
+    {
+      "type": "text",
+      "id": "dvds_btn",
+      "label": "Button Label",
+      "default": "Shop DVDs \u2192"
+    },
+    {
+      "type": "header",
+      "content": "GuitarInstructor.com Card"
+    },
+    {
+      "type": "text",
+      "id": "gi_title",
+      "label": "Title",
+      "default": "GuitarInstructor.com"
+    },
+    {
+      "type": "text",
+      "id": "gi_subtitle",
+      "label": "Subtitle / Tagline",
+      "default": "On-demand video lessons"
+    },
+    {
+      "type": "textarea",
+      "id": "gi_body",
+      "label": "Body Text",
+      "default": "Explore Greg\u2019s instructor page and additional lessons at GuitarInstructor.com."
+    },
+    {
+      "type": "url",
+      "id": "gi_url",
+      "label": "GuitarInstructor URL",
+      "info": "Paste the full GuitarInstructor.com profile URL here."
+    },
+    {
+      "type": "text",
+      "id": "gi_btn",
+      "label": "Button Label",
+      "default": "Visit GuitarInstructor.com \u2192"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "default": 72,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "default": 72,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Lessons Resources",
+      "settings": {
+        "books_url": "/collections/instructional-books",
+        "dvds_url": "/collections/instructional-dvds",
+        "gi_url": "https://www.guitarinstructor.com/product/viewinstructor.action?contributorid=52595"
+      }
+    }
+  ]
+}
+{% endschema %}
