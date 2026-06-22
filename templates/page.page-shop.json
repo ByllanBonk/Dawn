@@ -65,7 +65,7 @@
           "settings": {
             "collection": "gear",
             "title": "Gear",
-            "description": "Pedals, pickups, tone tools.",
+            "description": "Pickups, pedals, tone tools.",
             "icon": "gear",
             "featured": false
           }
