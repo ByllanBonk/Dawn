@@ -31,17 +31,38 @@
       {% endif %}
     </header>
 
-    {%- comment -%} Count category blocks so we know where to drop the row divider. {%- endcomment -%}
+    {%- comment -%}
+      Count UNIQUE category blocks (by title, falling back to collection handle)
+      so the row divider lands correctly and a duplicate tile can never inflate
+      the layout into an orphan wrap.
+    {%- endcomment -%}
     {%- assign cat_total = 0 -%}
+    {%- assign seen_count = '' -%}
     {%- for block in section.blocks -%}
-      {%- if block.type == 'category' -%}{%- assign cat_total = cat_total | plus: 1 -%}{%- endif -%}
+      {%- if block.type == 'category' -%}
+        {%- assign ckey = block.settings.title | default: '' | downcase | strip -%}
+        {%- if ckey == blank and block.settings.collection != blank -%}{%- assign ckey = block.settings.collection.handle -%}{%- endif -%}
+        {%- assign ckey = '[' | append: ckey | append: ']' -%}
+        {%- unless seen_count contains ckey -%}
+          {%- assign cat_total = cat_total | plus: 1 -%}
+          {%- assign seen_count = seen_count | append: ckey -%}
+        {%- endunless -%}
+      {%- endif -%}
     {%- endfor -%}
 
     <div class="gk-shop__grid" role="list">
       {%- assign rendered = 0 -%}
+      {%- assign seen = '' -%}
 
       {% for block in section.blocks %}
         {% if block.type == 'category' %}
+          {%- comment -%} Skip a tile whose title (or collection) already rendered. {%- endcomment -%}
+          {%- assign dkey = block.settings.title | default: '' | downcase | strip -%}
+          {%- if dkey == blank and block.settings.collection != blank -%}{%- assign dkey = block.settings.collection.handle -%}{%- endif -%}
+          {%- assign dkey = '[' | append: dkey | append: ']' -%}
+          {%- if seen contains dkey -%}{%- continue -%}{%- endif -%}
+          {%- assign seen = seen | append: dkey -%}
+
           {%- assign rendered = rendered | plus: 1 -%}
           {%- assign col = block.settings.collection -%}
           {%- if col != blank -%}
@@ -234,8 +255,21 @@
                 {% endif %}
               </div>
 
-              {% if block.settings.description != blank %}
-                <p class="gk-shop__desc">{{ block.settings.description | escape }}</p>
+              {%- comment -%} Use the block description, or fall back by icon so it is never blank. {%- endcomment -%}
+              {%- assign desc = block.settings.description -%}
+              {%- if desc == blank -%}
+                {%- case icon_key -%}
+                  {%- when 'new' -%}{%- assign desc = 'Latest drops and fresh arrivals.' -%}
+                  {%- when 'cds' -%}{%- assign desc = 'Studio albums and live records.' -%}
+                  {%- when 'vinyl' -%}{%- assign desc = 'Wax. Analog. Real.' -%}
+                  {%- when 'merch' -%}{%- assign desc = 'Wear the gristle.' -%}
+                  {%- when 'gear' -%}{%- assign desc = 'Pickups, pedals, tone tools.' -%}
+                  {%- when 'books' -%}{%- assign desc = 'Learn from the Gristleman.' -%}
+                  {%- when 'dvds' -%}{%- assign desc = 'Classic guitar instruction.' -%}
+                {%- endcase -%}
+              {%- endif -%}
+              {% if desc != blank %}
+                <p class="gk-shop__desc">{{ desc | escape }}</p>
               {% endif %}
             </div>
 
@@ -359,13 +393,15 @@
       isolation: isolate;
       overflow: hidden;
 
-      background: var(--gk-card);
-      border: 1px solid var(--gk-card-line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 22%),
+        rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        0 10px 30px -12px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
 
       transition:
         transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -398,6 +434,18 @@
       opacity: 0;
       transform: translate(-12px, -12px);
       transition: opacity 260ms ease, transform 260ms ease;
+      pointer-events: none;
+    }
+
+    /* Crisp highlight line across the top edge for resting depth */
+    .gk-shop__card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 14%;
+      right: 14%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
       pointer-events: none;
     }
 
@@ -442,10 +490,16 @@
       inset: 0;
       border-radius: inherit;
       background: radial-gradient(circle at 50% 50%, var(--gk-accent-glow), transparent 68%);
-      opacity: 0.5;
+      opacity: 0.45;             /* always-on warm anchor, even at rest / reduced motion */
       transform: scale(0.85);
       animation: gk-breathe 4s ease-in-out infinite;
+      transition: filter 220ms ease;
       pointer-events: none;
+    }
+
+    /* hover raises the icon glow (filter is not animated, so it always applies) */
+    .gk-shop__card:hover .gk-shop__iconGlow {
+      filter: brightness(1.7) saturate(1.15);
     }
 
     /* light sheen wipe across the tile on hover */
@@ -818,7 +872,7 @@
         { "type": "category", "settings": { "title": "CDs", "description": "Studio albums and live records.", "icon": "cds" } },
         { "type": "category", "settings": { "title": "Vinyl", "description": "Wax. Analog. Real.", "icon": "vinyl" } },
         { "type": "category", "settings": { "title": "Merch", "description": "Wear the gristle.", "icon": "merch" } },
-        { "type": "category", "settings": { "title": "Gear", "description": "Pedals, pickups, tone tools.", "icon": "gear" } },
+        { "type": "category", "settings": { "title": "Gear", "description": "Pickups, pedals, tone tools.", "icon": "gear" } },
         { "type": "category", "settings": { "title": "Instructional Books", "description": "Learn from the Gristleman.", "icon": "books" } },
         { "type": "category", "settings": { "title": "DVDs", "description": "Classic guitar instruction.", "icon": "dvds" } }
       ]
