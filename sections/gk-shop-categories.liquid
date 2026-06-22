@@ -71,8 +71,38 @@
                 <span class="gk-shop__iconGlow"></span>
                 <span class="gk-shop__sheen"></span>
 
+                {%- comment -%}
+                  Resolve which icon to draw. If the block's Icon is left on "Auto"
+                  (or was never saved), infer it from the tile title / collection
+                  handle so every card still gets its own distinct shape.
+                {%- endcomment -%}
+                {%- assign icon_key = block.settings.icon -%}
+                {%- if icon_key == blank or icon_key == 'auto' -%}
+                  {%- assign probe = block.settings.title | default: '' | downcase -%}
+                  {%- if block.settings.collection != blank -%}
+                    {%- assign probe = probe | append: ' ' | append: block.settings.collection.handle -%}
+                  {%- endif -%}
+                  {%- if probe contains 'vinyl' or probe contains 'record' or probe contains 'wax' or probe contains 'lp' -%}
+                    {%- assign icon_key = 'vinyl' -%}
+                  {%- elsif probe contains 'dvd' or probe contains 'video' -%}
+                    {%- assign icon_key = 'dvds' -%}
+                  {%- elsif probe contains 'cd' -%}
+                    {%- assign icon_key = 'cds' -%}
+                  {%- elsif probe contains 'book' or probe contains 'instruction' or probe contains 'lesson' -%}
+                    {%- assign icon_key = 'books' -%}
+                  {%- elsif probe contains 'merch' or probe contains 'shirt' or probe contains 'tee' or probe contains 'apparel' or probe contains 'wear' or probe contains 'hat' -%}
+                    {%- assign icon_key = 'merch' -%}
+                  {%- elsif probe contains 'gear' or probe contains 'pedal' or probe contains 'pickup' or probe contains 'guitar' or probe contains 'tone' or probe contains 'amp' -%}
+                    {%- assign icon_key = 'gear' -%}
+                  {%- elsif probe contains 'new' -%}
+                    {%- assign icon_key = 'new' -%}
+                  {%- else -%}
+                    {%- assign icon_key = 'new' -%}
+                  {%- endif -%}
+                {%- endif -%}
+
                 {%- comment -%} Inline, per-icon SVG. Each case renders a distinct shape. {%- endcomment -%}
-                {% case block.settings.icon %}
+                {% case icon_key %}
 
                   {% when 'new' %}
                     <svg class="gk-ico" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -757,7 +787,9 @@
           "type": "select",
           "id": "icon",
           "label": "Icon",
+          "info": "Auto picks the icon from the tile title.",
           "options": [
+            { "value": "auto", "label": "Auto (from title)" },
             { "value": "new", "label": "New (star)" },
             { "value": "cds", "label": "CDs (jewel case)" },
             { "value": "vinyl", "label": "Vinyl (turntable)" },
@@ -766,7 +798,7 @@
             { "value": "books", "label": "Instructional Books" },
             { "value": "dvds", "label": "DVDs (disc case)" }
           ],
-          "default": "new"
+          "default": "auto"
         },
         {
           "type": "checkbox",
