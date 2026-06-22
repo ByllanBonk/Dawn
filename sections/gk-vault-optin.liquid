@@ -23,6 +23,16 @@
   {%- assign heading_html = heading_safe -%}
 {%- endif -%}
 
+{%- if section.settings.hide_header_footer -%}
+  {%- comment -%} Naked landing page: hide the theme's header + footer section groups on this page only. {%- endcomment -%}
+  <style>
+    .shopify-section-group-header-group,
+    .shopify-section-group-footer-group {
+      display: none !important;
+    }
+  </style>
+{%- endif -%}
+
 <section class="gk-vault" data-gk-vault id="section-{{ section.id }}">
   {% comment %} ============ HERO ============ {% endcomment %}
   <header class="gk-vault__hero">
@@ -941,6 +951,17 @@
   "tag": "section",
   "class": "gk-vault-section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Landing Page Mode"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_header_footer",
+      "label": "Hide header & footer (naked landing page)",
+      "info": "Hides the site nav and footer on this page only, for a focused opt-in.",
+      "default": true
+    },
     {
       "type": "header",
       "content": "Hero"

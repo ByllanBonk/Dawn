@@ -96,6 +96,7 @@
         "item_pdf"
       ],
       "settings": {
+        "hide_header_footer": true,
         "kicker": "The Gristle Vault",
         "heading": "Access the Gristle Vault",
         "highlight_text": "Gristle Vault",
