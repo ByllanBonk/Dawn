@@ -369,8 +369,8 @@
         "heading": "",
         "heading_size": "h1",
         "enable_video_looping": false,
-        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
-        "description": "",
+        "video_url": "https://www.youtube.com/watch?v=fNRCb3rriuo",
+        "description": "Greg Koch",
         "full_width": false,
         "color_scheme": "scheme-1",
         "padding_top": 36,
@@ -383,8 +383,8 @@
         "column1": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "title": "Steve Vai",
+            "text": "<p>“Greg Koch is one of those rare guitarists that can blend various styles with a light-hearted approach and a tremendous amount of technique. Hearing him play is inspiring to a guitar player to try to achieve greatness on the instrument.”</p>",
             "link_label": "",
             "link": ""
           }
@@ -392,17 +392,8 @@
         "column2": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column3": {
-          "type": "column",
-          "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "title": "Joe Bonamassa",
+            "text": "<p>“I believe Greg Koch is pound for pound the best guitar player in the world today. His tone, feel and style are unrivaled in today’s guitar playing community. He is scary good.”</p>",
             "link_label": "",
             "link": ""
           }
@@ -410,8 +401,7 @@
       },
       "block_order": [
         "column1",
-        "column2",
-        "column3"
+        "column2"
       ],
       "settings": {
         "title": "",
@@ -420,7 +410,7 @@
         "image_ratio": "adapt",
         "button_label": "",
         "button_link": "",
-        "columns_desktop": 3,
+        "columns_desktop": 2,
         "column_alignment": "center",
         "background_style": "none",
         "color_scheme": "scheme-1",
