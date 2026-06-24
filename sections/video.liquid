@@ -56,6 +56,8 @@
       data-media-id="{{ video_id }}"
       {% if poster != null %}
         style="--ratio-percent: {{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;"
+      {% elsif section.settings.video == null and section.settings.video_url.type == 'youtube' %}
+        style="--ratio-percent: 56.25%;"
       {% endif %}
     >
       <button
@@ -70,6 +72,15 @@
             | image_url: width: 3840
             | image_tag: sizes: sizes, widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840', alt: alt
           }}
+        {%- elsif section.settings.video == null and section.settings.video_url.type == 'youtube' -%}
+          <img
+            src="https://img.youtube.com/vi/{{ section.settings.video_url.id }}/maxresdefault.jpg"
+            alt="{{ alt }}"
+            class="video-section__poster-image"
+            loading="lazy"
+            width="1280"
+            height="720"
+          >
         {%- else -%}
           {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
         {%- endif -%}
