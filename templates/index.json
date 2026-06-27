@@ -377,6 +377,7 @@
     },
     "gk_spotify_embed_k4K4EF": {
       "type": "gk-spotify-embed",
+      "disabled": true,
       "name": "GK Spotify Embed",
       "settings": {
         "enable_animation": true,
