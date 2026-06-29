@@ -1,0 +1,30 @@
+<section class="vopt-ps-wrap vopt-wrap">
+  <div class="vopt-ps">
+    {%- if section.settings.label != blank -%}
+      <p class="vopt-ps-label">{{ section.settings.label | escape }}</p>
+    {%- endif -%}
+    <div class="vopt-ps-body">{{ section.settings.body }}</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vault P.S.",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "P.S."
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "info": "Use bold for the highlighted phrase.",
+      "default": "<p>If you scrolled straight to the bottom, here is the short version. Greg built a vault of 8 full-length guitar videos covering chicken picking, Travis picking, chord vocabulary, outside playing, his full live rig, blues soloing concepts, and note-for-note breakdowns of two originals. Plus a 12-page PDF that ties it all together. <strong>All of it is free.</strong> Put in your email above and he will send it to you.</p>"
+    }
+  ],
+  "presets": [{ "name": "Vault P.S." }]
+}
+{% endschema %}

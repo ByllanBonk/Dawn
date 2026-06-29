@@ -1,0 +1,56 @@
+<header class="vopt-hero vopt-wrap">
+  {%- if section.settings.kicker != blank -%}
+    <p class="vopt-kicker">{{ section.settings.kicker | escape }}</p>
+  {%- endif -%}
+  <h1 class="vopt-h1">
+    {{- section.settings.heading_line1 | escape -}}
+    {%- if section.settings.heading_line2 != blank -%}
+      <br><span class="vopt-accent-text">{{ section.settings.heading_line2 | escape }}</span>
+    {%- endif -%}
+  </h1>
+  {%- if section.settings.tagline != blank -%}
+    <p class="vopt-hero-tagline">{{ section.settings.tagline | escape }}</p>
+  {%- endif -%}
+  {%- if section.settings.subhead != blank -%}
+    <p class="vopt-hero-sub">{{ section.settings.subhead | escape }}</p>
+  {%- endif -%}
+</header>
+
+{% schema %}
+{
+  "name": "Vault Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker line",
+      "default": "8 Videos. 4+ Hours. One PDF that ties it all together. All of it free."
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Headline line 1",
+      "default": "ACCESS THE"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Headline line 2 (accent color)",
+      "default": "GRISTLE VAULT"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Every secret Greg probably shouldn’t have shared."
+    },
+    {
+      "type": "textarea",
+      "id": "subhead",
+      "label": "Subhead",
+      "default": "Access the full Gristle Vault. Live clinics, technique masterclasses, a complete gear breakdown, and the 12-page reference PDF that ties it all together. All of it free. No credit card. No tricks."
+    }
+  ],
+  "presets": [{ "name": "Vault Hero" }]
+}
+{% endschema %}

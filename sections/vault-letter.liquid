@@ -1,0 +1,112 @@
+{%- if section.settings.show_top_divider -%}
+  <div class="vopt-divider"><hr></div>
+{%- endif -%}
+
+<section class="vopt-letter vopt-wrap">
+  {%- if section.settings.eyebrow != blank -%}
+    <p class="vopt-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+  {%- endif -%}
+  {%- if section.settings.heading != blank -%}
+    <h2 class="vopt-h2">{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+
+  <div class="vopt-letter-grid">
+    <div class="vopt-letter-photo">
+      <div class="vopt-letter-well">
+        {%- if section.settings.letter_image != blank -%}
+          <img
+            src="{{ section.settings.letter_image | image_url: width: 320 }}"
+            srcset="{{ section.settings.letter_image | image_url: width: 160 }} 160w, {{ section.settings.letter_image | image_url: width: 320 }} 320w"
+            sizes="160px"
+            width="{{ section.settings.letter_image.width }}"
+            height="{{ section.settings.letter_image.height }}"
+            alt="{{ section.settings.caption | escape }}"
+            loading="lazy"
+          >
+        {%- else -%}
+          <i class="ti ti-photo" aria-hidden="true"></i>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.caption != blank -%}
+        <p class="vopt-letter-caption">{{ section.settings.caption | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="vopt-letter-copy">
+      {{ section.settings.body }}
+    </div>
+  </div>
+
+  {%- if section.settings.pullquote_line1 != blank or section.settings.pullquote_line2 != blank -%}
+    <blockquote class="vopt-pullquote">
+      {%- if section.settings.pullquote_line1 != blank -%}
+        <span class="vopt-pq-1">{{ section.settings.pullquote_line1 | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.pullquote_line2 != blank -%}
+        <span class="vopt-pq-2">{{ section.settings.pullquote_line2 | escape }}</span>
+      {%- endif -%}
+    </blockquote>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Vault Letter",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_top_divider",
+      "label": "Show divider above section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "A note from Greg"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "WAIT. IS THIS ACTUALLY FREE?"
+    },
+    {
+      "type": "image_picker",
+      "id": "letter_image",
+      "label": "Letter photo",
+      "info": "Leave blank to show a placeholder well."
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Photo caption",
+      "default": "Greg Koch"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Letter body",
+      "info": "Use bold for light emphasis and italic for orange emphasis.",
+      "default": "<p><em>Yeah. It is.</em></p><p>Look, I have spent decades on stage and in clinics sharing this stuff with players who actually want to go deeper. The techniques in the Vault are the ones people ask about <strong>every single night after the show.</strong></p><p>The chicken picking. The chord substitutions. The rig. How to play outside without sounding like you just fell down the stairs.</p><p>Most guitar content online is someone talking about playing. The Vault is eight sessions of me <strong>actually showing you the mechanics.</strong> The exact picking motions. The specific voicings. The actual pedal settings.</p><p>I recorded it. I compiled a 12-page reference PDF so you can keep it open while you watch. And I made the whole thing <em>free because that is how I have always operated.</em></p><p>Give your people the real thing. <strong>They will stick around.</strong></p><p><strong>Greg Koch</strong></p>"
+    },
+    {
+      "type": "header",
+      "content": "Pull quote"
+    },
+    {
+      "type": "text",
+      "id": "pullquote_line1",
+      "label": "Pull quote line 1",
+      "default": "This is not a teaser."
+    },
+    {
+      "type": "text",
+      "id": "pullquote_line2",
+      "label": "Pull quote line 2 (accent color)",
+      "default": "It is the full stash."
+    }
+  ],
+  "presets": [{ "name": "Vault Letter" }]
+}
+{% endschema %}

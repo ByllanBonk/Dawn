@@ -18,9 +18,19 @@
 
     {{ content_for_header }}
 
+    {%- comment -%} Fonts + icons + shared styles for the naked vault opt-in page {%- endcomment -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    >
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css" rel="stylesheet">
+    {{ 'vault-optin.css' | asset_url | stylesheet_tag }}
+
     {%- comment -%}
       Naked conversion layout. No Dawn header, footer, navigation, drawers or
-      page padding. The page chrome lives entirely inside the section.
+      page padding. The page chrome lives entirely inside the sections.
     {%- endcomment -%}
     {% style %}
       *,
@@ -51,7 +61,9 @@
 
   <body class="vault-optin-body">
     <main id="MainContent" class="content-for-layout" role="main" tabindex="-1">
-      {{ content_for_layout }}
+      <div class="vopt">
+        {{ content_for_layout }}
+      </div>
     </main>
   </body>
 </html>
