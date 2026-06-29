@@ -626,7 +626,18 @@
     .vopt-card-item,
     .vopt-card-item--wide { grid-column: auto; }
 
-    .vopt-final { padding: 24px 16px 40px; }
+    /* All padding reduces to 16px on mobile */
+    .vopt-letter,
+    .vopt-stash,
+    .vopt-faq,
+    .vopt-cta-section { padding-block: 16px; }
+
+    .vopt-form-card,
+    .vopt-cta-block,
+    .vopt-ps,
+    .vopt-pdf { padding: 16px; }
+
+    .vopt-final { padding: 16px 16px 40px; }
     .vopt-ps { margin: 16px 0; }
   }
 {% endstyle %}
