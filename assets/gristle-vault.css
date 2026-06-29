@@ -293,7 +293,7 @@
 
 .gv-eyebrow {
   font-family: var(--gv-font-body);
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--gv-orange);
@@ -333,11 +333,12 @@
   margin: 18px 0 0;
 }
 .gv-hero-body {
-  max-width: 600px;
-  margin: 22px auto 0;
-  font-size: 1rem;
-  line-height: 1.8;
-  color: var(--gv-muted);
+  max-width: 680px;
+  margin: 26px auto 0;
+  font-size: 1.35rem;
+  line-height: 1.75;
+  color: var(--gv-text);
+  opacity: 0.85;
 }
 
 .gv-scroll-cue {
@@ -414,7 +415,7 @@
 .gv-session-label {
   display: block;
   font-family: var(--gv-font-body);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--gv-orange);
@@ -431,7 +432,7 @@
   margin: 0 0 16px;
 }
 .gv-session-desc {
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.75;
   color: var(--gv-muted);
   margin: 0;
@@ -462,11 +463,11 @@
   margin: 0 0 12px;
 }
 .gv-guide-desc {
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.7;
   color: var(--gv-muted);
   margin: 0;
-  max-width: 520px;
+  max-width: 560px;
 }
 .gv-guide-btn {
   flex-shrink: 0;
