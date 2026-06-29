@@ -1,0 +1,301 @@
+{%- liquid
+  assign kl_company = section.settings.klaviyo_company_id | default: 'XBDmgJ'
+  assign kl_list = section.settings.klaviyo_list_id | default: 'Wbqf9S'
+-%}
+
+<script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id={{ kl_company }}"></script>
+
+<section class="vopt-split vopt-wrap">
+
+  {%- comment -%} Photo card {%- endcomment -%}
+  <div class="vopt-card vopt-photo-card">
+    <div class="vopt-photo-well">
+      {%- if section.settings.hero_image != blank -%}
+        <img
+          src="{{ section.settings.hero_image | image_url: width: 800 }}"
+          srcset="{{ section.settings.hero_image | image_url: width: 400 }} 400w, {{ section.settings.hero_image | image_url: width: 800 }} 800w, {{ section.settings.hero_image | image_url: width: 1200 }} 1200w"
+          sizes="(min-width: 760px) 360px, 100vw"
+          width="{{ section.settings.hero_image.width }}"
+          height="{{ section.settings.hero_image.height }}"
+          alt="{{ section.settings.form_heading | escape }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        <div class="vopt-photo-placeholder">
+          <i class="ti ti-photo" aria-hidden="true"></i>
+          <span>{{ section.settings.photo_placeholder | escape }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <div class="vopt-stats">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'stat' -%}
+            <div class="vopt-stat" {{ block.shopify_attributes }}>
+              <span class="vopt-stat-num">{{ block.settings.num | escape }}</span>
+              <span class="vopt-stat-label">{{ block.settings.label | escape }}</span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Form card (scroll anchor for every CTA button) {%- endcomment -%}
+  <div class="vopt-card vopt-form-card" id="vopt-form-card">
+    {%- if section.settings.form_heading != blank -%}
+      <h2 class="vopt-form-heading">{{ section.settings.form_heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.form_note != blank -%}
+      <p class="vopt-form-note">{{ section.settings.form_note | escape }}</p>
+    {%- endif -%}
+
+    <form class="vopt-form" id="vopt-form" novalidate>
+      <div class="vopt-field-row">
+        <input type="text" id="vopt-firstname" name="first_name" class="vopt-input" placeholder="{{ section.settings.first_name_placeholder | escape }}" autocomplete="given-name" aria-label="{{ section.settings.first_name_placeholder | escape }}">
+        <input type="text" id="vopt-lastname" name="last_name" class="vopt-input" placeholder="{{ section.settings.last_name_placeholder | escape }}" autocomplete="family-name" aria-label="{{ section.settings.last_name_placeholder | escape }}">
+      </div>
+      <input type="email" id="vopt-email" name="email" class="vopt-input" placeholder="{{ section.settings.email_placeholder | escape }}" autocomplete="email" aria-label="{{ section.settings.email_placeholder | escape }}" required>
+      <button type="submit" class="vopt-btn" id="vopt-submit" data-sending="{{ section.settings.sending_label | default: 'Sending…' | escape }}">{{ section.settings.submit_label | escape }}</button>
+      {%- if section.settings.consent != blank -%}
+        <p class="vopt-consent">{{ section.settings.consent | escape }}</p>
+      {%- endif -%}
+      <p class="vopt-error" id="vopt-error" hidden>{{ section.settings.error_text | escape }}</p>
+    </form>
+
+    <div class="vopt-success" id="vopt-success" hidden>{{ section.settings.success_message | escape }}</div>
+  </div>
+
+</section>
+
+<script>
+  (function () {
+    var COMPANY_ID = {{ kl_company | json }};
+    var LIST_ID = {{ kl_list | json }};
+
+    var form = document.getElementById('vopt-form');
+    var success = document.getElementById('vopt-success');
+    var errorEl = document.getElementById('vopt-error');
+    var submitBtn = document.getElementById('vopt-submit');
+    var firstName = document.getElementById('vopt-firstname');
+    var originalLabel = submitBtn ? submitBtn.textContent : '';
+    var sendingLabel = submitBtn ? (submitBtn.getAttribute('data-sending') || 'Sending…') : 'Sending…';
+
+    function isValidEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    function showSuccess() {
+      if (form) form.setAttribute('hidden', 'hidden');
+      if (success) success.removeAttribute('hidden');
+    }
+
+    function showError() {
+      if (errorEl) errorEl.removeAttribute('hidden');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
+    }
+
+    if (form) {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (errorEl) errorEl.setAttribute('hidden', 'hidden');
+
+        var emailEl = document.getElementById('vopt-email');
+        var lastEl = document.getElementById('vopt-lastname');
+        var email = emailEl ? emailEl.value.trim() : '';
+
+        if (!isValidEmail(email)) {
+          showError();
+          if (emailEl) emailEl.focus();
+          return;
+        }
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = sendingLabel;
+        }
+
+        var payload = {
+          data: {
+            type: 'subscription',
+            attributes: {
+              profile: {
+                data: {
+                  type: 'profile',
+                  attributes: {
+                    email: email,
+                    first_name: firstName ? firstName.value.trim() : '',
+                    last_name: lastEl ? lastEl.value.trim() : ''
+                  }
+                }
+              }
+            },
+            relationships: {
+              list: { data: { type: 'list', id: LIST_ID } }
+            }
+          }
+        };
+
+        fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + encodeURIComponent(COMPANY_ID), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            revision: '2024-10-15'
+          },
+          body: JSON.stringify(payload)
+        })
+          .then(function (response) {
+            if (response.ok || response.status === 202) {
+              showSuccess();
+            } else {
+              showError();
+            }
+          })
+          .catch(showError);
+      });
+    }
+
+    // Any CTA button (in this or any other vault section) scrolls to the form
+    // and focuses the first name field. Delegated so section order does not matter.
+    document.addEventListener('click', function (event) {
+      var btn = event.target.closest ? event.target.closest('.vopt-scroll-btn') : null;
+      if (!btn) return;
+      var formCard = document.getElementById('vopt-form-card');
+      if (formCard) formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.setTimeout(function () {
+        if (firstName && form && !form.hasAttribute('hidden')) firstName.focus({ preventScroll: true });
+      }, 550);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Vault Opt-In Form",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Photo"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Performance photo",
+      "info": "Leave blank to show a placeholder well."
+    },
+    {
+      "type": "text",
+      "id": "photo_placeholder",
+      "label": "Placeholder text",
+      "default": "Add performance photo in theme editor"
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form heading",
+      "default": "Get Instant Access"
+    },
+    {
+      "type": "text",
+      "id": "form_note",
+      "label": "Form note",
+      "default": "Delivered to your inbox."
+    },
+    {
+      "type": "text",
+      "id": "first_name_placeholder",
+      "label": "First name placeholder",
+      "default": "First name"
+    },
+    {
+      "type": "text",
+      "id": "last_name_placeholder",
+      "label": "Last name placeholder",
+      "default": "Last name"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Email address"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Submit button label",
+      "default": "SEND ME THE VAULT →"
+    },
+    {
+      "type": "text",
+      "id": "sending_label",
+      "label": "Submitting button label",
+      "default": "Sending…"
+    },
+    {
+      "type": "textarea",
+      "id": "consent",
+      "label": "Consent line",
+      "default": "By submitting you agree to receive emails from Greg Koch. Unsubscribe anytime."
+    },
+    {
+      "type": "text",
+      "id": "error_text",
+      "label": "Error message",
+      "default": "Something went wrong. Please check your email and try again."
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "You are in. Check your inbox."
+    },
+    {
+      "type": "header",
+      "content": "Klaviyo"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_company_id",
+      "label": "Klaviyo public API key",
+      "default": "XBDmgJ",
+      "info": "Company ID / public key used to load Klaviyo and subscribe profiles."
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_list_id",
+      "label": "Klaviyo list ID",
+      "default": "Wbqf9S",
+      "info": "The list new subscribers are added to."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "num", "label": "Number", "default": "8" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Videos" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Vault Opt-In Form",
+      "blocks": [
+        { "type": "stat", "settings": { "num": "8", "label": "Videos" } },
+        { "type": "stat", "settings": { "num": "4+", "label": "Hours" } },
+        { "type": "stat", "settings": { "num": "1", "label": "PDF" } },
+        { "type": "stat", "settings": { "num": "$0", "label": "Cost" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

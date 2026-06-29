@@ -1,0 +1,67 @@
+{%- if section.settings.show_top_divider -%}
+  <div class="vopt-divider"><hr></div>
+{%- endif -%}
+
+<section class="vopt-cta-section vopt-wrap">
+  <div class="vopt-card vopt-cta-block">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="vopt-cta-h">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subhead != blank -%}
+      <p class="vopt-cta-sub">{{ section.settings.subhead | escape }}</p>
+    {%- endif -%}
+    {%- if section.settings.button_link != blank -%}
+      <a href="{{ section.settings.button_link }}" class="vopt-btn">{{ section.settings.button_label | escape }}</a>
+    {%- else -%}
+      <button type="button" class="vopt-btn vopt-scroll-btn">{{ section.settings.button_label | escape }}</button>
+    {%- endif -%}
+    {%- if section.settings.consent != blank -%}
+      <p class="vopt-cta-consent">{{ section.settings.consent | escape }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vault CTA",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_top_divider",
+      "label": "Show divider above section",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "4+ Hours. 8 Videos. 1 PDF. All of it free."
+    },
+    {
+      "type": "text",
+      "id": "subhead",
+      "label": "Subhead",
+      "default": "Enter your email and Greg sends it straight to your inbox."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "YES. SEND ME THE VAULT →"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link (optional)",
+      "info": "Leave blank to scroll the visitor to the opt-in form and focus the first name field."
+    },
+    {
+      "type": "text",
+      "id": "consent",
+      "label": "Consent line",
+      "default": "Free. No credit card. No nonsense."
+    }
+  ],
+  "presets": [{ "name": "Vault CTA" }]
+}
+{% endschema %}

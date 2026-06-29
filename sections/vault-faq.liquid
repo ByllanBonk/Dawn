@@ -1,0 +1,121 @@
+{%- if section.settings.show_top_divider -%}
+  <div class="vopt-divider"><hr></div>
+{%- endif -%}
+
+<section class="vopt-faq vopt-wrap">
+  {%- if section.settings.eyebrow != blank -%}
+    <p class="vopt-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+  {%- endif -%}
+  {%- if section.settings.heading != blank -%}
+    <h2 class="vopt-h2 vopt-faq-h">{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+
+  <div class="vopt-faq-list">
+    {%- for block in section.blocks -%}
+      <div class="vopt-faq-item" {{ block.shopify_attributes }}>
+        <p class="vopt-faq-q">
+          <i class="ti {{ block.settings.icon | default: 'ti-circle-check' | escape }}" aria-hidden="true"></i>
+          <span>{{ block.settings.question | escape }}</span>
+        </p>
+        {%- if block.settings.answer != blank -%}
+          <p class="vopt-faq-a">{{ block.settings.answer | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vault FAQ",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_top_divider",
+      "label": "Show divider above section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Common questions"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "WAIT. IS THERE A CATCH?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "ti-circle-check",
+          "options": [
+            { "value": "ti-circle-check", "label": "Check" },
+            { "value": "ti-help-circle", "label": "Question" },
+            { "value": "ti-info-circle", "label": "Info" },
+            { "value": "ti-lock-open", "label": "Lock open" },
+            { "value": "ti-gift", "label": "Gift" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Is this actually free?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Yes. All eight videos and the PDF are free."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Vault FAQ",
+      "blocks": [
+        {
+          "type": "qa",
+          "settings": {
+            "question": "Is this actually free?",
+            "answer": "Yes. All eight videos and the PDF are free. You will be added to Greg’s email list where he sends new content, show dates, and gear news. You can leave anytime."
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "Who is this for?",
+            "answer": "Guitar players who want to go deeper than pentatonic noodling. Whether you are into chicken picking, jazz harmony, or just want to understand how Greg gets that tone, there is something in here for you."
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "What happens after I sign up?",
+            "answer": "You will get an email with access to all 8 videos and a download link for the PDF. After that you will receive occasional emails from Greg with new content, show dates, and gear news. Unsubscribe anytime."
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "Is this the same as the Patreon?",
+            "answer": "Different thing entirely. The Patreon has lessons, backing tracks and more as an ongoing paid membership. The Vault is a standalone free resource. No overlap and nothing to buy on the other side."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
