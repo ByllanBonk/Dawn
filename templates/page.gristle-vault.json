@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "layout": "vault",
   "sections": {
@@ -9,7 +18,7 @@
           "settings": {
             "youtube_url": "https://www.youtube.com/watch?v=q3tf2NnffAs",
             "video_title": "Rhythm, Groove and the C9",
-            "video_description": "Core rhythm approach through a blues progression. How to phrase, leave space, and make it sound like a conversation.",
+            "video_description": "Inside, Greg walks through the core rhythm approach using a C9 groove, how to move through a blues progression with feel, and a handful of simple tricks that make a part sound big and musical.\n\nFrom there, he gets into lead playing: not from a “more scales” angle, but how to phrase, leave space, and make it sound like a conversation.\n​\nThe big takeaway: you don’t need a million notes to sound good. A few solid ideas, good time, and the right attitude will take you a long way.",
             "video_tag": "Rhythm · Phrasing"
           }
         },
@@ -96,8 +105,14 @@
         "video_8",
         "pdf_guide"
       ],
-      "settings": {}
+      "settings": {
+        "heading": "The Gristle Vault",
+        "subheading": "Technique. Tone. Theory.",
+        "body_text": "Eight sessions of real guitar knowledge. The kind that takes decades to collect.. Phrasing, tone, theory, and the slightly-wrong choices that make a player impossible to copy."
+      }
     }
   },
-  "order": ["gristle-vault"]
+  "order": [
+    "gristle-vault"
+  ]
 }
