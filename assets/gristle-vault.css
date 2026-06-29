@@ -8,6 +8,8 @@
 
 .gristle-vault {
   --gv-orange: #e8690a;
+  --gv-font-heading: "Bebas Neue", sans-serif;
+  --gv-font-body: "DM Sans", sans-serif;
   --gv-stone-dark: #0e0b08;
   --gv-mortar: #1c1510;
   --gv-text: #e8e8e8;
@@ -16,7 +18,7 @@
   min-height: 100vh;
   overflow: hidden;
   color: var(--gv-text);
-  font-family: var(--font-body-family, "DM Sans", sans-serif);
+  font-family: var(--gv-font-body);
   /* Dark ashlar stone wall — staggered blocks, rough mortar */
   background-color: var(--gv-stone-dark);
   background-image:
@@ -251,7 +253,7 @@
 @keyframes gvEmblemOut { to { opacity: 0; transform: translate(-50%, -58%) scale(1.06); } }
 
 .gv-emblem-eyebrow {
-  font-family: var(--font-body-family, sans-serif);
+  font-family: var(--gv-font-body);
   font-size: 12px;
   letter-spacing: 0.5em;
   text-transform: uppercase;
@@ -260,7 +262,7 @@
   padding-left: 0.5em;
 }
 .gv-emblem-title {
-  font-family: var(--font-heading-family, "Bebas Neue", sans-serif);
+  font-family: var(--gv-font-heading);
   font-size: clamp(3.5rem, 13vw, 9rem);
   line-height: 0.86;
   letter-spacing: 0.04em;
@@ -290,7 +292,7 @@
 }
 
 .gv-eyebrow {
-  font-family: var(--font-body-family, sans-serif);
+  font-family: var(--gv-font-body);
   font-size: 10px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -312,7 +314,7 @@
 }
 
 .gv-hero-title {
-  font-family: var(--font-heading-family, "Bebas Neue", sans-serif);
+  font-family: var(--gv-font-heading);
   font-weight: var(--font-heading-weight, 400);
   font-size: clamp(3.2rem, 10vw, 7rem);
   line-height: 0.95;
@@ -323,7 +325,7 @@
   text-shadow: 0 4px 40px rgba(232, 105, 10, 0.2);
 }
 .gv-hero-sub {
-  font-family: var(--font-heading-family, "Bebas Neue", sans-serif);
+  font-family: var(--gv-font-heading);
   font-size: clamp(1.3rem, 3.5vw, 2rem);
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -369,7 +371,7 @@
   position: absolute;
   top: -38px;
   left: -10px;
-  font-family: var(--font-heading-family, "Bebas Neue", sans-serif);
+  font-family: var(--gv-font-heading);
   font-size: 5.5rem;
   line-height: 1;
   color: rgba(232, 105, 10, 0.14);
@@ -411,7 +413,7 @@
 .gv-session-tag { margin-bottom: 14px; }
 .gv-session-label {
   display: block;
-  font-family: var(--font-body-family, sans-serif);
+  font-family: var(--gv-font-body);
   font-size: 11px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -419,7 +421,7 @@
   margin-bottom: 8px;
 }
 .gv-session-title {
-  font-family: var(--font-heading-family, "Bebas Neue", sans-serif);
+  font-family: var(--gv-font-heading);
   font-weight: var(--font-heading-weight, 400);
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   line-height: 1.02;
@@ -451,7 +453,7 @@
 .gv-guide-copy { flex: 1; min-width: 0; }
 .gv-guide-copy .gv-eyebrow { margin-bottom: 10px; }
 .gv-guide-title {
-  font-family: var(--font-heading-family, "Bebas Neue", sans-serif);
+  font-family: var(--gv-font-heading);
   font-weight: var(--font-heading-weight, 400);
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   letter-spacing: 0.06em;

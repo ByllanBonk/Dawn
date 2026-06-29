@@ -3,6 +3,99 @@
   "sections": {
     "gristle-vault": {
       "type": "gristle-vault",
+      "blocks": {
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/watch?v=q3tf2NnffAs",
+            "video_title": "Rhythm, Groove and the C9",
+            "video_description": "Core rhythm approach through a blues progression. How to phrase, leave space, and make it sound like a conversation.",
+            "video_tag": "Rhythm · Phrasing"
+          }
+        },
+        "video_2": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/watch?v=LBHZn4yqqa0",
+            "video_title": "One Guitar, Full Band",
+            "video_description": "Solo arrangements combining rhythm, bass movement, and lead lines simultaneously.",
+            "video_tag": "Solo Guitar · Arrangement"
+          }
+        },
+        "video_3": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/watch?v=BmCQbpYT-T8",
+            "video_title": "Clinic: Gear, Chord Techniques and Tonus Diabolicus",
+            "video_description": "James Burton, Robben Ford, the Mahavishnu scale, hybrid picking reps.",
+            "video_tag": "Clinic · Tone · Theory"
+          }
+        },
+        "video_4": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/watch?v=oPiIXRel65U",
+            "video_title": "Jeff Beck and The Grip",
+            "video_description": "Hybrid picking mechanics, pinch harmonics, whammy tricks. The slightly wrong choices that made Beck impossible to copy.",
+            "video_tag": "Technique · Influence"
+          }
+        },
+        "video_5": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/watch?v=Y_SlPtbsnSI",
+            "video_title": "Chicken and Travis Picking Deep Dive",
+            "video_description": "Both techniques, both methods. The muted note is where both live or die.",
+            "video_tag": "Right Hand · Country · Fingerstyle"
+          }
+        },
+        "video_6": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/watch?v=H4bPfA9CVzI",
+            "video_title": "Harmonic Color and Weaponized Open Strings",
+            "video_description": "Chromatic approaches, pentatonic swaps, diminished arpeggios. The slightly wrong open string can be the best note in the room.",
+            "video_tag": "Harmony · Outside Playing"
+          }
+        },
+        "video_7": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/watch?v=nCEhYhFhS0E",
+            "video_title": "Live Rig Breakdown: Italian Tour",
+            "video_description": "Reverend signatures, Fishman Fluence, Tone King Royalist. A simple, well-chosen rig beats a complicated one every time.",
+            "video_tag": "Gear · Tone"
+          }
+        },
+        "video_8": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/watch?v=M2EE6kbKFtE",
+            "video_title": "Spank It: The 1988 Riff Decoded",
+            "video_description": "A cornerstone riff broken down completely. Two fingers alternating on adjacent strings. Sounds wild — it isn't.",
+            "video_tag": "Riff Breakdown · Technique"
+          }
+        },
+        "pdf_guide": {
+          "type": "pdf",
+          "settings": {
+            "pdf_title": "The Gristle Vault Master Guide",
+            "pdf_description": "Every concept from all eight sessions in one reference document. Techniques, tones, and theory from a lifetime of playing.",
+            "pdf_url": "https://cdn.shopify.com/s/files/1/0976/0210/9761/files/gristle_vault_guide.pdf?v=1782747864"
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5",
+        "video_6",
+        "video_7",
+        "video_8",
+        "pdf_guide"
+      ],
       "settings": {}
     }
   },
