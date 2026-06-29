@@ -42,6 +42,12 @@
     <span class="gv-smoke gv-smoke--2"></span>
     <span class="gv-smoke gv-smoke--3"></span>
     <span class="gv-torchlight"></span>
+    <span class="gv-ember gv-ember--1"></span>
+    <span class="gv-ember gv-ember--2"></span>
+    <span class="gv-ember gv-ember--3"></span>
+    <span class="gv-ember gv-ember--4"></span>
+    <span class="gv-ember gv-ember--5"></span>
+    <span class="gv-ember gv-ember--6"></span>
   </div>
 
   <div class="gv-inner">
@@ -49,7 +55,25 @@
     {%- comment -%} ——— Hero ——— {%- endcomment -%}
     <header class="gv-hero">
       <p class="gv-eyebrow">Members Only · The Vault Is Open</p>
-      <h1 class="gv-hero-title">{{ section.settings.heading }}</h1>
+
+      {%- if section.settings.hero_logo != blank -%}
+        <img
+          class="gv-hero-logo"
+          src="{{ section.settings.hero_logo | image_url: width: 1200 }}"
+          srcset="{{ section.settings.hero_logo | image_url: width: 600 }} 600w, {{ section.settings.hero_logo | image_url: width: 900 }} 900w, {{ section.settings.hero_logo | image_url: width: 1200 }} 1200w"
+          sizes="(min-width: 990px) 78vw, (min-width: 750px) 86vw, 94vw"
+          width="{{ section.settings.hero_logo.width }}"
+          height="{{ section.settings.hero_logo.height }}"
+          alt="{{ section.settings.heading | escape }}"
+        >
+      {%- else -%}
+        <img
+          class="gv-hero-logo"
+          src="{{ 'gristle-vault-logo-wide.png' | asset_url }}"
+          alt="{{ section.settings.heading | escape }}"
+        >
+      {%- endif -%}
+
       {% if section.settings.subheading != blank %}
         <p class="gv-hero-sub">{{ section.settings.subheading }}</p>
       {% endif %}
@@ -191,9 +215,15 @@
   "name": "Gristle Vault",
   "settings": [
     {
+      "type": "image_picker",
+      "id": "hero_logo",
+      "label": "Hero Logo",
+      "info": "Wide Gristle Vault logo. Falls back to the gristle-vault-logo-wide.png theme asset if left blank."
+    },
+    {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "Heading (logo alt text)",
       "default": "The Gristle Vault"
     },
     {
