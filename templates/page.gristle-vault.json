@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "gristle-vault": {
+      "type": "gristle-vault",
+      "settings": {}
+    }
+  },
+  "order": ["gristle-vault"]
+}
