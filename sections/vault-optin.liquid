@@ -15,7 +15,7 @@
 
 {% style %}
   .vopt {
-    --vopt-bg: #111111;
+    --vopt-bg: #0d0d0d;
     --vopt-card: #161616;
     --vopt-card-border: #222222;
     --vopt-card-dark: #181818;
@@ -110,52 +110,42 @@
     margin: 0;
   }
 
-  /* ——— 1. Nav ——— */
-  .vopt-nav { border-bottom: 1px solid #1e1e1e; }
+  /* ——— Hero (naked page, no nav) ——— */
+  .vopt-hero { padding: 56px 28px 0; }
 
-  .vopt-nav-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-block: 14px;
-  }
-
-  .vopt-brand {
-    font-family: var(--vopt-display);
-    font-size: 20px;
-    letter-spacing: 0.02em;
-    color: #ffffff;
-  }
-
-  .vopt-nav-tag {
+  .vopt-kicker {
+    margin: 0;
     font-family: var(--vopt-body);
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.14em;
+    line-height: 1.5;
     text-transform: uppercase;
     color: var(--vopt-accent);
-    background: #1c130b;
-    border: 1px solid #2a1a08;
-    border-radius: 40px;
-    padding: 5px 12px;
   }
 
-  /* ——— 2. Hero ——— */
-  .vopt-hero { padding: 44px 28px 0; }
-
   .vopt-h1 {
-    margin: 14px 0 0;
+    margin: 16px 0 0;
     font-family: var(--vopt-display);
     font-weight: 400;
-    font-size: 62px;
-    line-height: 0.9;
+    font-size: 84px;
+    line-height: 0.86;
     letter-spacing: 0.005em;
     text-transform: uppercase;
     color: var(--vopt-head);
   }
 
-  .vopt-hero-sub {
+  .vopt-hero-tagline {
     margin: 18px 0 0;
+    font-family: var(--vopt-body);
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.45;
+    color: #b0a898;
+  }
+
+  .vopt-hero-sub {
+    margin: 16px 0 0;
     max-width: 600px;
     font-size: 15px;
     line-height: 1.6;
@@ -611,8 +601,9 @@
   @media (max-width: 640px) {
     .vopt-wrap { padding-inline: 16px; }
     .vopt-divider { padding-inline: 16px; }
-    .vopt-hero { padding: 28px 16px 0; }
-    .vopt-h1 { font-size: 44px; }
+    .vopt-hero { padding: 36px 16px 0; }
+    .vopt-h1 { font-size: 50px; }
+    .vopt-hero-tagline { font-size: 16px; }
     .vopt-form-heading { font-size: 26px; }
 
     .vopt-split { grid-template-columns: 1fr; }
@@ -644,18 +635,11 @@
 
 <div class="vopt" id="vault-optin">
 
-  {%- comment -%} ——— 1. Minimal nav ——— {%- endcomment -%}
-  <nav class="vopt-nav">
-    <div class="vopt-nav-inner vopt-wrap">
-      <span class="vopt-brand">Greg Koch</span>
-      <span class="vopt-nav-tag">Free Resource</span>
-    </div>
-  </nav>
-
-  {%- comment -%} ——— 2. Hero ——— {%- endcomment -%}
+  {%- comment -%} ——— Hero (naked page, no header) ——— {%- endcomment -%}
   <header class="vopt-hero vopt-wrap">
-    <p class="vopt-eyebrow">8 Videos &middot; 4 Hours &middot; One Master PDF &middot; Completely Free</p>
-    <h1 class="vopt-h1">EVERY SECRET GREG PROBABLY SHOULDN&rsquo;T HAVE<br><span class="vopt-accent-text">SHARED.</span></h1>
+    <p class="vopt-kicker">8 Videos. 4+ Hours. One PDF that ties it all together. All of it free.</p>
+    <h1 class="vopt-h1">ACCESS THE<br><span class="vopt-accent-text">GRISTLE VAULT</span></h1>
+    <p class="vopt-hero-tagline">Every secret Greg probably shouldn&rsquo;t have shared.</p>
     <p class="vopt-hero-sub">Access the full Gristle Vault. Live clinics, technique masterclasses, a complete gear breakdown, and the 12-page reference PDF that ties it all together. All of it free. No credit card. No tricks.</p>
   </header>
 
