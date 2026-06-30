@@ -199,6 +199,17 @@
         "foot": "Here’s what’s inside the free stash."
       }
     },
+    "cta": {
+      "type": "vault-cta",
+      "settings": {
+        "show_top_divider": false,
+        "heading": "4+ Hours. 8 Videos. 1 Master PDF. All Free.",
+        "subhead": "Enter your email and Greg sends the whole stash straight to your inbox.",
+        "button_label": "YES, SEND ME THE VAULT →",
+        "button_link": "",
+        "consent": "Free. No credit card. No nonsense."
+      }
+    },
     "letter": {
       "type": "vault-letter",
       "settings": {
@@ -209,20 +220,9 @@
         "caption": "Greg Koch",
         "caption_role": "The Gristle Vault",
         "lead": "Yeah. It’s actually free.",
-        "body": "<p>Look, I have spent decades up on stages and holed up in clinics handing this stuff over to players who actually want to go deeper into the Ways of Gristle. </p><p>The techniques in the Vault are the ones <strong>folks have asked me about backstage more times than I can count</strong>, in the deep and abiding Ways of Gristle.</p><p>The chicken picking. The chord substitutions. The rig. How to play outside without sounding like you just tumbled down a flight of stairs mid-solo.<br/></p><p>It has all been compiled into a 12-page reference PDF so you can keep it propped open while you watch, I can dig it. And <strong>the whole thing is free because that is how we roll, ancient code and all.</strong><br/><br/>Give your People of the Gristle Night the real thing. They will stick around. We ride!</p><p><strong>Greg Koch</strong></p>",
+        "body": "<p>Look, I have spent decades up on stages and holed up in clinics handing this stuff over to players who actually want to go deeper into the Ways of Gristle. </p><p>The techniques in the Vault are the ones <strong>folks have asked me about backstage more times than I can count</strong>, in the deep and abiding Ways of Gristle.</p><p>The chicken picking. The chord substitutions. The rig. How to play outside without sounding like you just tumbled down a flight of stairs mid-solo.<br/></p><p>It has all been compiled into a 12-page reference PDF so you can keep it propped open while you watch, I can dig it. And <strong>the whole thing is free, because the real payment is you actually using it </strong>instead of letting it gather dust in some forgotten browser tab. </p><p>Give your People of the Gristle Night the real thing. They will stick around. We ride!</p><p><strong>Greg Koch</strong></p>",
         "pullquote_line1": "This is not a teaser.",
         "pullquote_line2": "It is the full stash."
-      }
-    },
-    "cta": {
-      "type": "vault-cta",
-      "settings": {
-        "show_top_divider": false,
-        "heading": "4+ Hours. 8 Videos. 1 Master PDF. All Free.",
-        "subhead": "Enter your email and Greg sends the whole stash straight to your inbox.",
-        "button_label": "YES, SEND ME THE VAULT →",
-        "button_link": "",
-        "consent": "Free. No credit card. No nonsense."
       }
     },
     "faq": {
