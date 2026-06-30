@@ -13,9 +13,21 @@
     <p class="vopt-section-sub">{{ section.settings.subhead | escape }}</p>
   {%- endif -%}
 
+  {%- comment -%}
+    Each lesson gets a distinct scene + waveform. If a card has no emblem set
+    (for example after a theme-editor reset), fall back to a unique emblem by
+    position so the cards never collapse into eight identical wells.
+  {%- endcomment -%}
+  {%- assign emblem_fallbacks = "pick,travis,chords,outside,tone,blues,song,clinic" | split: "," -%}
+  {%- assign card_index = 0 -%}
   <div class="vopt-grid">
     {%- for block in section.blocks -%}
       {%- if block.type == 'card' -%}
+        {%- assign emblem = block.settings.emblem -%}
+        {%- if emblem == blank -%}
+          {%- assign emblem = emblem_fallbacks[card_index] | default: 'pick' -%}
+        {%- endif -%}
+        {%- assign card_index = card_index | plus: 1 -%}
         <article class="vopt-card-item" data-w="{{ block.settings.width | default: 'third' }}" {{ block.shopify_attributes }}>
           <div class="vopt-card-head">
             {%- if block.settings.free_label != blank -%}
@@ -24,9 +36,9 @@
             <span class="vopt-card-rivet" aria-hidden="true"></span>
           </div>
           <div class="vopt-card-well">
-            {% render 'vault-scene', key: block.settings.emblem %}
+            {% render 'vault-scene', key: emblem %}
             <span class="vopt-play" aria-hidden="true"></span>
-            <span class="vopt-wave vopt-wave--{{ block.settings.emblem | escape }}" aria-hidden="true"></span>
+            <span class="vopt-wave vopt-wave--{{ emblem | escape }}" aria-hidden="true"></span>
           </div>
           <div class="vopt-card-body">
             {%- if block.settings.title != blank -%}
