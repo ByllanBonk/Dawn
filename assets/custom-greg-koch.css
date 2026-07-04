@@ -190,6 +190,17 @@ a.button,
   color: var(--gk-text) !important;
 }
 
+/* Text logo: slightly larger than Dawn's default (2rem / 2.4rem) */
+.header__heading-link .h2 {
+  font-size: calc(var(--font-heading-scale) * 2.2rem);
+}
+
+@media screen and (min-width: 750px) {
+  .header__heading-link .h2 {
+    font-size: calc(var(--font-heading-scale) * 2.7rem);
+  }
+}
+
 /* Navigation links */
 .header__menu-item,
 .header__menu-item span,
@@ -208,6 +219,16 @@ a.button,
 .header__menu-item:hover span,
 .list-menu__item--link:hover {
   color: var(--gk-accent) !important;
+}
+
+/* Top-level desktop nav only (excludes dropdown submenus, footer, and
+   mobile drawer): larger size, slightly tighter tracking */
+.header__inline-menu > ul > li > .header__menu-item,
+.header__inline-menu > ul > li > .header__menu-item span,
+.header__inline-menu > ul > li > header-menu > details > .header__menu-item,
+.header__inline-menu > ul > li > header-menu > details > .header__menu-item span {
+  font-size: 1.1rem;
+  letter-spacing: 1.5px;
 }
 
 /* Header icons */
