@@ -9,87 +9,87 @@
  */
 {
   "sections": {
-    "banner": {
-      "type": "main-collection-banner",
-      "settings": {
-        "show_collection_description": true,
-        "show_collection_image": false,
-        "color_scheme": "scheme-1"
-      }
-    },
     "gk_shop_categories_tfaetK": {
       "type": "gk-shop-categories",
       "blocks": {
         "category_UMLxAC": {
           "type": "category",
           "settings": {
+            "collection": "new",
             "title": "NEW!",
-            "desc": "Latest drops and fresh arrivals.",
-            "cta": "Explore",
-            "collection": "new"
+            "description": "",
+            "icon": "auto",
+            "featured": false
           }
         },
         "category_ityGCR": {
           "type": "category",
           "settings": {
+            "collection": "cds",
             "title": "CDs",
-            "desc": "Studio albums and live records.",
-            "cta": "Explore",
-            "collection": "cds"
+            "description": "",
+            "icon": "auto",
+            "featured": false
           }
         },
         "category_6BM7nV": {
           "type": "category",
           "settings": {
+            "collection": "",
             "title": "CDs",
-            "desc": "Studio albums and live records.",
-            "cta": "Explore",
-            "collection": ""
+            "description": "",
+            "icon": "auto",
+            "featured": false
           }
         },
         "category_AqaeTn": {
           "type": "category",
           "settings": {
+            "collection": "vinyl",
             "title": "Vinyl",
-            "desc": "Wax. Analog. Real.",
-            "cta": "Explore",
-            "collection": "vinyl"
+            "description": "",
+            "icon": "auto",
+            "featured": false
           }
         },
         "category_7bBD8L": {
           "type": "category",
           "settings": {
+            "collection": "merch",
             "title": "Merch",
-            "desc": "Wear the gristle.",
-            "cta": "Explore",
-            "collection": "merch"
+            "description": "",
+            "icon": "auto",
+            "featured": false
           }
         },
         "category_tmbJC9": {
           "type": "category",
           "settings": {
+            "collection": "gear",
             "title": "Gear",
-            "desc": "Pedals, pickups, tone tools.",
-            "cta": "Explore",
-            "collection": "gear"
+            "description": "",
+            "icon": "auto",
+            "featured": false
           }
         },
         "category_BkTJfQ": {
           "type": "category",
           "settings": {
+            "collection": "instructional-books",
             "title": "Instructional Books",
-            "desc": "Learn from the Gristleman.",
-            "cta": "Explore",
-            "collection": "instructional-books"
+            "description": "",
+            "icon": "auto",
+            "featured": false
           }
         },
         "category_DgjBa6": {
           "type": "category",
           "settings": {
+            "collection": "dvds",
             "title": "DVDs",
-            "desc": "Classic guitar instruction.",
-            "cta": "Explore",
-            "collection": "dvds"
+            "description": "",
+            "icon": "auto",
+            "featured": false
           }
         }
       },
@@ -107,7 +107,15 @@
       "settings": {
         "kicker": "Browse the goods",
         "heading": "The Gristle Shop",
-        "subtext": "<p>Records. Gear. Tools of tone. Wear the sound.</p>"
+        "subheading": "<p>Records. Gear. Tools of tone. Wear the sound.</p>"
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
       }
     },
     "product-grid": {
@@ -132,8 +140,8 @@
     }
   },
   "order": [
-    "banner",
     "gk_shop_categories_tfaetK",
+    "banner",
     "product-grid"
   ]
 }
