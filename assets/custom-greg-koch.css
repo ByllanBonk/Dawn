@@ -210,6 +210,16 @@ a.button,
   color: var(--gk-accent) !important;
 }
 
+/* Top-level desktop nav only (excludes dropdown submenus, footer, and
+   mobile drawer): larger size, slightly tighter tracking */
+.header__inline-menu > ul > li > .header__menu-item,
+.header__inline-menu > ul > li > .header__menu-item span,
+.header__inline-menu > ul > li > header-menu > details > .header__menu-item,
+.header__inline-menu > ul > li > header-menu > details > .header__menu-item span {
+  font-size: 1.1rem;
+  letter-spacing: 1.5px;
+}
+
 /* Header icons */
 .header__icon,
 .header__icon svg,
