@@ -7,16 +7,16 @@
     overflow: hidden;
   }
 
-  /* Soft radial glow behind the title area (matches mockup proportions) */
+  /* Cinematic radial glow behind the headline */
   .gk-press-hero::before {
     content: '';
     position: absolute;
-    top: 4%;
+    top: -6%;
     left: 50%;
     transform: translateX(-50%);
-    width: 560px;
-    height: 320px;
-    background: radial-gradient(ellipse at center, rgba(200, 96, 26, 0.16) 0%, transparent 65%);
+    width: 900px;
+    height: 480px;
+    background: radial-gradient(ellipse at center, rgba(232, 105, 10, 0.11) 0%, transparent 65%);
     pointer-events: none;
     z-index: 0;
   }
@@ -29,7 +29,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(to right, transparent, rgba(200, 96, 26, 0.3), transparent);
+    background: linear-gradient(to right, transparent, rgba(232, 105, 10, 0.3), transparent);
     z-index: 1;
   }
 
@@ -43,34 +43,36 @@
 
   .gk-press-hero__content {
     text-align: center;
-    max-width: 800px;
+    max-width: 860px;
     margin: 0 auto;
   }
 
   /* Kicker - "IN THE PRESS" */
   .gk-press-hero__eyebrow {
     display: block;
-    color: #C8601A;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 6px;
+    font-family: 'DM Mono', monospace;
+    color: #E8690A;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 5px;
     text-transform: uppercase;
-    margin-bottom: 18px;
+    margin-bottom: 22px;
   }
 
   /* Headline - "PRESS & MEDIA" with orange ampersand */
   .gk-press-hero__heading {
-    font-size: clamp(2.6rem, 8vw, 3.75rem);
-    font-weight: 900;
-    color: #FFFFFF;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.85rem, 8vw, 4.5rem);
+    font-weight: 400;
+    color: #F2F2F2;
     text-transform: uppercase;
-    letter-spacing: -2px;
-    margin: 0 0 4px;
-    line-height: 0.92;
+    letter-spacing: 3px;
+    margin: 0 0 8px;
+    line-height: 0.95;
   }
 
   .gk-press-hero__heading .gk-ph-amp {
-    color: #C8601A;
+    color: #E8690A;
   }
 
   /* Divider: hairlines + 45deg diamond */
@@ -79,7 +81,7 @@
     align-items: center;
     justify-content: center;
     gap: 14px;
-    margin: 22px auto;
+    margin: 28px auto;
     width: auto;
   }
 
@@ -87,46 +89,46 @@
     flex: 0 0 80px;
     width: 80px;
     height: 1px;
-    background: linear-gradient(to right, transparent, rgba(200, 96, 26, 0.6));
+    background: linear-gradient(to right, transparent, rgba(232, 105, 10, 0.55));
   }
 
   .gk-press-hero__divider-line:last-child {
-    background: linear-gradient(to right, rgba(200, 96, 26, 0.6), transparent);
+    background: linear-gradient(to right, rgba(232, 105, 10, 0.55), transparent);
   }
 
   .gk-press-hero__divider-dot {
     width: 7px;
     height: 7px;
-    background-color: #C8601A;
+    background-color: #E8690A;
     transform: rotate(45deg);
     flex-shrink: 0;
-    box-shadow: 0 0 12px rgba(200, 96, 26, 0.85), 0 0 24px rgba(200, 96, 26, 0.35);
+    box-shadow: 0 0 12px rgba(232, 105, 10, 0.85), 0 0 24px rgba(232, 105, 10, 0.35);
   }
 
-  /* Lede paragraph (small, mixed-case, matches mockup) */
+  /* Lede paragraph */
   .gk-press-hero__subheading {
     font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
-    font-size: 13px;
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
     font-weight: 400;
     text-transform: none;
-    letter-spacing: 0.3px;
-    color: rgba(255, 255, 255, 0.55);
-    line-height: 1.7;
-    margin: 0 auto 28px;
-    max-width: 560px;
+    letter-spacing: 0.2px;
+    color: #A6A6A6;
+    line-height: 1.8;
+    margin: 0 auto 36px;
+    max-width: 640px;
   }
 
   /* Optional second paragraph */
   .gk-press-hero__intro {
     font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
-    font-size: 12px;
+    font-size: 1rem;
     font-weight: 400;
     text-transform: none;
-    letter-spacing: 0.3px;
-    color: rgba(255, 255, 255, 0.38);
-    line-height: 1.7;
-    max-width: 520px;
-    margin: -14px auto 28px;
+    letter-spacing: 0.2px;
+    color: #8A8A8A;
+    line-height: 1.75;
+    max-width: 580px;
+    margin: -18px auto 36px;
   }
 
   /* ── Press Kit CTA - uses .button (molten orange from base.css) ── */
@@ -134,7 +136,7 @@
     margin: 0 auto 8px;
   }
 
-  /* Press Kit button - exact molten match to the mockup .b3 */
+  /* Press Kit button - molten orange, matched to the site accent */
   .gk-press-hero__kit-btn {
     position: relative;
     display: inline-flex;
@@ -143,32 +145,32 @@
     overflow: hidden;
     text-decoration: none;
     border: none !important;
-    border-radius: 10px;
-    padding: 15px 30px !important;
+    border-radius: 8px;
+    padding: 17px 36px !important;
     min-width: 0;
     min-height: 0;
     font-weight: 800;
-    font-size: 12px !important;
+    font-size: 13px !important;
     letter-spacing: 2.5px !important;
     text-transform: uppercase;
     color: #1a0e04 !important;
-    background: linear-gradient(180deg, #f0a85a 0%, #c8601a 60%, #a8490d 100%) !important;
+    background: linear-gradient(180deg, #f2a35c 0%, #E8690A 58%, #b54f08 100%) !important;
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.5) inset,
       0 -3px 8px rgba(100, 40, 0, 0.5) inset,
-      0 10px 24px -8px rgba(200, 96, 26, 0.75),
+      0 10px 24px -8px rgba(232, 105, 10, 0.75),
       0 3px 6px rgba(0, 0, 0, 0.6) !important;
     transition: transform 0.15s ease, filter 0.25s ease;
   }
 
   .gk-press-hero__kit-btn:hover {
     transform: translateY(-2px);
-    filter: brightness(1.04);
+    filter: brightness(1.05);
   }
 
   .gk-press-hero__kit-btn svg {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
     fill: #1a0e04;
     flex-shrink: 0;
     position: relative;
@@ -177,45 +179,51 @@
 
   /* ── Featured In ── */
   .gk-press-hero__featured-in {
-    margin-top: 52px;
-    padding-top: 36px;
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    margin-top: 72px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .gk-press-hero__featured-in-label {
+    font-family: 'DM Mono', monospace;
     text-transform: uppercase;
-    letter-spacing: 4px;
-    font-size: 10px;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 5px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.45);
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
   }
 
-  /* Cards grid: 3-up desktop, 2-up tablet/mobile */
+  /* Cards grid: 3-up desktop, 2-up tablet, 2-up (then 1-up) mobile */
   .gk-press-hero__pub-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    max-width: 680px;
+    gap: 16px;
+    max-width: 840px;
     margin: 0 auto;
   }
 
   /* Each publication card */
   .gk-press-hero__pub-card {
     position: relative;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 10px;
-    padding: 20px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #171717 0%, #101010 100%);
+    border: 1px solid #262626;
+    border-radius: 6px;
+    padding: 28px 18px;
     text-align: center;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    font-family: 'Bebas Neue', sans-serif;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 11px;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.6);
-    transition: border-color 200ms ease, color 200ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    letter-spacing: 2.5px;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.15;
+    color: #CFCFCF;
+    transition: border-color 200ms ease, color 200ms ease, box-shadow 200ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
     overflow: hidden;
   }
 
@@ -227,40 +235,68 @@
     left: 14%;
     right: 14%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
     pointer-events: none;
   }
 
   .gk-press-hero__pub-card:hover {
-    border-color: rgba(200, 96, 26, 0.5);
-    color: #f0a060;
-    transform: translateY(-2px);
+    border-color: rgba(232, 105, 10, 0.6);
+    color: #F0A060;
+    transform: translateY(-3px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 12px 28px rgba(0, 0, 0, 0.45),
+      0 0 24px rgba(232, 105, 10, 0.12);
   }
 
   /* ── Responsive ── */
   @media screen and (max-width: 989px) {
     .gk-press-hero::before {
-      width: 600px;
-      height: 380px;
-    }
-  }
-
-  @media screen and (max-width: 749px) {
-    .gk-press-hero__heading {
-      font-size: clamp(2.2rem, 12vw, 3.2rem);
-      letter-spacing: 1px;
+      width: 640px;
+      height: 400px;
     }
     .gk-press-hero__pub-grid {
       grid-template-columns: repeat(2, 1fr);
     }
-    .gk-press-hero__divider {
-      width: 200px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .gk-press-hero {
+      padding: {{ section.settings.padding_top | times: 0.75 | round }}px 0 {{ section.settings.padding_bottom | times: 0.75 | round }}px;
+    }
+    .gk-press-hero__heading {
+      font-size: clamp(2.6rem, 12vw, 3.25rem);
+      letter-spacing: 2px;
+    }
+    .gk-press-hero__subheading {
+      font-size: 1rem;
+    }
+    .gk-press-hero__divider-line {
+      flex: 0 0 60px;
+      width: 60px;
+    }
+    .gk-press-hero__featured-in {
+      margin-top: 56px;
+      padding-top: 40px;
+    }
+    .gk-press-hero__pub-card {
+      padding: 22px 14px;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .gk-press-hero__pub-grid {
+      grid-template-columns: 1fr;
+      max-width: 320px;
     }
   }
 
   /* ── Reduced motion ── */
   @media (prefers-reduced-motion: reduce) {
-    .gk-press-hero__pub-card:hover {
+    .gk-press-hero__pub-card:hover,
+    .gk-press-hero__kit-btn:hover {
       transform: none;
     }
   }

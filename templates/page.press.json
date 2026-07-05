@@ -34,7 +34,7 @@
         "pub_4": "Premier Guitar",
         "pub_5": "Guitar World",
         "pub_6": "Palm Beach Arts Paper",
-        "padding_top": 96,
+        "padding_top": 120,
         "padding_bottom": 96
       }
     },
@@ -82,9 +82,9 @@
         "video_url": "https://www.youtube.com/watch?v=oLOg9ZLiHtg",
         "articles_eyebrow": "In the Press",
         "articles_heading": "Featured Coverage",
-        "section_gap": 64,
-        "padding_top": 64,
-        "padding_bottom": 64
+        "section_gap": 80,
+        "padding_top": 72,
+        "padding_bottom": 80
       }
     },
     "gk_press_quotes_nHhdmE": {
@@ -96,7 +96,7 @@
             "quote": "The best guitarist working today.",
             "attribution": "Palm Beach Arts Paper",
             "source": "",
-            "emphasis": true
+            "emphasis": false
           }
         },
         "quote_block_g7FGhy": {
@@ -114,7 +114,7 @@
             "quote": "I believe Greg Koch is pound for pound the\nbest guitar player in the world today. His, tone,\nfeel and style are unrivaled in today’s guitar\nplaying community. He is scary good.",
             "attribution": "Joe Bonamassa",
             "source": "",
-            "emphasis": false
+            "emphasis": true
           }
         }
       },
@@ -128,8 +128,8 @@
         "show_header": true,
         "eyebrow": "What They're Saying",
         "heading": "Press Praise",
-        "padding_top": 64,
-        "padding_bottom": 64
+        "padding_top": 72,
+        "padding_bottom": 96
       }
     }
   },

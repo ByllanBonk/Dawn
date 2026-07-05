@@ -12,9 +12,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 700px;
-    height: 400px;
-    background: radial-gradient(ellipse at center, rgba(232, 105, 10, 0.04) 0%, transparent 70%);
+    width: 780px;
+    height: 480px;
+    background: radial-gradient(ellipse at center, rgba(232, 105, 10, 0.05) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
@@ -30,7 +30,7 @@
   /* ── Section header ── */
   .gk-press-quotes__header {
     text-align: center;
-    margin-bottom: 64px;
+    margin-bottom: 72px;
   }
 
   .gk-press-quotes__eyebrow {
@@ -38,6 +38,7 @@
     text-transform: uppercase;
     letter-spacing: 4px;
     font-size: 0.82rem;
+    font-weight: 500;
     color: #E8690A;
     margin-bottom: 16px;
     display: block;
@@ -45,8 +46,8 @@
 
   .gk-press-quotes__heading {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    color: #E8E8E8;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    color: #F0F0F0;
     text-transform: uppercase;
     letter-spacing: 3px;
     margin: 0;
@@ -58,21 +59,27 @@
     display: flex;
     flex-direction: column;
     gap: 0;
-    max-width: 900px;
+    max-width: 880px;
     margin: 0 auto;
   }
 
   /* ── Individual quote block ── */
   .gk-press-quotes__item {
-    padding: 52px 48px;
+    padding: 64px 48px;
     text-align: center;
     position: relative;
-    border-bottom: 1px solid #1C1C1C;
     transition: background-color 150ms ease;
   }
 
-  .gk-press-quotes__item:first-child {
-    border-top: 1px solid #1C1C1C;
+  /* Subtle gradient hairline divider between quotes */
+  .gk-press-quotes__item + .gk-press-quotes__item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 12%;
+    right: 12%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #2C2C2C, transparent);
   }
 
   .gk-press-quotes__item:hover {
@@ -82,11 +89,11 @@
   /* Large decorative quote mark */
   .gk-press-quotes__mark {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 3.5rem;
+    font-size: 4rem;
     color: #E8690A;
     line-height: 1;
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
     text-shadow: 0 0 20px rgba(232, 105, 10, 0.35);
     font-style: normal;
     user-select: none;
@@ -95,17 +102,36 @@
   /* Quote text */
   .gk-press-quotes__text {
     font-family: 'DM Sans', sans-serif;
-    font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
     font-style: italic;
-    color: #E8E8E8;
-    line-height: 1.55;
-    margin: 0 0 28px 0;
+    color: #EDEDED;
+    line-height: 1.6;
+    margin: 0 0 32px 0;
     letter-spacing: 0.01em;
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Emphasis quote — the visual centerpiece of the section */
+  .gk-press-quotes__item--emphasis {
+    padding: 72px 48px;
+  }
+
+  .gk-press-quotes__item--emphasis .gk-press-quotes__mark {
+    font-size: 4.75rem;
+    text-shadow: 0 0 24px rgba(232, 105, 10, 0.5);
   }
 
   .gk-press-quotes__item--emphasis .gk-press-quotes__text {
-    font-size: clamp(1.45rem, 3vw, 2rem);
-    color: #F0F0F0;
+    font-size: clamp(1.5rem, 2.8vw, 2rem);
+    font-weight: 500;
+    color: #F7F7F7;
+    line-height: 1.5;
+  }
+
+  .gk-press-quotes__item--emphasis .gk-press-quotes__rule {
+    width: 56px;
   }
 
   /* Orange accent rule */
@@ -113,7 +139,7 @@
     width: 40px;
     height: 2px;
     background-color: #E8690A;
-    margin: 0 auto 20px;
+    margin: 0 auto 22px;
     box-shadow: 0 0 8px rgba(232, 105, 10, 0.5);
   }
 
@@ -122,14 +148,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
   }
 
   .gk-press-quotes__author {
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 3px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 500;
     color: #E8690A;
     display: block;
   }
@@ -138,26 +165,42 @@
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-size: 0.7rem;
-    color: #555555;
+    font-size: 0.75rem;
+    color: #6E6E6E;
     display: block;
   }
 
   @media screen and (max-width: 749px) {
+    .gk-press-quotes {
+      padding: {{ section.settings.padding_top | times: 0.85 | round }}px 0 {{ section.settings.padding_bottom | times: 0.85 | round }}px;
+    }
+
+    .gk-press-quotes__header {
+      margin-bottom: 52px;
+    }
+
     .gk-press-quotes__item {
-      padding: 40px 24px;
+      padding: 48px 20px;
+    }
+
+    .gk-press-quotes__item--emphasis {
+      padding: 56px 20px;
     }
 
     .gk-press-quotes__text {
-      font-size: clamp(1.1rem, 5vw, 1.4rem);
+      font-size: clamp(1.125rem, 5vw, 1.35rem);
     }
 
     .gk-press-quotes__item--emphasis .gk-press-quotes__text {
-      font-size: clamp(1.2rem, 5.5vw, 1.55rem);
+      font-size: clamp(1.3rem, 5.5vw, 1.65rem);
     }
 
     .gk-press-quotes__mark {
-      font-size: 2.8rem;
+      font-size: 3.2rem;
+    }
+
+    .gk-press-quotes__item--emphasis .gk-press-quotes__mark {
+      font-size: 3.75rem;
     }
   }
 {%- endstyle -%}
