@@ -35,9 +35,13 @@
           }
         }
       },
-      "block_order": ["bullet_voiced", "bullet_knobs", "bullet_mini"],
+      "block_order": [
+        "bullet_voiced",
+        "bullet_knobs",
+        "bullet_mini"
+      ],
       "settings": {
-        "product": "the-lil-heat-93",
+        "product": "lil-heat-overdrive-pedal-93",
         "low_stock_threshold": 5,
         "kicker": "A Tone City x Greg Koch collaboration",
         "heading_line1": "A little heat.",
@@ -68,13 +72,17 @@
           }
         }
       },
-      "block_order": ["point_breakup", "point_simple"],
+      "block_order": [
+        "point_breakup",
+        "point_simple"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "The Gristle Lowdown",
         "heading": "Some very scientific tweaks",
         "body": "<p>The good folks at Tone City sent me their pedals and I finally went through the lot. They all sound pretty damn good. The one that most tripped my trigger was their low-gain overdrive, and the tweaks I had in mind were very scientific. <strong>I needed an ass hair more gain and an ass hair more low end.</strong></p><p>They obliged, then added a heat knob to push the whole affair further into the fire. Thus the Lil Heat was born, a fiery little box that makes your amp feel like a natural extension of itself.</p><p>It does the edge-of-breakup thing with great aplomb, and it stacks happily with whatever else lives on your board.</p><p>All of that in a mini enclosure, at a price that requires no committee meeting. Sometimes you need a Lil Heat. I can dig it.</p>",
         "signature": "Greg Koch",
+        "image": "shopify://shop_images/3d0040c2-f5c0-4ff5-873a-a65f26079d99.png",
         "caption": "Greg Koch",
         "outro": "<p>True bypass, mono in and out, standard pedal power. <strong>The most affordable way yet to walk the Ways of Gristle.</strong></p>"
       }
@@ -115,7 +123,12 @@
           }
         }
       },
-      "block_order": ["feat_breakup", "feat_knobs", "feat_stack", "feat_mini"],
+      "block_order": [
+        "feat_breakup",
+        "feat_knobs",
+        "feat_stack",
+        "feat_mini"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "What you're plugging into",
@@ -141,12 +154,15 @@
           }
         }
       },
-      "block_order": ["quote_forum", "quote_buyer"],
+      "block_order": [
+        "quote_forum",
+        "quote_buyer"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Hear it sizzle",
         "heading": "A little box with a big mouth",
-        "video_embed_url": "https://www.youtube.com/embed/sQJZIabUgE8",
+        "video_embed_url": "https://www.youtube.com/watch?v=Z2ErMqK9zdQ",
         "video_title": "Tone City Lil Heat overdrive, designed by Greg Koch",
         "video_caption": "Greg demos the Lil Heat for Andertons",
         "testimonials_heading": "What People Are Saying About the Lil Heat",
@@ -202,7 +218,13 @@
           }
         }
       },
-      "block_order": ["q_drive", "q_amp", "q_stack", "q_power", "q_shipping"],
+      "block_order": [
+        "q_drive",
+        "q_amp",
+        "q_stack",
+        "q_power",
+        "q_shipping"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Common questions",
@@ -225,5 +247,13 @@
       }
     }
   },
-  "order": ["hero", "problem", "features", "proof", "quote", "faq", "cta"]
+  "order": [
+    "hero",
+    "problem",
+    "features",
+    "proof",
+    "quote",
+    "faq",
+    "cta"
+  ]
 }
