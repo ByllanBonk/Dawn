@@ -1,0 +1,65 @@
+{% comment %}
+  GK Stream + Follow — one platform tile.
+  Accepts: block (a 'tile' block), index (0-based position within its grid,
+  used for the staggered entrance delay).
+  Icon resolution: explicit preset choice wins; 'auto' matches the platform
+  name against the gk-sf-icon library; an uploaded custom icon overrides both.
+{% endcomment %}
+{%- liquid
+  assign icon_key = block.settings.icon
+  if icon_key == 'auto' or icon_key == blank
+    assign name_key = block.settings.platform_name | downcase | strip
+    if name_key contains 'spotify'
+      assign icon_key = 'spotify'
+    elsif name_key contains 'youtube music'
+      assign icon_key = 'youtube_music'
+    elsif name_key contains 'youtube'
+      assign icon_key = 'youtube'
+    elsif name_key contains 'apple podcast'
+      assign icon_key = 'podcast'
+    elsif name_key contains 'apple'
+      assign icon_key = 'apple'
+    elsif name_key contains 'bandcamp'
+      assign icon_key = 'bandcamp'
+    elsif name_key contains 'podcast'
+      assign icon_key = 'podcast'
+    elsif name_key contains 'instagram'
+      assign icon_key = 'instagram'
+    elsif name_key contains 'facebook'
+      assign icon_key = 'facebook'
+    elsif name_key contains 'tiktok'
+      assign icon_key = 'tiktok'
+    elsif name_key contains 'twitch'
+      assign icon_key = 'twitch'
+    elsif name_key == 'x' or name_key contains 'twitter'
+      assign icon_key = 'x'
+    else
+      assign icon_key = 'note'
+    endif
+  endif
+-%}
+<a
+  class="gk-sf-tile"
+  {% if block.settings.url != blank %}
+    href="{{ block.settings.url }}" target="_blank" rel="noopener"
+  {% else %}
+    role="link" aria-disabled="true"
+  {% endif %}
+  style="--i: {{ index | default: 0 }};"
+  {{ block.shopify_attributes }}
+>
+  <span class="gk-sf-tile__icon" aria-hidden="true">
+    {%- if block.settings.custom_icon != blank -%}
+      <img
+        src="{{ block.settings.custom_icon | image_url: width: 120 }}"
+        alt=""
+        loading="lazy"
+        width="40"
+        height="40"
+      >
+    {%- else -%}
+      {%- render 'gk-sf-icon', icon: icon_key -%}
+    {%- endif -%}
+  </span>
+  <span class="gk-sf-tile__name">{{ block.settings.platform_name | escape }}</span>
+</a>

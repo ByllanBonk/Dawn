@@ -1,384 +1,599 @@
 {% comment %}
-  GK Stream + Follow (Modern — dark premium / burnt-orange redesign)
-  4 fixed columns: Stream Greg / Stream KMT / Podcast / Watch Greg Live
-  - platform_link blocks get assigned to a column via dropdown
-  - follow_link blocks render as buttons under FOLLOW
-  Aesthetic only: all hrefs come from block.settings.url (unchanged).
+  GK Stream + Follow — tabbed icon-tile rebuild.
+  One streaming grid with a Greg/KMT tab toggle, a podcast grid, and a
+  unified follow/live row. Every tile is a repeatable 'tile' block assigned
+  to a group from the theme editor; icons come from the gk-sf-icon snippet
+  (auto-matched by platform name) with a per-block image override.
+  Motion: staggered entrance on scroll-in, hover lift + cursor-tracked 3D
+  tilt, all transform-only and disabled under prefers-reduced-motion.
 {% endcomment %}
 
-<section class="gk-stream" data-section-id="{{ section.id }}">
-  <div class="gk-stream__inner">
+{%- liquid
+  assign greg_count = 0
+  assign kmt_count = 0
+  assign podcast_count = 0
+  assign follow_count = 0
+  for block in section.blocks
+    case block.settings.group
+      when 'stream_greg'
+        assign greg_count = greg_count | plus: 1
+      when 'stream_kmt'
+        assign kmt_count = kmt_count | plus: 1
+      when 'podcast'
+        assign podcast_count = podcast_count | plus: 1
+      when 'follow'
+        assign follow_count = follow_count | plus: 1
+    endcase
+  endfor
+
+  assign active_tab = section.settings.default_tab
+  if greg_count == 0
+    assign active_tab = 'kmt'
+  elsif kmt_count == 0
+    assign active_tab = 'greg'
+  endif
+  assign show_tabs = false
+  if greg_count > 0 and kmt_count > 0
+    assign show_tabs = true
+  endif
+-%}
+
+<gk-stream-follow
+  class="gk-sf"
+  data-section-id="{{ section.id }}"
+  style="background: {{ section.settings.bg_color }}; padding: {{ section.settings.pad_y }}px 20px;"
+>
+  <div class="gk-sf__inner">
     {% if section.settings.eyebrow != blank %}
-      <p class="sf-eyebrow"><span class="glow-dot"></span>{{ section.settings.eyebrow }}</p>
+      <p class="gk-sf__eyebrow"><span class="gk-sf-dot" aria-hidden="true"></span>{{ section.settings.eyebrow }}</p>
     {% endif %}
 
     {% if section.settings.heading != blank %}
-      <h2 class="sf-heading">{{ section.settings.heading }}</h2>
+      <h2 class="gk-sf__heading">{{ section.settings.heading }}</h2>
     {% endif %}
 
     {% if section.settings.subtext != blank %}
-      <p class="sf-sub">{{ section.settings.subtext }}</p>
+      <p class="gk-sf__sub">{{ section.settings.subtext }}</p>
     {% endif %}
 
-    {% assign col_keys = "stream_greg,stream_kmt,podcast,watch_live" | split: "," %}
+    {%- if greg_count > 0 or kmt_count > 0 -%}
+      <div class="gk-sf-group">
+        <div class="gk-sf-group__head">
+          <span class="gk-sf-label"><span class="gk-sf-dot" aria-hidden="true"></span>{{ section.settings.stream_title }}</span>
 
-    <div class="sf-grid" role="list">
-      {% for col in col_keys %}
-        <div class="sf-card" role="listitem">
-          <div class="sf-card-label">
-            {% case col %}
-              {% when "stream_greg" %}{{ section.settings.col_1_title }}
-              {% when "stream_kmt" %}{{ section.settings.col_2_title }}
-              {% when "podcast" %}{{ section.settings.col_3_title }}
-              {% when "watch_live" %}{{ section.settings.col_4_title }}
-            {% endcase %}
-          </div>
-
-          {% assign has_any = false %}
-
-          {% for block in section.blocks %}
-            {% if block.type == "platform_link" and block.settings.column == col %}
-              {% assign has_any = true %}
-              <a
-                class="sf-link"
-                href="{{ block.settings.url }}"
-                target="_blank"
-                rel="noopener"
-                {{ block.shopify_attributes }}
-              >
-                <span class="sf-link-text">
-                  {% if section.settings.show_icons and block.settings.icon != blank %}
-                    <img
-                      class="gk-stream__icon"
-                      src="{{ block.settings.icon | image_url: width: 96 }}"
-                      alt=""
-                      loading="lazy"
-                      width="24"
-                      height="24"
-                    >
-                  {% endif %}
-                  {{ block.settings.label }}
-                </span>
-                <span class="arrow" aria-hidden="true">&#8599;</span>
-              </a>
-            {% endif %}
-          {% endfor %}
-
-          {% if has_any == false %}
-            <div class="sf-link sf-link--empty">
-              <span>{{ section.settings.empty_column_text }}</span>
+          {%- if show_tabs -%}
+            <div class="gk-sf-tabs" role="tablist" aria-label="{{ section.settings.stream_title | escape }}">
+              <button
+                type="button"
+                class="gk-sf-tab"
+                id="gk-sf-tab-greg-{{ section.id }}"
+                data-gk-tab="greg"
+                role="tab"
+                aria-selected="{% if active_tab == 'greg' %}true{% else %}false{% endif %}"
+                aria-controls="gk-sf-panel-greg-{{ section.id }}"
+                {% if active_tab != 'greg' %}tabindex="-1"{% endif %}
+              >{{ section.settings.tab_greg_label }}</button>
+              <button
+                type="button"
+                class="gk-sf-tab"
+                id="gk-sf-tab-kmt-{{ section.id }}"
+                data-gk-tab="kmt"
+                role="tab"
+                aria-selected="{% if active_tab == 'kmt' %}true{% else %}false{% endif %}"
+                aria-controls="gk-sf-panel-kmt-{{ section.id }}"
+                {% if active_tab != 'kmt' %}tabindex="-1"{% endif %}
+              >{{ section.settings.tab_kmt_label }}</button>
             </div>
-          {% endif %}
+          {%- endif -%}
         </div>
-      {% endfor %}
-    </div>
 
-    {% assign has_follow = false %}
-    {% for block in section.blocks %}
-      {% if block.type == "follow_link" %}
-        {% assign has_follow = true %}
-      {% endif %}
-    {% endfor %}
+        {%- if greg_count > 0 -%}
+          <div
+            class="gk-sf-grid"
+            id="gk-sf-panel-greg-{{ section.id }}"
+            data-gk-panel="greg"
+            {% if show_tabs %}role="tabpanel" aria-labelledby="gk-sf-tab-greg-{{ section.id }}"{% endif %}
+            {% if active_tab != 'greg' %}hidden{% endif %}
+          >
+            {%- assign idx = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'tile' and block.settings.group == 'stream_greg' -%}
+                {% render 'gk-sf-tile', block: block, index: idx %}
+                {%- assign idx = idx | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
 
-    {% if has_follow %}
-      <div class="sf-divider"></div>
-
-      {% if section.settings.follow_heading != blank %}
-        <div class="sf-follow-label"><span class="glow-dot"></span>{{ section.settings.follow_heading }}</div>
-      {% endif %}
-
-      <div class="sf-socials" role="list">
-        {% for block in section.blocks %}
-          {% if block.type == "follow_link" %}
-            <a
-              class="sf-social-btn"
-              href="{{ block.settings.url }}"
-              target="_blank"
-              rel="noopener"
-              role="listitem"
-              {{ block.shopify_attributes }}
-            >
-              {% if block.settings.icon != blank %}
-                <img
-                  class="sf-social-icon"
-                  src="{{ block.settings.icon | image_url: width: 96 }}"
-                  alt="{{ block.settings.label | escape }}"
-                  loading="lazy"
-                  width="22"
-                  height="22"
-                >
-              {% endif %}
-              <span class="sf-social-text">{{ block.settings.label }}</span>
-            </a>
-          {% endif %}
-        {% endfor %}
+        {%- if kmt_count > 0 -%}
+          <div
+            class="gk-sf-grid"
+            id="gk-sf-panel-kmt-{{ section.id }}"
+            data-gk-panel="kmt"
+            {% if show_tabs %}role="tabpanel" aria-labelledby="gk-sf-tab-kmt-{{ section.id }}"{% endif %}
+            {% if active_tab != 'kmt' %}hidden{% endif %}
+          >
+            {%- assign idx = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'tile' and block.settings.group == 'stream_kmt' -%}
+                {% render 'gk-sf-tile', block: block, index: idx %}
+                {%- assign idx = idx | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
       </div>
-    {% endif %}
-  </div>
-</section>
+    {%- endif -%}
 
-<style>
-  .gk-stream{
-    background: {{ section.settings.bg_color }};
-    color: {{ section.settings.text_color }};
-    padding: {{ section.settings.pad_y }}px 20px;
+    {%- if podcast_count > 0 -%}
+      <div class="gk-sf-group">
+        <div class="gk-sf-group__head">
+          <span class="gk-sf-label"><span class="gk-sf-dot" aria-hidden="true"></span>{{ section.settings.podcast_title }}</span>
+        </div>
+        <div class="gk-sf-grid">
+          {%- assign idx = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'tile' and block.settings.group == 'podcast' -%}
+              {% render 'gk-sf-tile', block: block, index: idx %}
+              {%- assign idx = idx | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if follow_count > 0 -%}
+      <div class="gk-sf-divider" aria-hidden="true"></div>
+      <div class="gk-sf-group">
+        <div class="gk-sf-group__head">
+          <span class="gk-sf-label"><span class="gk-sf-dot" aria-hidden="true"></span>{{ section.settings.follow_title }}</span>
+        </div>
+        <div class="gk-sf-grid gk-sf-grid--follow">
+          {%- assign idx = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'tile' and block.settings.group == 'follow' -%}
+              {% render 'gk-sf-tile', block: block, index: idx %}
+              {%- assign idx = idx | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</gk-stream-follow>
+
+{% style %}
+  gk-stream-follow { display: block; }
+
+  .gk-sf {
+    color: #ede6de;
+    font-family: 'DM Sans', var(--gk-font-body, sans-serif);
   }
 
-  .gk-stream__inner{
+  .gk-sf__inner {
     max-width: 1100px;
     margin: 0 auto;
   }
 
-  .sf-eyebrow {
+  .gk-sf__eyebrow {
+    font-family: 'DM Mono', var(--gk-font-label, monospace);
     font-size: 11px;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #C8601A;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
+    color: #c8601a;
+    margin: 0 0 0.6rem;
   }
 
-  .sf-heading {
-    font-size: 48px;
-    font-weight: 800;
+  .gk-sf__heading {
+    font-family: 'Bebas Neue', var(--gk-font-heading, sans-serif);
+    font-size: clamp(38px, 6vw, 58px);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: #fff;
-    letter-spacing: -0.02em;
-    margin: 0 0 0.35rem;
-    line-height: 1;
+    line-height: 0.95;
+    margin: 0 0 0.4rem;
   }
 
-  .sf-sub {
+  .gk-sf__sub {
     font-size: 14px;
-    color: rgba(255,255,255,0.4);
-    margin: 0 0 2.5rem;
+    color: rgba(237, 230, 222, 0.45);
+    margin: 0 0 2.75rem;
   }
 
-  .sf-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin-bottom: 2.5rem;
-  }
+  .gk-sf-group { margin-bottom: 2.5rem; }
+  .gk-sf-group:last-child { margin-bottom: 0; }
 
-  .sf-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.13);
-    border-radius: 14px;
-    padding: 1.25rem 1rem;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  .sf-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(200,96,26,0.6), transparent);
-  }
-
-  .sf-card:hover {
-    background: rgba(255,255,255,0.055);
-    border-color: rgba(200,96,26,0.45);
-  }
-
-  .sf-card-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.13em;
-    color: #C8601A;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(200,96,26,0.25);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .sf-link {
+  .gk-sf-group__head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 10px;
-    border-radius: 8px;
-    color: rgba(255,255,255,0.72);
-    font-size: 13px;
-    font-weight: 400;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
-    border: 1px solid rgba(255,255,255,0.08);
-    margin-bottom: 6px;
-    background: rgba(255,255,255,0.02);
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 1.1rem;
   }
 
-  .sf-link:last-child { margin-bottom: 0; }
-
-  .sf-link:hover {
-    background: rgba(200,96,26,0.14);
-    border-color: rgba(200,96,26,0.35);
-    color: #fff;
-  }
-
-  .sf-link-text {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 0;
-  }
-
-  .sf-link svg, .sf-link .arrow {
-    font-size: 12px;
-    color: rgba(255,255,255,0.2);
-    transition: color 0.15s;
-    flex-shrink: 0;
-  }
-
-  .sf-link:hover svg, .sf-link:hover .arrow { color: #C8601A; }
-
-  .sf-link--empty {
-    cursor: default;
-    color: rgba(255,255,255,0.35);
-    border-style: dashed;
-    justify-content: flex-start;
-  }
-
-  .sf-link--empty:hover {
-    background: rgba(255,255,255,0.02);
-    border-color: rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.35);
-  }
-
-  .gk-stream__icon {
-    border-radius: 6px;
-    filter: brightness(1.1);
-  }
-
-  .sf-follow-label {
+  .gk-sf-label {
+    font-family: 'DM Mono', var(--gk-font-label, monospace);
     font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.13em;
-    color: #C8601A;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .sf-socials {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .sf-social-btn {
-    display: flex;
+    letter-spacing: 0.18em;
+    color: #c8601a;
+    display: inline-flex;
     align-items: center;
     gap: 7px;
-    padding: 9px 16px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.13);
-    color: rgba(255,255,255,0.65);
-    font-size: 13px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
   }
 
-  .sf-social-btn:hover {
-    background: rgba(200,96,26,0.14);
-    border-color: rgba(200,96,26,0.4);
-    color: #fff;
-  }
-
-  .sf-social-icon { border-radius: 6px; }
-
-  .sf-divider {
-    height: 1px;
-    background: rgba(255,255,255,0.08);
-    margin: 2rem 0;
-  }
-
-  .glow-dot {
+  .gk-sf-dot {
     display: inline-block;
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #C8601A;
-    box-shadow: 0 0 7px #C8601A;
-    margin-right: 5px;
-    vertical-align: middle;
+    background: #c8601a;
+    box-shadow: 0 0 7px #c8601a;
+    flex-shrink: 0;
   }
 
-  @media (max-width: 1000px){
-    .sf-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .sf-heading{ font-size: 40px; }
+  .gk-sf__eyebrow .gk-sf-dot { margin-right: 7px; }
+
+  /* ---- Tabs (Greg / KMT) ---- */
+  .gk-sf-tabs {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid rgba(216, 200, 184, 0.16);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
   }
 
-  @media (max-width: 620px){
-    .sf-grid{ grid-template-columns: 1fr; }
-    .sf-heading{ font-size: 34px; }
+  .gk-sf-tab {
+    appearance: none;
+    border: 1px solid transparent;
+    background: transparent;
+    color: rgba(237, 230, 222, 0.55);
+    font-family: 'Bebas Neue', var(--gk-font-heading, sans-serif);
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 8px 22px 6px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: color 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out;
   }
-</style>
+
+  .gk-sf-tab:hover { color: #fff; }
+
+  .gk-sf-tab[aria-selected="true"] {
+    color: #fff;
+    background: rgba(200, 96, 26, 0.16);
+    border-color: rgba(200, 96, 26, 0.55);
+    box-shadow: 0 0 14px -4px rgba(200, 96, 26, 0.45);
+  }
+
+  .gk-sf-tab:focus-visible {
+    outline: 2px solid #c8601a;
+    outline-offset: 2px;
+  }
+
+  /* ---- Tile grid ---- */
+  .gk-sf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+  }
+
+  /* display:grid would otherwise beat the UA [hidden] rule */
+  .gk-sf-grid[hidden] { display: none; }
+
+  /* ---- Tile ---- */
+  .gk-sf-tile {
+    --rx: 0deg;
+    --ry: 0deg;
+    --ty: 0px;
+    --sc: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    aspect-ratio: 1 / 1;
+    padding: 14px;
+    background: #16120e;
+    border: 1px solid rgba(216, 200, 184, 0.14);
+    border-radius: 12px;
+    text-decoration: none;
+    transform: perspective(800px) translate3d(0, var(--ty), 0) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--sc));
+    transition:
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.25s ease-out,
+      background-color 0.25s ease-out,
+      box-shadow 0.28s ease-out;
+  }
+
+  /* Shorter transform transition while the cursor is tracking, so the tilt
+     feels responsive; mouseleave removes the class and eases back at 0.3s. */
+  .gk-sf-tile.is-tilting {
+    transition-duration: 0.1s, 0.25s, 0.25s, 0.28s;
+  }
+
+  .gk-sf-tile:hover,
+  .gk-sf-tile:focus-visible {
+    --ty: -7px;
+    will-change: transform;
+    border-color: #c8601a;
+    background: #1a140f;
+    box-shadow:
+      0 24px 44px -16px rgba(200, 96, 26, 0.3),
+      0 16px 36px -12px rgba(0, 0, 0, 0.65),
+      0 0 20px -8px rgba(200, 96, 26, 0.4);
+  }
+
+  .gk-sf-tile:focus-visible {
+    outline: 2px solid #c8601a;
+    outline-offset: 2px;
+  }
+
+  .gk-sf-tile:active { --sc: 0.97; }
+
+  .gk-sf-tile__icon {
+    display: inline-flex;
+    color: rgba(237, 230, 222, 0.82);
+    transition: color 0.25s ease-out, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), filter 0.25s ease-out;
+  }
+
+  .gk-sf-tile__icon svg,
+  .gk-sf-tile__icon img {
+    width: 38px;
+    height: 38px;
+    display: block;
+  }
+
+  .gk-sf-tile:hover .gk-sf-tile__icon,
+  .gk-sf-tile:focus-visible .gk-sf-tile__icon {
+    color: #c8601a;
+    transform: scale(1.07);
+    filter: drop-shadow(0 0 9px rgba(200, 96, 26, 0.45));
+  }
+
+  .gk-sf-tile__name {
+    font-family: 'DM Sans', var(--gk-font-body, sans-serif);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    text-align: center;
+    color: rgba(237, 230, 222, 0.55);
+    transition: color 0.25s ease-out;
+  }
+
+  .gk-sf-tile:hover .gk-sf-tile__name,
+  .gk-sf-tile:focus-visible .gk-sf-tile__name { color: #fff; }
+
+  .gk-sf-divider {
+    height: 1px;
+    background: rgba(216, 200, 184, 0.1);
+    margin: 2.25rem 0;
+  }
+
+  /* ---- Entrance: fade + rise, staggered per tile ---- */
+  /* Hidden until the section scrolls into view (JS adds .is-inview).
+     :defined guards against JS being unavailable — tiles only hide once
+     the custom element has actually been registered. */
+  .gk-sf:defined:not(.is-inview) .gk-sf-tile { opacity: 0; }
+
+  .gk-sf.is-inview .gk-sf-tile {
+    animation: gk-sf-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation-delay: calc(var(--i) * 50ms);
+  }
+
+  @keyframes gk-sf-rise {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+  }
+
+  @media (max-width: 749px) {
+    .gk-sf-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  }
+
+  @media (max-width: 420px) {
+    /* Stay 2-up on small phones; tiles shrink rather than stacking. */
+    .gk-sf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .gk-sf-group__head { justify-content: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gk-sf .gk-sf-tile,
+    .gk-sf .gk-sf-tile__icon {
+      animation: none !important;
+      transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s, color 0.2s !important;
+      transform: none !important;
+    }
+    .gk-sf:defined:not(.is-inview) .gk-sf-tile { opacity: 1; }
+  }
+{% endstyle %}
+
+<script>
+  if (!customElements.get('gk-stream-follow')) {
+    customElements.define(
+      'gk-stream-follow',
+      class GkStreamFollow extends HTMLElement {
+        connectedCallback() {
+          this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          this.tabs = Array.from(this.querySelectorAll('[data-gk-tab]'));
+          this.panels = Array.from(this.querySelectorAll('[data-gk-panel]'));
+
+          this.tabs.forEach((tab) => {
+            tab.addEventListener('click', () => this.selectTab(tab.dataset.gkTab));
+            tab.addEventListener('keydown', (e) => {
+              if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+              const i = this.tabs.indexOf(tab);
+              const next = this.tabs[(i + (e.key === 'ArrowRight' ? 1 : this.tabs.length - 1)) % this.tabs.length];
+              this.selectTab(next.dataset.gkTab);
+              next.focus();
+            });
+          });
+
+          this.setupEntrance();
+
+          if (!this.reducedMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            this.querySelectorAll('.gk-sf-tile').forEach((tile) => this.bindTilt(tile));
+          }
+        }
+
+        selectTab(name) {
+          this.tabs.forEach((tab) => {
+            const active = tab.dataset.gkTab === name;
+            tab.setAttribute('aria-selected', active ? 'true' : 'false');
+            tab.tabIndex = active ? 0 : -1;
+          });
+          this.panels.forEach((panel) => {
+            panel.hidden = panel.dataset.gkPanel !== name;
+          });
+        }
+
+        setupEntrance() {
+          if (this.reducedMotion || !('IntersectionObserver' in window)) {
+            this.classList.add('is-inview');
+            return;
+          }
+          const io = new IntersectionObserver(
+            (entries) => {
+              if (entries.some((e) => e.isIntersecting)) {
+                this.classList.add('is-inview');
+                io.disconnect();
+              }
+            },
+            { rootMargin: '0px 0px -10% 0px' }
+          );
+          io.observe(this);
+        }
+
+        bindTilt(tile) {
+          const MAX_DEG = 6;
+          let rect = null;
+          let px = 0;
+          let py = 0;
+          let raf = null;
+
+          const apply = () => {
+            raf = null;
+            const rx = Math.max(-MAX_DEG, Math.min(MAX_DEG, py * -2 * MAX_DEG));
+            const ry = Math.max(-MAX_DEG, Math.min(MAX_DEG, px * 2 * MAX_DEG));
+            tile.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+            tile.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+          };
+
+          tile.addEventListener('mouseenter', () => {
+            rect = tile.getBoundingClientRect();
+            tile.classList.add('is-tilting');
+          });
+
+          tile.addEventListener('mousemove', (e) => {
+            if (!rect) rect = tile.getBoundingClientRect();
+            px = (e.clientX - rect.left) / rect.width - 0.5;
+            py = (e.clientY - rect.top) / rect.height - 0.5;
+            if (!raf) raf = requestAnimationFrame(apply);
+          });
+
+          tile.addEventListener('mouseleave', () => {
+            if (raf) {
+              cancelAnimationFrame(raf);
+              raf = null;
+            }
+            rect = null;
+            tile.classList.remove('is-tilting');
+            tile.style.setProperty('--rx', '0deg');
+            tile.style.setProperty('--ry', '0deg');
+          });
+        }
+      }
+    );
+  }
+</script>
 
 {% schema %}
 {
   "name": "GK Stream + Follow",
   "settings": [
+    { "type": "header", "content": "Heading" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "LISTEN & CONNECT" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "STREAM + FOLLOW" },
     { "type": "text", "id": "subtext", "label": "Subtext", "default": "Find Greg Koch on every platform." },
 
-    { "type": "text", "id": "col_1_title", "label": "Column 1 title", "default": "STREAM GREG" },
-    { "type": "text", "id": "col_2_title", "label": "Column 2 title", "default": "STREAM KMT" },
-    { "type": "text", "id": "col_3_title", "label": "Column 3 title", "default": "PODCAST" },
-    { "type": "text", "id": "col_4_title", "label": "Column 4 title", "default": "WATCH GREG LIVE" },
+    { "type": "header", "content": "Streaming tabs" },
+    { "type": "text", "id": "stream_title", "label": "Streaming group title", "default": "STREAM" },
+    { "type": "text", "id": "tab_greg_label", "label": "First tab label", "default": "GREG" },
+    { "type": "text", "id": "tab_kmt_label", "label": "Second tab label", "default": "KMT" },
+    {
+      "type": "select",
+      "id": "default_tab",
+      "label": "Default tab",
+      "default": "greg",
+      "options": [
+        { "value": "greg", "label": "Greg" },
+        { "value": "kmt", "label": "KMT" }
+      ]
+    },
 
-    { "type": "text", "id": "follow_heading", "label": "Follow heading", "default": "FOLLOW" },
+    { "type": "header", "content": "Other groups" },
+    { "type": "text", "id": "podcast_title", "label": "Podcast group title", "default": "PODCAST" },
+    { "type": "text", "id": "follow_title", "label": "Follow group title", "default": "FOLLOW + LIVE" },
 
-    { "type": "checkbox", "id": "show_icons", "label": "Show link icons", "default": false },
-    { "type": "checkbox", "id": "show_dividers", "label": "Show divider line", "default": true },
-
-    { "type": "text", "id": "empty_column_text", "label": "Empty column text", "default": "Add links for this column in the section blocks." },
-
+    { "type": "header", "content": "Style" },
     { "type": "range", "id": "pad_y", "min": 20, "max": 120, "step": 4, "unit": "px", "label": "Vertical padding", "default": 72 },
-
-    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#0D0D0D" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#FFFFFF" }
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#0A0A0A" }
   ],
+  "max_blocks": 40,
   "blocks": [
     {
-      "type": "platform_link",
-      "name": "Platform link",
+      "type": "tile",
+      "name": "Platform tile",
       "settings": [
         {
           "type": "select",
-          "id": "column",
-          "label": "Column",
+          "id": "group",
+          "label": "Group",
           "default": "stream_greg",
           "options": [
-            { "value": "stream_greg", "label": "Stream Greg" },
-            { "value": "stream_kmt", "label": "Stream KMT" },
+            { "value": "stream_greg", "label": "Stream — Greg" },
+            { "value": "stream_kmt", "label": "Stream — KMT" },
             { "value": "podcast", "label": "Podcast" },
-            { "value": "watch_live", "label": "Watch Greg Live" }
+            { "value": "follow", "label": "Follow + Live" }
           ]
         },
-        { "type": "text", "id": "label", "label": "Link label", "default": "Spotify" },
+        { "type": "text", "id": "platform_name", "label": "Platform name", "default": "Spotify" },
         { "type": "url", "id": "url", "label": "Link URL" },
-        { "type": "image_picker", "id": "icon", "label": "Optional icon" }
-      ]
-    },
-    {
-      "type": "follow_link",
-      "name": "Follow link",
-      "settings": [
-        { "type": "text", "id": "label", "label": "Label", "default": "Instagram" },
-        { "type": "url", "id": "url", "label": "URL" },
-        { "type": "image_picker", "id": "icon", "label": "Icon" }
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "auto",
+          "info": "Auto matches the platform name (Spotify, Apple Music, YouTube, Bandcamp, podcasts, socials).",
+          "options": [
+            { "value": "auto", "label": "Auto (match platform name)" },
+            { "value": "spotify", "label": "Spotify" },
+            { "value": "apple", "label": "Apple" },
+            { "value": "youtube", "label": "YouTube" },
+            { "value": "youtube_music", "label": "YouTube Music" },
+            { "value": "bandcamp", "label": "Bandcamp" },
+            { "value": "podcast", "label": "Podcast" },
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "facebook", "label": "Facebook" },
+            { "value": "x", "label": "X" },
+            { "value": "tiktok", "label": "TikTok" },
+            { "value": "twitch", "label": "Twitch" },
+            { "value": "note", "label": "Music note (generic)" }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom icon (overrides preset)",
+          "info": "Square image recommended. Replaces the built-in icon for this tile."
+        }
       ]
     }
   ],
@@ -386,11 +601,21 @@
     {
       "name": "GK Stream + Follow",
       "blocks": [
-        { "type": "platform_link" },
-        { "type": "platform_link" },
-        { "type": "platform_link" },
-        { "type": "follow_link" },
-        { "type": "follow_link" }
+        { "type": "tile", "settings": { "group": "stream_greg", "platform_name": "Spotify", "url": "https://open.spotify.com/artist/5Y6wPwVr2krTASRASpMLsC" } },
+        { "type": "tile", "settings": { "group": "stream_greg", "platform_name": "Apple Music", "url": "https://music.apple.com/us/artist/greg-koch/5517890" } },
+        { "type": "tile", "settings": { "group": "stream_greg", "platform_name": "YouTube Music", "url": "https://music.youtube.com/channel/UCX3rdX9oHrDLxb8Ql74Gwaw" } },
+        { "type": "tile", "settings": { "group": "stream_greg", "platform_name": "Bandcamp", "url": "https://gregkoch.bandcamp.com/album/live-on-the-radio-volume-2" } },
+        { "type": "tile", "settings": { "group": "stream_kmt", "platform_name": "Spotify", "url": "https://open.spotify.com/artist/0S1IwDW6PhPmAuC9jtOo1L" } },
+        { "type": "tile", "settings": { "group": "stream_kmt", "platform_name": "Apple Music", "url": "https://music.apple.com/us/artist/koch-marshall-trio/1325215495" } },
+        { "type": "tile", "settings": { "group": "stream_kmt", "platform_name": "YouTube Music", "url": "https://music.youtube.com/channel/UCOCLy0S38jVy35han88h_JA" } },
+        { "type": "tile", "settings": { "group": "podcast", "platform_name": "Apple Podcasts", "url": "https://podcasts.apple.com/us/podcast/chewing-the-gristle-with-greg-koch/id1525643497" } },
+        { "type": "tile", "settings": { "group": "podcast", "platform_name": "Spotify Podcasts", "url": "https://open.spotify.com/show/0J5kQaxZPd1iKqT3Vfzirc" } },
+        { "type": "tile", "settings": { "group": "follow", "platform_name": "Instagram", "url": "https://www.instagram.com/gregkochmusic" } },
+        { "type": "tile", "settings": { "group": "follow", "platform_name": "Facebook", "url": "https://www.facebook.com/GregKochMusic" } },
+        { "type": "tile", "settings": { "group": "follow", "platform_name": "YouTube", "url": "https://www.youtube.com/c/GregKochMusic" } },
+        { "type": "tile", "settings": { "group": "follow", "platform_name": "X", "url": "https://x.com/Mansqwatch" } },
+        { "type": "tile", "settings": { "group": "follow", "platform_name": "TikTok", "url": "https://www.tiktok.com/@gregkochofficial" } },
+        { "type": "tile", "settings": { "group": "follow", "platform_name": "YouTube Live", "url": "https://www.youtube.com/@GregKochMusic/streams" } }
       ]
     }
   ]
