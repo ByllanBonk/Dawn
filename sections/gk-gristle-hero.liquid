@@ -4,14 +4,15 @@
   kicker badge, benefit-led headline, subhead, trust bullets, live price +
   availability from Shopify, and the primary CTA straight to checkout.
   Commerce data is never hardcoded: price, compare-at, stock and image all
-  come from the product picked in the section settings (or the fallback
-  handle below - one-line fix if the handle changes).
+  come from the product picked in the section settings. The Gristle King
+  fallback only applies on the Gristle King template; on any other page an
+  unset or unresolvable product shows the error state below instead of
+  silently rendering another product's info.
 {% endcomment %}
 
-{%- assign fallback_handle = 'gristle-king-pedal-56' -%}
 {%- assign product = section.settings.product -%}
-{%- if product == blank -%}
-  {%- assign product = all_products[fallback_handle] -%}
+{%- if product == blank and template.suffix == 'gristle-king' -%}
+  {%- assign product = all_products['gristle-king-pedal-56'] -%}
 {%- endif -%}
 {%- assign variant = product.selected_or_first_available_variant | default: product.variants.first -%}
 {%- assign checkout_url = '/cart/' | append: variant.id | append: ':1' -%}
@@ -42,15 +43,14 @@
     <div class="gkl-wrap--wide gkl-wrap">
       <p class="gkl-error__title">Product not found</p>
       <p>
-        No product selected in the theme editor and no product matches the
-        fallback handle “{{ fallback_handle }}”. Pick the Gristle King product
-        in the section settings, or update the fallback handle at the top of
-        sections/gk-gristle-hero.liquid. Pricing is never hardcoded by design.
+        This section has no resolvable product. Open the theme editor and
+        pick this page's product in the hero, proof and final CTA sections.
+        Pricing is never hardcoded by design.
       </p>
     </div>
   </div>
   <script>
-    console.warn('[gk-gristle-hero] Product not found for handle "{{ fallback_handle }}" and no product selected. No fallback pricing is rendered by design.');
+    console.warn('[gk-gristle-hero] No resolvable product for this section. Pick the product in the theme editor. No fallback pricing is rendered by design.');
   </script>
 {%- else -%}
 
@@ -146,7 +146,7 @@
       "type": "product",
       "id": "product",
       "label": "Product",
-      "info": "Leave empty to use the fallback handle defined at the top of the section file."
+      "info": "Required on every page except the Gristle King page, which falls back to the Gristle King product."
     },
     {
       "type": "range",

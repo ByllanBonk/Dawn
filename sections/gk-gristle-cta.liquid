@@ -7,10 +7,13 @@
   mobile CTA bar pinned to the bottom of the viewport (mobile only).
 {% endcomment %}
 
-{%- assign fallback_handle = 'gristle-king-pedal-56' -%}
+{%- comment -%}
+  The Gristle King fallback only applies on the Gristle King template so a
+  misconfigured product never silently shows another product's price.
+{%- endcomment -%}
 {%- assign product = section.settings.product -%}
-{%- if product == blank -%}
-  {%- assign product = all_products[fallback_handle] -%}
+{%- if product == blank and template.suffix == 'gristle-king' -%}
+  {%- assign product = all_products['gristle-king-pedal-56'] -%}
 {%- endif -%}
 {%- assign variant = product.selected_or_first_available_variant | default: product.variants.first -%}
 {%- assign checkout_url = '/cart/' | append: variant.id | append: ':1' -%}
@@ -28,7 +31,7 @@
 
 {%- if product == blank or product.empty? -%}
   <script>
-    console.warn('[gk-gristle-cta] Product not found for handle "{{ fallback_handle }}" and no product selected. CTA not rendered - no fallback pricing by design.');
+    console.warn('[gk-gristle-cta] No resolvable product for this section. Pick the product in the theme editor. CTA not rendered - no fallback pricing by design.');
   </script>
 {%- else -%}
 
@@ -140,7 +143,7 @@
       "type": "product",
       "id": "product",
       "label": "Product",
-      "info": "Leave empty to use the fallback handle defined at the top of the section file."
+      "info": "Required on every page except the Gristle King page, which falls back to the Gristle King product."
     },
     {
       "type": "text",
