@@ -10,10 +10,43 @@
   goes fully live.
 {% endcomment %}
 
-{%- assign fallback_handle = 'gristle-king-pedal-56' -%}
+{%- comment -%}
+  The Gristle King fallback only applies on the Gristle King page itself.
+  On any other template an unset/unresolvable product renders nothing here
+  rather than silently showing another product's images.
+{%- endcomment -%}
 {%- assign product = section.settings.product -%}
-{%- if product == blank -%}
-  {%- assign product = all_products[fallback_handle] -%}
+{%- if product == blank and template.suffix == 'gristle-king' -%}
+  {%- assign product = all_products['gristle-king-pedal-56'] -%}
+{%- endif -%}
+
+{%- comment -%}
+  Normalize any YouTube link form (watch, share, shorts, live, embed, or a
+  bare video id) into an embeddable /embed/ URL. Regular watch URLs refuse
+  to load inside iframes, which is why pasting them used to break the page.
+{%- endcomment -%}
+{%- assign raw_video = section.settings.video_embed_url | strip -%}
+{%- assign video_src = '' -%}
+{%- if raw_video != blank -%}
+  {%- if raw_video contains '/embed/' -%}
+    {%- assign video_src = raw_video -%}
+  {%- elsif raw_video contains 'watch?v=' -%}
+    {%- assign video_id = raw_video | split: 'watch?v=' | last | split: '&' | first -%}
+    {%- assign video_src = 'https://www.youtube.com/embed/' | append: video_id -%}
+  {%- elsif raw_video contains 'youtu.be/' -%}
+    {%- assign video_id = raw_video | split: 'youtu.be/' | last | split: '?' | first -%}
+    {%- assign video_src = 'https://www.youtube.com/embed/' | append: video_id -%}
+  {%- elsif raw_video contains '/shorts/' -%}
+    {%- assign video_id = raw_video | split: '/shorts/' | last | split: '?' | first -%}
+    {%- assign video_src = 'https://www.youtube.com/embed/' | append: video_id -%}
+  {%- elsif raw_video contains '/live/' -%}
+    {%- assign video_id = raw_video | split: '/live/' | last | split: '?' | first -%}
+    {%- assign video_src = 'https://www.youtube.com/embed/' | append: video_id -%}
+  {%- elsif raw_video contains 'http' -%}
+    {%- assign video_src = raw_video -%}
+  {%- else -%}
+    {%- assign video_src = 'https://www.youtube.com/embed/' | append: raw_video -%}
+  {%- endif -%}
 {%- endif -%}
 
 <div class="gkl">
@@ -32,11 +65,22 @@
         {%- endif -%}
       </div>
 
-      {%- if section.settings.video_embed_url != blank -%}
+      {%- if section.settings.video != blank -%}
+        {%- comment -%} Uploaded video wins over the YouTube link when set. {%- endcomment -%}
+        <div class="gkl-video__frame">
+          {{
+            section.settings.video
+            | video_tag: controls: true, preload: 'metadata', class: 'gkl-video__file'
+          }}
+        </div>
+        {%- if section.settings.video_caption != blank -%}
+          <p class="gkl-video__caption">{{ section.settings.video_caption | escape }}</p>
+        {%- endif -%}
+      {%- elsif video_src != blank -%}
         <div
           class="gkl-video__frame"
           data-gkl-video
-          data-video-src="{{ section.settings.video_embed_url | escape }}"
+          data-video-src="{{ video_src | escape }}"
           data-video-title="{{ section.settings.video_title | escape }}"
         ></div>
         {%- if section.settings.video_caption != blank -%}
@@ -141,9 +185,16 @@
       "default": "See what this thing actually does"
     },
     {
+      "type": "video",
+      "id": "video",
+      "label": "Uploaded video",
+      "info": "Overrides the YouTube link below when set."
+    },
+    {
       "type": "text",
       "id": "video_embed_url",
-      "label": "Video embed URL",
+      "label": "YouTube link or video ID",
+      "info": "Paste any YouTube link (watch, share, shorts or embed) or just the video ID. It's converted to an embeddable player automatically.",
       "default": "https://www.youtube.com/embed/LG6n_28SW_c"
     },
     {
@@ -174,7 +225,7 @@
       "type": "product",
       "id": "product",
       "label": "Product (for gallery images)",
-      "info": "Leave empty to use the fallback handle defined at the top of the section file."
+      "info": "Required on every page except the Gristle King page, which falls back to the Gristle King product."
     }
   ],
   "blocks": [
