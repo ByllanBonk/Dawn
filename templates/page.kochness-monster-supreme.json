@@ -48,8 +48,13 @@
         "heading_line2": "One glorious monster.",
         "subhead": "The Kochness Monster Supreme. Greg's entire live and studio signal chain in one sparkling orange slab, hand-built by JAM pedals in Athens, Greece.",
         "cta_label": "Get my Monster Supreme now",
-        "cta_label_soldout": "Join the waiting list",
-        "microcopy": "Includes tailored gig bag and universal power supply."
+        "cta_label_soldout": "Notify me when it's back",
+        "microcopy": "Includes tailored gig bag and universal power supply.",
+        "waitlist_tag": "kochness-monster-supreme-waitlist",
+        "soldout_note": "Every Supreme is hand-built to order right now. Get on the list and we'll let you know the second one's ready.",
+        "bonus_enabled": true,
+        "bonus_badge": "Included free",
+        "bonus_text": "Every Kochness Monster Supreme ships with a set of Gristle Picks and a Gristle Capo, on us."
       }
     },
     "problem": {
@@ -239,11 +244,42 @@
         "eyebrow": "Ready when you are",
         "heading": "Summon the Supreme",
         "cta_label": "Get my Monster Supreme now",
-        "cta_label_soldout": "Join the waiting list",
+        "cta_label_soldout": "Notify me when it's back",
         "smallprint": "Hand-made in small batches by JAM pedals. International orders responsible for customs and duties.",
         "waitlist_tag": "kochness-monster-supreme-waitlist",
         "waitlist_heading": "Join the waiting list",
         "waitlist_text": "Leave your email and we'll let you know the moment the Supreme is back in stock."
+      }
+    },
+    "crossell": {
+      "type": "gk-gristle-crossell",
+      "blocks": {
+        "card_pickguard": {
+          "type": "card",
+          "settings": {
+            "product": "greg-koch-gristle-tone-signature-series-single-width-3-pickup-set-loaded-pickguard-90",
+            "link": "/pages/gristle-tone-pickups",
+            "note": "The exact Fluence trio from the Gristle ST, wired and ready to drop in."
+          }
+        },
+        "card_king": {
+          "type": "card",
+          "settings": {
+            "product": "gristle-king-pedal-56",
+            "link": "/pages/gristle-king",
+            "note": "The drive and boost Greg built his sound on."
+          }
+        }
+      },
+      "block_order": [
+        "card_pickguard",
+        "card_king"
+      ],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "The attainable path",
+        "heading": "Not ready for the one-of-one? Get the tone.",
+        "subhead": "The same gristle, sized for mortals."
       }
     }
   },
@@ -254,6 +290,7 @@
     "proof",
     "quote",
     "faq",
-    "cta"
+    "cta",
+    "crossell"
   ]
 }

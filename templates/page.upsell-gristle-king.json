@@ -1,0 +1,22 @@
+{
+  "layout": "gristle-landing",
+  "sections": {
+    "offer": {
+      "type": "gk-funnel-offer",
+      "settings": {
+        "product": "gristle-king-pedal-56",
+        "image_side": "left",
+        "compact_image": false,
+        "eyebrow": "One more for the road",
+        "heading": "Add the Gristle King to your order",
+        "body": "<p>What you just grabbed handles its end of the tone chain. The Gristle King is the piece that ties the whole affair together, Tim Jauernig's drive and boost in one box.</p><p>Stack it after the Lil Heat for layers of simmer, or run it behind the new pickups and let the fiendishness commence. Either way, the amp will think it earned it.</p><p>Toss it in now and it rides along with this order. Easy-peasy.</p>",
+        "accept_label": "Yes, add it",
+        "decline_label": "No thanks, take me to my order",
+        "decline_url": "/pages/capo-offer",
+        "testimonial_quote": "A dynamic tone sculptor that puts you in control of your sound's destiny.",
+        "testimonial_source": "Gear press"
+      }
+    }
+  },
+  "order": ["offer"]
+}

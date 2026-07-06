@@ -104,10 +104,86 @@
               {%- endif -%}
             </p>
 
-            <a class="gkl-btn" href="{{ cta_url }}">{{ cta_label | escape }}</a>
+            {%- if sold_out -%}
+              {%- if section.settings.soldout_note != blank -%}
+                <p class="gkl-notify__note">{{ section.settings.soldout_note | escape }}</p>
+              {%- endif -%}
+              {%- comment -%}
+                Inline email capture, revealed by the CTA itself. Not a popup
+                and not a jump to the bottom of the page. Posts to Shopify's
+                customer form (a real backend), tagged per product.
+              {%- endcomment -%}
+              <details class="gkl-notify">
+                <summary class="gkl-btn">{{ cta_label | escape }}</summary>
+                <div class="gkl-notify__panel">
+                  {%- form 'customer', class: 'gkl-notify__form', id: 'gkl-hero-notify' -%}
+                    <input type="hidden" name="contact[tags]" value="{{ section.settings.waitlist_tag | default: 'gristle-king-waitlist' | escape }}">
+                    {%- if form.posted_successfully? -%}
+                      <p class="gkl-notify__success">You're on the list. We'll email you the second it's ready.</p>
+                    {%- else -%}
+                      <div class="gkl-notify__row">
+                        <label class="visually-hidden" for="gkl-hero-notify-email">Email address</label>
+                        <input
+                          id="gkl-hero-notify-email"
+                          type="email"
+                          name="contact[email]"
+                          value="{{ form.email }}"
+                          placeholder="Email address"
+                          required
+                          autocomplete="email"
+                          autocorrect="off"
+                          autocapitalize="off"
+                        >
+                        <button type="submit" class="gkl-btn gkl-btn--compact">Notify me</button>
+                      </div>
+                      {%- if form.errors -%}
+                        <p class="gkl-notify__error">
+                          {{ form.errors.translated_fields.email | capitalize }}
+                          {{ form.errors.messages.email }}
+                        </p>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endform -%}
+                </div>
+              </details>
+              <script>
+                if (window.location.search.indexOf('customer_posted=true') !== -1) {
+                  document.querySelectorAll('.gkl-notify').forEach(function (d) { d.open = true; });
+                }
+              </script>
+            {%- else -%}
+              <a class="gkl-btn" href="{{ cta_url }}">{{ cta_label | escape }}</a>
+            {%- endif -%}
 
             {%- if section.settings.microcopy != blank -%}
               <p class="gkl-microcopy">{{ section.settings.microcopy | escape }}</p>
+            {%- endif -%}
+
+            {%- if section.settings.bonus_enabled -%}
+              {%- comment -%}
+                Collector's kit bonus: automatically included free with the
+                order, so there is no accept/decline step. Just the card.
+              {%- endcomment -%}
+              <div class="gkl-bonus">
+                <div class="gkl-bonus__thumbs">
+                  {%- if section.settings.bonus_image_1 != blank -%}
+                    {{ section.settings.bonus_image_1 | image_url: width: 160 | image_tag: loading: 'lazy', class: 'gkl-bonus__thumb', alt: '' }}
+                  {%- else -%}
+                    <span class="gkl-bonus__thumb gkl-bonus__thumb--icon"><i class="ti ti-guitar-pick" aria-hidden="true"></i></span>
+                  {%- endif -%}
+                  {%- if section.settings.bonus_image_2 != blank -%}
+                    {{ section.settings.bonus_image_2 | image_url: width: 160 | image_tag: loading: 'lazy', class: 'gkl-bonus__thumb', alt: '' }}
+                  {%- else -%}
+                    <span class="gkl-bonus__thumb gkl-bonus__thumb--icon"><i class="ti ti-tools" aria-hidden="true"></i></span>
+                  {%- endif -%}
+                </div>
+                <div class="gkl-bonus__body">
+                  <span class="gkl-bonus__badge">{{ section.settings.bonus_badge | escape }}</span>
+                  {%- if section.settings.bonus_text != blank -%}
+                    <p class="gkl-bonus__text">{{ section.settings.bonus_text | escape }}</p>
+                  {%- endif -%}
+                </div>
+              </div>
             {%- endif -%}
           </div>
         </div>
@@ -204,6 +280,51 @@
       "id": "image",
       "label": "Hero image",
       "info": "Leave empty to use the product's featured image from Shopify."
+    },
+    {
+      "type": "text",
+      "id": "soldout_note",
+      "label": "Sold-out note (Greg voice)",
+      "info": "Shown near the CTA when the product is sold out. Explains why without sounding like an error message."
+    },
+    {
+      "type": "text",
+      "id": "waitlist_tag",
+      "label": "Waitlist customer tag",
+      "info": "Tag applied to emails captured by the inline sold-out form.",
+      "default": "gristle-king-waitlist"
+    },
+    {
+      "type": "header",
+      "content": "Collector's kit bonus"
+    },
+    {
+      "type": "checkbox",
+      "id": "bonus_enabled",
+      "label": "Show bonus card",
+      "default": false,
+      "info": "Free kit included with every order: no accept or decline step."
+    },
+    {
+      "type": "text",
+      "id": "bonus_badge",
+      "label": "Bonus badge",
+      "default": "Included free"
+    },
+    {
+      "type": "text",
+      "id": "bonus_text",
+      "label": "Bonus text"
+    },
+    {
+      "type": "image_picker",
+      "id": "bonus_image_1",
+      "label": "Bonus thumbnail 1 (picks)"
+    },
+    {
+      "type": "image_picker",
+      "id": "bonus_image_2",
+      "label": "Bonus thumbnail 2 (capo)"
     }
   ],
   "blocks": [

@@ -1,0 +1,189 @@
+{% comment %}
+  GK funnel offer (post-purchase upsell / downsell page)
+  A full-page, single-offer screen on the naked gristle-landing layout: no
+  navigation, no paths away except accept or decline. Used for both the
+  upsell page and the downsell page (the downsell sets "Compact image" and
+  usually flips the image side so the pair doesn't feel templated).
+
+  - Accept is a cart permalink straight to Shopify checkout for one unit.
+    NOTE: true one-click "charge my saved card" post-purchase requires a
+    checkout app (Zipify OCU, Rebuy, AfterSell or similar); a theme cannot
+    vault payment. Until one is connected, this page works as the
+    destination for Klaviyo post-purchase flows and as a decline-chain page.
+  - Decline is a quiet, honest link. No exit popups, no scarcity language.
+  - Optional single testimonial in the same card style as the landing
+    pages, just smaller.
+{% endcomment %}
+
+{%- assign product = section.settings.product -%}
+{%- assign variant = product.selected_or_first_available_variant | default: product.variants.first -%}
+{%- assign accept_url = '/cart/' | append: variant.id | append: ':1' -%}
+
+{%- if product == blank or product.empty? -%}
+  <div class="gkl gkl-error" role="alert">
+    <div class="gkl-wrap">
+      <p class="gkl-error__title">No offer product selected</p>
+      <p>Pick the offer product in this section's settings in the theme editor. Pricing is never hardcoded by design.</p>
+    </div>
+  </div>
+  <script>
+    console.warn('[gk-funnel-offer] No offer product selected. Pick one in the theme editor.');
+  </script>
+{%- else -%}
+
+<div class="gkl">
+  <section class="gkl-offer{% if section.settings.image_side == 'right' %} gkl-offer--flip{% endif %}{% if section.settings.compact_image %} gkl-offer--compact{% endif %}">
+    <div class="gkl-wrap gkl-wrap--wide">
+      <p class="gkl-wordmark">Greg <span>Koch</span></p>
+
+      <div class="gkl-offer__grid">
+        <div class="gkl-offer__media">
+          <div class="gkl-offer__frame">
+            {%- assign offer_image = section.settings.image | default: product.featured_image -%}
+            {%- if offer_image != blank -%}
+              {{
+                offer_image
+                | image_url: width: 1200
+                | image_tag:
+                  loading: 'eager',
+                  sizes: '(min-width: 750px) 44vw, 100vw',
+                  widths: '400, 600, 800, 1000, 1200',
+                  class: 'gkl-offer__img',
+                  alt: offer_image.alt | default: product.title
+              }}
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="gkl-offer__copy">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="gkl-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+
+          <h1 class="gkl-offer__heading">{{ section.settings.heading | escape }}</h1>
+
+          {%- if section.settings.body != blank -%}
+            <div class="gkl-offer__body">{{ section.settings.body }}</div>
+          {%- endif -%}
+
+          <p class="gkl-price">
+            <span class="gkl-price__label">{{ product.title | escape }}</span>
+            <span class="gkl-price__amount">{{ variant.price | money }}</span>
+            {%- if variant.compare_at_price > variant.price -%}
+              <s class="gkl-price__compare">{{ variant.compare_at_price | money }}</s>
+            {%- endif -%}
+          </p>
+
+          {%- if product.available -%}
+            <a class="gkl-btn gkl-btn--full gkl-offer__accept" href="{{ accept_url }}">
+              {{ section.settings.accept_label | escape }} for {{ variant.price | money }}
+            </a>
+          {%- else -%}
+            <p class="gkl-stock gkl-stock--out">Sold out. Greg is flattered by the enthusiasm.</p>
+          {%- endif -%}
+
+          <a class="gkl-offer__decline" href="{{ section.settings.decline_url | default: '/' }}">
+            {{ section.settings.decline_label | escape }}
+          </a>
+
+          {%- if section.settings.testimonial_quote != blank -%}
+            <figure class="gkl-testimonial gkl-testimonial--small">
+              <i class="ti ti-quote" aria-hidden="true"></i>
+              <blockquote>{{ section.settings.testimonial_quote | escape }}</blockquote>
+              <figcaption>{{ section.settings.testimonial_source | escape }}</figcaption>
+            </figure>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GK funnel offer",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Offer product"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image override",
+      "info": "Leave empty to use the product's featured image."
+    },
+    {
+      "type": "select",
+      "id": "image_side",
+      "label": "Image side (desktop)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left",
+      "info": "Alternate per offer so the pages don't feel templated."
+    },
+    {
+      "type": "checkbox",
+      "id": "compact_image",
+      "label": "Compact image",
+      "default": false,
+      "info": "Use on downsell pages: smaller image, same visual quality."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "One more for the road"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Add the Gristle King to your order"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Copy (2-3 short lines, Greg voice)"
+    },
+    {
+      "type": "text",
+      "id": "accept_label",
+      "label": "Accept button label",
+      "info": "The live price is appended automatically.",
+      "default": "Yes, add it"
+    },
+    {
+      "type": "text",
+      "id": "decline_label",
+      "label": "Decline link label",
+      "default": "No thanks, take me to my order"
+    },
+    {
+      "type": "url",
+      "id": "decline_url",
+      "label": "Decline link URL",
+      "info": "Point the upsell page's decline at the downsell page; point the downsell's decline at the home page or order status."
+    },
+    {
+      "type": "textarea",
+      "id": "testimonial_quote",
+      "label": "Testimonial quote (optional, just one)"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_source",
+      "label": "Testimonial source"
+    }
+  ],
+  "presets": [
+    { "name": "GK funnel offer" }
+  ]
+}
+{% endschema %}

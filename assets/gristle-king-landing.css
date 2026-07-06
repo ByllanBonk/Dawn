@@ -806,6 +806,321 @@
   color: #e07a5f;
 }
 
+/* ===========================================================
+   Inline sold-out notify (hero)
+   =========================================================== */
+
+.gkl-notify__note {
+  margin: 0;
+  max-width: 44ch;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--gkl-muted);
+}
+
+.gkl-notify {
+  width: 100%;
+  max-width: 440px;
+}
+
+.gkl-notify summary {
+  list-style: none;
+  display: inline-flex;
+}
+
+.gkl-notify summary::-webkit-details-marker { display: none; }
+
+.gkl-notify__panel {
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid var(--gkl-card-border);
+  border-radius: 14px;
+  background: var(--gkl-card);
+}
+
+.gkl-notify__row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gkl-notify__row input[type='email'] {
+  flex: 1;
+  padding: 13px 16px;
+  font-size: 15px;
+  font-family: var(--gkl-body);
+  color: var(--gkl-text);
+  background: var(--gkl-card-dark);
+  border: 1px solid var(--gkl-card-dark-border);
+  border-radius: 40px;
+}
+
+.gkl-notify__row input[type='email']::placeholder { color: var(--gkl-dim); }
+
+.gkl-notify__row input[type='email']:focus-visible {
+  outline: 2px solid var(--gkl-accent);
+  outline-offset: 1px;
+  border-color: var(--gkl-accent);
+}
+
+.gkl-btn--compact {
+  padding: 13px 24px;
+  font-size: 19px;
+}
+
+.gkl-notify__success {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #7bb662;
+}
+
+.gkl-notify__error {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: #e07a5f;
+}
+
+/* ===========================================================
+   Collector's kit bonus card (hero)
+   =========================================================== */
+
+.gkl-bonus {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 6px;
+  padding: 14px 16px;
+  max-width: 440px;
+  border: 1px solid var(--gkl-card-border);
+  border-radius: 14px;
+  background: var(--gkl-card);
+  text-align: left;
+}
+
+.gkl-bonus__thumbs {
+  flex: none;
+  display: flex;
+  gap: 6px;
+}
+
+.gkl-bonus__thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--gkl-card-dark-border);
+  background: var(--gkl-card-dark);
+  object-fit: cover;
+}
+
+.gkl-bonus__thumb--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--gkl-accent-bright);
+}
+
+.gkl-bonus__badge {
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 3px 10px;
+  border-radius: 40px;
+  background: var(--gkl-accent);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.gkl-bonus__text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--gkl-muted);
+}
+
+/* ===========================================================
+   Funnel offer page (upsell / downsell)
+   =========================================================== */
+
+.gkl-offer {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 32px 0 56px;
+}
+
+.gkl-offer .gkl-wordmark { margin-bottom: 32px; }
+
+.gkl-offer__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.gkl-offer__frame {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--gkl-card-border);
+  background: linear-gradient(180deg, #1a1a1a, #121212);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+.gkl-offer__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.gkl-offer__img { width: 100%; height: auto; display: block; }
+
+.gkl-offer--compact .gkl-offer__frame {
+  max-width: 340px;
+  margin-inline: auto;
+}
+
+.gkl-offer__heading {
+  margin: 14px 0 0;
+  font-family: var(--gkl-display);
+  font-weight: 400;
+  font-size: clamp(38px, 5.6vw, 62px);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--gkl-head);
+}
+
+.gkl-offer__body {
+  margin-top: 16px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--gkl-text);
+}
+
+.gkl-offer__body p { margin: 0 0 12px; }
+.gkl-offer__body p:last-child { margin-bottom: 0; }
+.gkl-offer__body strong { color: var(--gkl-head); }
+
+.gkl-offer .gkl-price { margin-top: 20px; }
+
+.gkl-offer__accept { margin-top: 18px; }
+
+.gkl-offer__decline {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--gkl-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.gkl-offer__decline:hover { color: var(--gkl-text); }
+
+.gkl-testimonial--small {
+  margin-top: 28px;
+  padding: 20px 20px 16px;
+}
+
+.gkl-testimonial--small blockquote {
+  margin-bottom: 12px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.gkl-testimonial--small .ti {
+  margin-bottom: 8px;
+  font-size: 22px;
+}
+
+/* ===========================================================
+   Cross-sell module (collector pages)
+   =========================================================== */
+
+.gkl-xsell {
+  padding: 56px 0 88px;
+}
+
+.gkl-xsell__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.gkl-xsell__card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px;
+  border: 1px solid var(--gkl-card-border);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #191919, #141414);
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.gkl-xsell__card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 14px 14px 0 0;
+}
+
+.gkl-xsell__card:hover {
+  border-color: rgba(200, 96, 26, 0.55);
+  transform: translateY(-1px);
+}
+
+.gkl-xsell__thumb {
+  flex: none;
+  width: 88px;
+  height: 88px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--gkl-card-dark-border);
+  background: var(--gkl-card-dark);
+}
+
+.gkl-xsell__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.gkl-xsell__title {
+  margin: 0;
+  font-family: var(--gkl-display);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--gkl-head);
+}
+
+.gkl-xsell__note {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--gkl-muted);
+}
+
+.gkl-xsell__price {
+  margin: 10px 0 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--gkl-display);
+  font-size: 18px;
+  color: var(--gkl-accent-bright);
+}
+
 /* === Sticky mobile CTA bar === */
 
 .gkl-sticky {
@@ -881,6 +1196,18 @@
 
   .gkl-sticky,
   .gkl-sticky-spacer { display: none; }
+
+  .gkl-offer__grid {
+    grid-template-columns: 1fr 1.05fr;
+    gap: 56px;
+  }
+
+  .gkl-offer--flip .gkl-offer__media { order: 2; }
+  .gkl-offer--flip .gkl-offer__copy { order: 1; }
+
+  .gkl-notify__row { flex-direction: row; }
+
+  .gkl-xsell__grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (prefers-reduced-motion: reduce) {
