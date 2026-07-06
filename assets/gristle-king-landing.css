@@ -1,0 +1,491 @@
+/* GK Gristle King landing page (paid traffic)
+   Flat and clean: no gradients, no drop shadows, generous whitespace.
+   Single accent color from Greg's brand palette. Mobile-first. */
+
+.gkl {
+  --gkl-accent: #c8601a;
+  --gkl-accent-dark: #a94f13;
+  --gkl-ink: #1c1814;
+  --gkl-muted: #6b6259;
+  --gkl-line: #e8e2d9;
+  --gkl-surface: #faf7f2;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--gkl-ink);
+  background: #ffffff;
+}
+
+.gkl-wrap {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.gkl-wrap--narrow {
+  max-width: 760px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  word-wrap: normal !important;
+}
+
+/* ============ CTA button ============ */
+
+.gkl-cta {
+  display: inline-block;
+  padding: 1.5rem 3.2rem;
+  background: var(--gkl-accent);
+  color: #ffffff;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  border: 0;
+  border-radius: 0.8rem;
+  cursor: pointer;
+}
+
+.gkl-cta:hover,
+.gkl-cta:focus-visible {
+  background: var(--gkl-accent-dark);
+}
+
+/* ============ 1. Hero ============ */
+
+.gkl-hero {
+  padding: 6rem 0 5rem;
+  text-align: center;
+}
+
+.gkl-hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.gkl-badge {
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  border: 1px solid var(--gkl-accent);
+  border-radius: 99rem;
+  color: var(--gkl-accent);
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.gkl-hero__heading {
+  margin: 0;
+  max-width: 20ch;
+  font-size: clamp(3.2rem, 7vw, 5.6rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.gkl-hero__subhead {
+  margin: 0;
+  max-width: 52ch;
+  font-size: 1.8rem;
+  line-height: 1.55;
+  color: var(--gkl-muted);
+}
+
+.gkl-price {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+}
+
+.gkl-price__title {
+  width: 100%;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--gkl-muted);
+}
+
+.gkl-price__amount {
+  font-size: 2.8rem;
+  font-weight: 800;
+}
+
+.gkl-price__compare {
+  font-size: 1.8rem;
+  color: var(--gkl-muted);
+}
+
+.gkl-stock {
+  margin: -0.6rem 0 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.gkl-stock--low {
+  color: var(--gkl-accent);
+}
+
+.gkl-stock--out {
+  color: var(--gkl-muted);
+}
+
+/* ============ 2. Gallery ============ */
+
+.gkl-gallery {
+  padding: 2rem 0 5rem;
+}
+
+.gkl-gallery__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+.gkl-gallery__cell {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 1.2rem;
+  background: var(--gkl-surface);
+}
+
+.gkl-gallery__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ============ 2b. Description from Shopify ============ */
+
+.gkl-desc {
+  padding: 3rem 0 5rem;
+}
+
+.gkl-eyebrow {
+  margin: 0 0 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--gkl-accent);
+}
+
+.gkl-desc__body {
+  font-size: 1.6rem;
+  line-height: 1.7;
+  color: var(--gkl-ink);
+}
+
+.gkl-desc__body p {
+  margin: 0 0 1.6rem;
+}
+
+.gkl-desc__body ul {
+  padding-left: 2rem;
+}
+
+.gkl-desc__body li {
+  margin-bottom: 0.8rem;
+}
+
+/* ============ 3. Video ============ */
+
+.gkl-video {
+  padding: 3rem 0 5rem;
+}
+
+.gkl-video__frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  background: var(--gkl-surface);
+}
+
+.gkl-video__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.gkl-video__caption {
+  margin: 1.2rem 0 0;
+  font-size: 1.4rem;
+  color: var(--gkl-muted);
+  text-align: center;
+}
+
+/* ============ 4. Features ============ */
+
+.gkl-features {
+  padding: 3rem 0 5rem;
+}
+
+.gkl-features__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+.gkl-feature {
+  padding: 2.8rem 2.4rem;
+  border: 1px solid var(--gkl-line);
+  border-radius: 1.2rem;
+  background: #ffffff;
+}
+
+.gkl-feature__icon {
+  display: inline-block;
+  margin-bottom: 1.2rem;
+  font-size: 2.8rem;
+  color: var(--gkl-accent);
+}
+
+.gkl-feature__title {
+  margin: 0 0 0.6rem;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.gkl-feature__text {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: var(--gkl-muted);
+}
+
+/* ============ 5. Testimonials ============ */
+
+.gkl-testimonials {
+  padding: 3rem 0 5rem;
+}
+
+.gkl-testimonials__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+.gkl-testimonial {
+  margin: 0;
+  padding: 2.8rem 2.4rem;
+  background: var(--gkl-surface);
+  border-radius: 1.2rem;
+}
+
+.gkl-testimonial blockquote {
+  margin: 0 0 1.2rem;
+  font-size: 1.7rem;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.gkl-testimonial figcaption {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--gkl-muted);
+}
+
+/* ============ 6. Greg quote ============ */
+
+.gkl-quote {
+  padding: 5rem 0;
+  text-align: center;
+}
+
+.gkl-quote__text {
+  margin: 0 0 1.6rem;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.gkl-quote__attribution {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gkl-accent);
+}
+
+/* ============ 7. Closing CTA ============ */
+
+.gkl-closing {
+  padding: 4rem 0 8rem;
+  text-align: center;
+}
+
+.gkl-price--closing {
+  margin-bottom: 2rem;
+}
+
+.gkl-smallprint {
+  margin: 1.6rem 0 0;
+  font-size: 1.3rem;
+  color: var(--gkl-muted);
+}
+
+/* ============ Waitlist (sold out only) ============ */
+
+.gkl-waitlist {
+  padding: 0 0 8rem;
+  text-align: center;
+}
+
+.gkl-waitlist__heading {
+  margin: 0 0 0.8rem;
+  font-size: 2.4rem;
+  font-weight: 800;
+}
+
+.gkl-waitlist__text {
+  margin: 0 0 2rem;
+  font-size: 1.5rem;
+  color: var(--gkl-muted);
+}
+
+.gkl-waitlist__row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.gkl-waitlist__row input[type='email'] {
+  padding: 1.4rem 1.6rem;
+  font-size: 1.6rem;
+  font-family: inherit;
+  color: var(--gkl-ink);
+  background: #ffffff;
+  border: 1px solid var(--gkl-line);
+  border-radius: 0.8rem;
+}
+
+.gkl-waitlist__row input[type='email']:focus-visible {
+  outline: 2px solid var(--gkl-accent);
+  outline-offset: 1px;
+  border-color: var(--gkl-accent);
+}
+
+.gkl-waitlist__success {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.gkl-waitlist__error {
+  margin: 1rem 0 0;
+  font-size: 1.4rem;
+  color: #b3261e;
+}
+
+/* ============ Error state (product not found) ============ */
+
+.gkl-error {
+  padding: 6rem 0;
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+
+.gkl-error__title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 1rem;
+}
+
+/* ============ Sticky mobile CTA ============ */
+
+.gkl-sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding: 1rem 1.6rem calc(1rem + env(safe-area-inset-bottom));
+  background: #ffffff;
+  border-top: 1px solid var(--gkl-line);
+}
+
+.gkl-sticky__price {
+  font-size: 1.8rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.gkl-sticky__compare {
+  margin-left: 0.6rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--gkl-muted);
+}
+
+.gkl-cta--sticky {
+  flex: 1;
+  padding: 1.2rem 1.6rem;
+  font-size: 1.5rem;
+}
+
+.gkl-sticky-spacer {
+  height: 7.2rem;
+}
+
+/* ============ Desktop ============ */
+
+@media screen and (min-width: 750px) {
+  .gkl-hero {
+    padding: 9rem 0 7rem;
+  }
+
+  .gkl-gallery__grid,
+  .gkl-features__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gkl-gallery__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .gkl-testimonials__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gkl-waitlist__row {
+    flex-direction: row;
+  }
+
+  .gkl-waitlist__row input[type='email'] {
+    flex: 1;
+  }
+
+  .gkl-sticky,
+  .gkl-sticky-spacer {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

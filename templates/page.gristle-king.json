@@ -1,0 +1,14 @@
+{
+  "layout": "gristle-landing",
+  "sections": {
+    "landing": {
+      "type": "gk-gristle-king-landing",
+      "settings": {
+        "product": "gristle-king-pedal-56",
+        "low_stock_threshold": 5,
+        "video_embed_url": "https://www.youtube.com/embed/LG6n_28SW_c"
+      }
+    }
+  },
+  "order": ["landing"]
+}
