@@ -1,8 +1,8 @@
 {% comment %}
-  GK Gristle King landing — 7. Final CTA
+  GK Gristle King landing - 7. Final CTA
   Repeats the primary CTA with live price from Shopify, plus the customs
   small print. When the product is sold out the CTA swaps to a waitlist
-  email capture posting to Shopify's customer form (a real backend — no
+  email capture posting to Shopify's customer form (a real backend - no
   browser storage), tagged gristle-king-waitlist. Also renders the sticky
   mobile CTA bar pinned to the bottom of the viewport (mobile only).
 {% endcomment %}
@@ -28,7 +28,7 @@
 
 {%- if product == blank or product.empty? -%}
   <script>
-    console.warn('[gk-gristle-cta] Product not found for handle "{{ fallback_handle }}" and no product selected. CTA not rendered — no fallback pricing by design.');
+    console.warn('[gk-gristle-cta] Product not found for handle "{{ fallback_handle }}" and no product selected. CTA not rendered - no fallback pricing by design.');
   </script>
 {%- else -%}
 
@@ -55,7 +55,7 @@
       </p>
 
       {%- if sold_out -%}
-        <p class="gkl-stock gkl-stock--out">Sold out — join the waiting list below</p>
+        <p class="gkl-stock gkl-stock--out">Sold out. Join the waiting list below</p>
       {%- endif -%}
 
       <div class="gkl-cta__button-row">
@@ -72,7 +72,7 @@
           <p class="gkl-waitlist__text">{{ section.settings.waitlist_text | escape }}</p>
 
           {%- form 'customer', class: 'gkl-waitlist__form', id: 'gkl-waitlist-form' -%}
-            <input type="hidden" name="contact[tags]" value="gristle-king-waitlist">
+            <input type="hidden" name="contact[tags]" value="{{ section.settings.waitlist_tag | default: 'gristle-king-waitlist' | escape }}">
 
             {%- if form.posted_successfully? -%}
               <p class="gkl-waitlist__success" tabindex="-1" autofocus>You're on the list. We'll email you when it's back.</p>
@@ -127,7 +127,7 @@
 
 {% schema %}
 {
-  "name": "GK Gristle — final CTA",
+  "name": "GK Gristle - final CTA",
   "tag": "section",
   "settings": [
     {
@@ -174,6 +174,13 @@
     },
     {
       "type": "text",
+      "id": "waitlist_tag",
+      "label": "Waitlist customer tag",
+      "info": "Tag applied to captured emails in Shopify customers, one per product.",
+      "default": "gristle-king-waitlist"
+    },
+    {
+      "type": "text",
       "id": "waitlist_heading",
       "label": "Waitlist heading",
       "default": "Join the waiting list"
@@ -186,7 +193,7 @@
     }
   ],
   "presets": [
-    { "name": "GK Gristle — final CTA" }
+    { "name": "GK Gristle - final CTA" }
   ]
 }
 {% endschema %}

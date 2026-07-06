@@ -46,7 +46,7 @@
         "kicker": "Now built by Fishman for wider availability",
         "heading_line1": "Your tone.",
         "heading_line2": "No matter what amp they throw at you.",
-        "subhead": "The Gristle King. The pedal Greg Koch built his sound on — designed with Greg and original builder Tim Jauernig. Warm bluesy breakup to searing sustain, in one pedal.",
+        "subhead": "The Gristle King. The pedal Greg Koch built his sound on. Designed with Greg and original builder Tim Jauernig. Warm bluesy breakup to searing sustain, in one pedal.",
         "cta_label": "Get my Gristle King now",
         "cta_label_soldout": "Join the waiting list",
         "microcopy": "Ships fast. Includes instruction booklet."
@@ -68,7 +68,7 @@
           "settings": {
             "icon": "ti-bolt",
             "title": "A boost with just the right push",
-            "text": "Adds push without coloring everything — your guitar still sounds like your guitar."
+            "text": "Adds push without coloring everything. Your guitar still sounds like your guitar."
           }
         }
       },
@@ -80,11 +80,11 @@
         "show_top_divider": true,
         "eyebrow": "The Gristle Lowdown",
         "heading": "The backline is… let's say questionable",
-        "body": "<p>When you're gigging as much as I do, you don't always get to play through your favorite amp. Sometimes you walk into a venue and the backline is… let's say questionable.</p><p>Or I'm sitting in with a friend's band in a high-profile situation, handed an amp I may not be that familiar with, and I need to know I'm gonna have my tone dialed.</p><p>Before I got this pedal, these situations may have caused me some angst. <strong>But no more.</strong></p><p>For the last 20+ years, I've kept one pedal in my bag that I know will always get me where I need to go — <strong>the Gristle King.</strong> It's the combination of the two things I rely on most:</p>",
-        "signature": "— Greg Koch",
+        "body": "<p>When you're gigging as much as I do, you don't always get to play through your favorite amp. Sometimes you walk into a venue and the backline is… let's say questionable.</p><p>Or I'm sitting in with a friend's band in a high-profile situation, handed an amp I may not be that familiar with, and I need to know I'm gonna have my tone dialed.</p><p>Before I got this pedal, these situations may have caused me some angst. <strong>But no more.</strong></p><p>For the last 20+ years, I've kept one pedal in my bag that I know will always get me where I need to go. <strong>The Gristle King.</strong> It's the combination of the two things I rely on most:</p>",
+        "signature": "Greg Koch",
         "image": "shopify://shop_images/826869ff-8cbf-458d-b779-5ee34a034654.png",
         "caption": "Greg Koch",
-        "outro": "<p>Whether it's a tiny club with a dodgy combo or a big stage with a borrowed rig: plug in, get a decent clean sound on the amp, fire up the Gristle King, and the tone delivers <strong>unparalleled savagery</strong>.</p><p>My buddy and tone guru Tim Jauernig designed the Gristle King for me to solve a real problem — and it's never let me down.</p>"
+        "outro": "<p>Whether it's a tiny club with a dodgy combo or a big stage with a borrowed rig: plug in, get a decent clean sound on the amp, fire up the Gristle King, and the tone delivers <strong>unparalleled savagery</strong>.</p><p>My buddy and tone guru Tim Jauernig designed the Gristle King for me to solve a real problem, and it's never let me down.</p>"
       }
     },
     "features": {
@@ -165,6 +165,7 @@
         "video_embed_url": "https://www.youtube.com/embed/LG6n_28SW_c",
         "video_title": "Greg Koch's Secret Weapon? Gristle King Pedal FULL Breakdown",
         "video_caption": "Full pedal breakdown, straight from Greg's channel",
+        "testimonials_heading": "What People Are Saying About the Gristle King",
         "show_gallery": true,
         "product": "gristle-king-pedal-56"
       }
@@ -175,7 +176,7 @@
         "show_top_divider": true,
         "quote_line1": "“This is the sound. Been chasing it for twenty years, now anyone can plug it in.",
         "quote_line2": "We ride!”",
-        "attribution": "— Greg Koch"
+        "attribution": "Greg Koch"
       }
     },
     "faq": {
@@ -185,14 +186,14 @@
           "type": "qa",
           "settings": {
             "question": "Is this the same pedal as the original Gristle King?",
-            "answer": "<p>Same signature circuit, same tone DNA — designed with Greg and original builder Tim Jauernig, now built by Fishman so it's actually available.</p>"
+            "answer": "<p>Same signature circuit, same tone DNA, designed with Greg and original builder Tim Jauernig. Now built by Fishman so it's actually available.</p>"
           }
         },
         "q_amp": {
           "type": "qa",
           "settings": {
             "question": "Will it work with my amp?",
-            "answer": "<p>That's the whole point. Set a decent clean sound on whatever amp you're handed — a tiny club combo or a borrowed stage rig — and the Gristle King does the rest, at any volume.</p>"
+            "answer": "<p>That's the whole point. Set a decent clean sound on whatever amp you're handed, tiny club combo or borrowed stage rig, and the Gristle King does the rest, at any volume.</p>"
           }
         },
         "q_box": {

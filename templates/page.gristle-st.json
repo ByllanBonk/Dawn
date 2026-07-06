@@ -1,0 +1,227 @@
+{
+  "layout": "gristle-landing",
+  "sections": {
+    "hero": {
+      "type": "gk-gristle-hero",
+      "blocks": {
+        "bullet_pickups": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-bolt",
+            "text": "Chambered korina body with three Fishman Fluence Gristle-Tone pickups"
+          }
+        },
+        "bullet_signed": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-signature",
+            "text": "Signed by Greg, with a personalized video featuring your serial number"
+          }
+        },
+        "bullet_tones": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-adjustments",
+            "text": "Blend knob and push-pull boost for tones a normal S-style cannot make"
+          }
+        }
+      },
+      "block_order": ["bullet_pickups", "bullet_signed", "bullet_tones"],
+      "settings": {
+        "product": "gristle-st-avocado-burst-100",
+        "low_stock_threshold": 3,
+        "kicker": "Signed collector edition, continental US only",
+        "heading_line1": "A new era",
+        "heading_line2": "of gristle.",
+        "subhead": "The Reverend Greg Koch Signature Gristle ST in Avocado Burst. Signed by the man himself, shipped in a hard case, with a personalized video for your guitar's serial number.",
+        "cta_label": "Get my Gristle ST now",
+        "cta_label_soldout": "Join the waiting list",
+        "microcopy": "Includes hard case, signature and serial-number video."
+      }
+    },
+    "problem": {
+      "type": "gk-gristle-problem",
+      "blocks": {
+        "point_fluence": {
+          "type": "point",
+          "settings": {
+            "icon": "ti-bolt",
+            "title": "Fluence Gristle-Tone trio",
+            "text": "Three Fishman Fluence signature pickups, two voices each, zero hum. Succulence in the extreme."
+          }
+        },
+        "point_controls": {
+          "type": "point",
+          "settings": {
+            "icon": "ti-adjustments",
+            "title": "Tones a Strat cannot make",
+            "text": "The blend knob folds bridge and neck into any of the five positions, and the push-pull boost adds girth and a midrange kick."
+          }
+        }
+      },
+      "block_order": ["point_fluence", "point_controls"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "The Gristle Lowdown",
+        "heading": "Built for fiendish musical deeds",
+        "body": "<p>Joe Naylor of Reverend and I noodled on this design for years, literally, until the right mix of design and function was landed on. The result is the Gristle ST, the third chapter in the Reverend gristle saga.</p><p>It has the classic sounds, with a second voice in the pickups that adds more girthsome tones. It has a tremolo system that can take a licking and stay in tune. And it is built just a little bit larger, so as to not look like a mandolin when played by a larger soul such as myself.</p><p><strong>This one comes from my own stash.</strong> Signed by yours truly, shipped in a hard case, with a personalized video from me featuring your guitar's serial number. A documented, traceable piece of Gristle history.</p>",
+        "signature": "Greg Koch",
+        "caption": "Greg Koch",
+        "outro": "<p>Chambered korina body, roasted maple neck, Wilkinson tremolo, pin-lock tuners, and an Avocado Burst finish that lets the grain glow through. <strong>A new era of Gristle. I can dig it.</strong></p>"
+      }
+    },
+    "features": {
+      "type": "gk-gristle-features",
+      "blocks": {
+        "feat_body": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-guitar-pick",
+            "title": "Chambered korina body",
+            "text": "Resonant, comfortable and a touch larger than the usual S-style, with a raised center and contours in all the right places."
+          }
+        },
+        "feat_pickups": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-bolt",
+            "title": "Fluence Gristle-Tone trio",
+            "text": "Greg's Fishman Fluence signature single-width pickups. Two voices each, glassy in-between tones, zero hum."
+          }
+        },
+        "feat_controls": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-adjustments",
+            "title": "Blend knob and boost",
+            "text": "Blend the bridge and neck into any switch position, then pull the tone knob for fat Texas-style push."
+          }
+        },
+        "feat_hardware": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-shield-check",
+            "title": "Takes a licking, stays in tune",
+            "text": "Wilkinson VS100N tremolo, Reverend pin-lock tuners and a roasted maple neck built for the long haul."
+          }
+        }
+      },
+      "block_order": ["feat_body", "feat_pickups", "feat_controls", "feat_hardware"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "What you're strapping on",
+        "heading": "An S-style, evolved",
+        "subhead": "Classic bones, modern sorcery, zero hum."
+      }
+    },
+    "proof": {
+      "type": "gk-gristle-proof",
+      "blocks": {
+        "quote_vg": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "It's dynamic and endlessly tweakable.",
+            "source": "Gear press"
+          }
+        },
+        "quote_boost": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Even the meek little second position can get jacked enough to push a low-watt amp to breakup.",
+            "source": "Gear press"
+          }
+        },
+        "quote_owner": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "After two weeks and a band rehearsal, this guitar is astounding.",
+            "source": "Verified owner review"
+          }
+        }
+      },
+      "block_order": ["quote_vg", "quote_boost", "quote_owner"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "Hear it sing",
+        "heading": "The Gristle ST at full gallop",
+        "video_embed_url": "https://www.youtube.com/embed/4tjKKpOWcAk",
+        "video_title": "Reverend Greg Koch Signature Gristle ST overview, Wildwood Guitars",
+        "video_caption": "Full overview from Wildwood Guitars, Greg's demo home since 2011",
+        "testimonials_heading": "What People Are Saying About the Gristle ST",
+        "show_gallery": true,
+        "product": "gristle-st-avocado-burst-100"
+      }
+    },
+    "quote": {
+      "type": "gk-gristle-quote",
+      "settings": {
+        "show_top_divider": true,
+        "quote_line1": "“Everything I need to engage in fiendish musical deeds.",
+        "quote_line2": "I can dig it all!”",
+        "attribution": "Greg Koch"
+      }
+    },
+    "faq": {
+      "type": "gk-gristle-faq",
+      "blocks": {
+        "q_collector": {
+          "type": "qa",
+          "settings": {
+            "question": "What makes this collector edition special?",
+            "answer": "<p>Each guitar is signed by Greg and ships in a hard case with a personalized video from Greg featuring your guitar's serial number. A documented, traceable piece of Gristle history.</p>"
+          }
+        },
+        "q_pickups": {
+          "type": "qa",
+          "settings": {
+            "question": "What are the pickups?",
+            "answer": "<p>Three Fishman Fluence Greg Koch Gristle-Tone single-width pickups. Each carries two voices, from wide-open hi-fi clarity to a mid-forward push, with zero sixty-cycle hum.</p>"
+          }
+        },
+        "q_guitar": {
+          "type": "qa",
+          "settings": {
+            "question": "What is the guitar itself?",
+            "answer": "<p>A chambered korina S-style body with a roasted maple neck and fretboard, 12 inch radius, Wilkinson VS100N tremolo, Boneite nut and Reverend pin-lock tuners, finished in Avocado Burst.</p>"
+          }
+        },
+        "q_size": {
+          "type": "qa",
+          "settings": {
+            "question": "Why is it a little bigger than a normal S-style?",
+            "answer": "<p>Because Greg is six foot eight and refuses to look like he is playing a mandolin. The slightly larger body also adds resonance and comfort for players of any altitude.</p>"
+          }
+        },
+        "q_shipping": {
+          "type": "qa",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>This signed collector edition is only available in the continental United States.</p>"
+          }
+        }
+      },
+      "block_order": ["q_collector", "q_pickups", "q_guitar", "q_size", "q_shipping"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "Common questions",
+        "heading": "Wait. What's the deal?"
+      }
+    },
+    "cta": {
+      "type": "gk-gristle-cta",
+      "settings": {
+        "show_top_divider": true,
+        "product": "gristle-st-avocado-burst-100",
+        "eyebrow": "Ready when you are",
+        "heading": "Claim your piece of Gristle history",
+        "cta_label": "Get my Gristle ST now",
+        "cta_label_soldout": "Join the waiting list",
+        "smallprint": "Signed collector edition. Only available in the continental United States. Includes hard case and personalized serial-number video.",
+        "waitlist_tag": "gristle-st-waitlist",
+        "waitlist_heading": "Join the waiting list",
+        "waitlist_text": "Leave your email and we'll let you know the moment a signed Gristle ST is available again."
+      }
+    }
+  },
+  "order": ["hero", "problem", "features", "proof", "quote", "faq", "cta"]
+}

@@ -1,0 +1,220 @@
+{
+  "layout": "gristle-landing",
+  "sections": {
+    "hero": {
+      "type": "gk-gristle-hero",
+      "blocks": {
+        "bullet_chain": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-stack-2",
+            "text": "All ten of Greg's JAM pedals circuits, wired in his exact signal chain"
+          }
+        },
+        "bullet_gk": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-crown",
+            "text": "Includes a JAM remaster of the Gristle King drive, exclusive to the Supreme"
+          }
+        },
+        "bullet_presets": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-adjustments",
+            "text": "Greg's own presets loaded, with tap sync and expression inputs"
+          }
+        }
+      },
+      "block_order": ["bullet_chain", "bullet_gk", "bullet_presets"],
+      "settings": {
+        "product": "kochness-monster-supreme-pedal-91",
+        "low_stock_threshold": 3,
+        "kicker": "The 15-year JAM pedals collaboration, supreme edition",
+        "heading_line1": "Greg's whole rig.",
+        "heading_line2": "One glorious monster.",
+        "subhead": "The Kochness Monster Supreme. Greg's entire live and studio signal chain in one sparkling orange slab, hand-built by JAM pedals in Athens, Greece.",
+        "cta_label": "Get my Monster Supreme now",
+        "cta_label_soldout": "Join the waiting list",
+        "microcopy": "Includes tailored gig bag and universal power supply."
+      }
+    },
+    "problem": {
+      "type": "gk-gristle-problem",
+      "blocks": {
+        "point_circuits": {
+          "type": "point",
+          "settings": {
+            "icon": "ti-stack-2",
+            "title": "Ten circuits, Greg's order",
+            "text": "Wah, vibe, Gristle King, fuzz, dry-blend drive, boost, chorus, harmonic tremolo and two delays, tap-synced across the lot."
+          }
+        },
+        "point_expand": {
+          "type": "point",
+          "settings": {
+            "icon": "ti-plug",
+            "title": "Room to grow",
+            "text": "A send and return loop for outside pedals, plus expression inputs for vibe speed, boost level and delay time."
+          }
+        }
+      },
+      "block_order": ["point_circuits", "point_expand"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "The Gristle Lowdown",
+        "heading": "One that just has everything",
+        "body": "<p>When JAM pedals and I set out to make the Kochness Monster, we made two. One lean and mean, with the bare essentials. And one for the ax-slingers who looked at the lean one and said, respectfully, more.</p><p>The Supreme is my entire live and studio signal chain in one sparkling orange slab. Ten JAM pedals circuits, wired in my exact order, with my presets already loaded into the tremolo and the delay.</p><p>It has the wah. It has the vibe. It has a JAM remaster of my beloved Gristle King. <strong>This creature right here has everything but the kitchen sink.</strong></p><p>Many are called, none are chosen. But somebody out there is going to plug into this thing and achieve succulence in the extreme.</p>",
+        "signature": "Greg Koch",
+        "caption": "Greg Koch",
+        "outro": "<p>Hand-wired and hand-painted in Athens, Greece, delivered in a tailored gig bag with optional labeled control guides for the knob-curious. <strong>Glorious, multi-effective doom and destruction.</strong></p>"
+      }
+    },
+    "features": {
+      "type": "gk-gristle-features",
+      "blocks": {
+        "feat_chain": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-stack-2",
+            "title": "The full signal chain",
+            "text": "Wahcko wah, RetroVibe, Gristle King, Eureka! fuzz, LucyDreamer, Boomster boost, Waterfall chorus, Harmonious Monk and two Delay Llamas."
+          }
+        },
+        "feat_gk": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-crown",
+            "title": "The Gristle King, remastered",
+            "text": "Greg's signature drive and boost, rebuilt by JAM for the Supreme. You cannot get this circuit in any other JAM box."
+          }
+        },
+        "feat_presets": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-adjustments",
+            "title": "Presets and tap sorcery",
+            "text": "Greg's custom presets ship loaded, and one tap drives both the delay and the harmonic tremolo in sync."
+          }
+        },
+        "feat_io": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-plug",
+            "title": "Serious plumbing",
+            "text": "Send and return loop, three expression inputs, remote tap and preset jacks. It plays well with everything."
+          }
+        }
+      },
+      "block_order": ["feat_chain", "feat_gk", "feat_presets", "feat_io"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "What you're plugging into",
+        "heading": "The whole arsenal, for real this time",
+        "subhead": "Every circuit Greg gigs with, in the order he gigs with them."
+      }
+    },
+    "proof": {
+      "type": "gk-gristle-proof",
+      "blocks": {
+        "quote_press": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Superbly built, and the sounds are just amazing.",
+            "source": "Gear press"
+          }
+        },
+        "quote_owner": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "It is now my go to live pedalboard.",
+            "source": "Owner review"
+          }
+        }
+      },
+      "block_order": ["quote_press", "quote_owner"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "Hear it roar",
+        "heading": "Ten circuits of doom and destruction",
+        "video_embed_url": "https://www.youtube.com/embed/KGu7vXXfPw8",
+        "video_title": "DIG IT! Greg Koch on the Koch Ness Monster Supreme, JAM pedals",
+        "video_caption": "Greg walks the whole beast, straight from JAM pedals",
+        "testimonials_heading": "What People Are Saying About the Kochness Monster Supreme",
+        "show_gallery": true,
+        "product": "kochness-monster-supreme-pedal-91"
+      }
+    },
+    "quote": {
+      "type": "gk-gristle-quote",
+      "settings": {
+        "show_top_divider": true,
+        "quote_line1": "“This creature right here has everything",
+        "quote_line2": "but the kitchen sink.”",
+        "attribution": "Greg Koch"
+      }
+    },
+    "faq": {
+      "type": "gk-gristle-faq",
+      "blocks": {
+        "q_inside": {
+          "type": "qa",
+          "settings": {
+            "question": "What circuits are inside?",
+            "answer": "<p>In Greg's signal order: Wahcko wah, RetroVibe vibrato, Gristle King drive and boost, Eureka! fuzz, LucyDreamer overdrive, a send and return loop, Boomster boost, Waterfall chorus, Harmonious Monk harmonic tremolo, Delay Llama and Delay Llama XTREME.</p>"
+          }
+        },
+        "q_gk": {
+          "type": "qa",
+          "settings": {
+            "question": "Is the Gristle King really in there?",
+            "answer": "<p>Yes. A JAM pedals remaster of Greg's signature Tim Jauernig drive and boost, exclusive to the Supreme. Greg runs the Delay Llama as his always-on slapback right behind it.</p>"
+          }
+        },
+        "q_expand": {
+          "type": "qa",
+          "settings": {
+            "question": "Can I add my own pedals?",
+            "answer": "<p>There's a send and return loop mid-chain for outside pedals, plus expression inputs for vibe speed, boost level and delay time, and remote tap and preset jacks.</p>"
+          }
+        },
+        "q_box": {
+          "type": "qa",
+          "settings": {
+            "question": "What comes with it?",
+            "answer": "<p>A tailored gig bag and a universal power supply. Optional labeled plexiglass control guides are available for keeping track of your settings.</p>"
+          }
+        },
+        "q_shipping": {
+          "type": "qa",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes. International orders are responsible for customs and duties.</p>"
+          }
+        }
+      },
+      "block_order": ["q_inside", "q_gk", "q_expand", "q_box", "q_shipping"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "Common questions",
+        "heading": "Wait. What's the deal?"
+      }
+    },
+    "cta": {
+      "type": "gk-gristle-cta",
+      "settings": {
+        "show_top_divider": true,
+        "product": "kochness-monster-supreme-pedal-91",
+        "eyebrow": "Ready when you are",
+        "heading": "Summon the Supreme",
+        "cta_label": "Get my Monster Supreme now",
+        "cta_label_soldout": "Join the waiting list",
+        "smallprint": "Hand-made in small batches by JAM pedals. International orders responsible for customs and duties.",
+        "waitlist_tag": "kochness-monster-supreme-waitlist",
+        "waitlist_heading": "Join the waiting list",
+        "waitlist_text": "Leave your email and we'll let you know the moment the Supreme is back in stock."
+      }
+    }
+  },
+  "order": ["hero", "problem", "features", "proof", "quote", "faq", "cta"]
+}

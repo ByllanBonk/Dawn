@@ -1,11 +1,11 @@
 {% comment %}
-  GK Gristle King landing — 1. Hero
-  Above the fold: wordmark (trust, not a link — no paths off this page),
+  GK Gristle King landing - 1. Hero
+  Above the fold: wordmark (trust, not a link - no paths off this page),
   kicker badge, benefit-led headline, subhead, trust bullets, live price +
   availability from Shopify, and the primary CTA straight to checkout.
   Commerce data is never hardcoded: price, compare-at, stock and image all
   come from the product picked in the section settings (or the fallback
-  handle below — one-line fix if the handle changes).
+  handle below - one-line fix if the handle changes).
 {% endcomment %}
 
 {%- assign fallback_handle = 'gristle-king-pedal-56' -%}
@@ -96,7 +96,7 @@
 
             <p class="gkl-stock{% if sold_out %} gkl-stock--out{% elsif low_stock %} gkl-stock--low{% endif %}">
               {%- if sold_out -%}
-                Sold out — join the waiting list below
+                Sold out. Join the waiting list below
               {%- elsif low_stock -%}
                 Only {{ variant.inventory_quantity }} left in stock
               {%- else -%}
@@ -139,7 +139,7 @@
 
 {% schema %}
 {
-  "name": "GK Gristle — hero",
+  "name": "GK Gristle - hero",
   "tag": "section",
   "settings": [
     {
@@ -179,7 +179,7 @@
       "type": "textarea",
       "id": "subhead",
       "label": "Subhead",
-      "default": "The Gristle King. The pedal Greg Koch built his sound on — designed with Greg and original builder Tim Jauernig. Warm bluesy breakup to searing sustain, in one pedal."
+      "default": "The Gristle King. The pedal Greg Koch built his sound on. Designed with Greg and original builder Tim Jauernig. Warm bluesy breakup to searing sustain, in one pedal."
     },
     {
       "type": "text",
@@ -229,7 +229,7 @@
   ],
   "presets": [
     {
-      "name": "GK Gristle — hero",
+      "name": "GK Gristle - hero",
       "blocks": [
         { "type": "bullet" },
         { "type": "bullet" },

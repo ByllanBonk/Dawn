@@ -1,5 +1,5 @@
 {% comment %}
-  GK Gristle King landing — 4. Proof
+  GK Gristle King landing - 4. Proof
   Demo video (iframe injected only when scrolled near, via
   IntersectionObserver, to keep initial load light), a 3-image gallery
   pulled live from the Shopify product, and testimonial cards.
@@ -63,6 +63,9 @@
       {%- endif -%}
 
       {%- if section.blocks.size > 0 -%}
+        {%- if section.settings.testimonials_heading != blank -%}
+          <h3 class="gkl-testimonials__title">{{ section.settings.testimonials_heading | escape }}</h3>
+        {%- endif -%}
         <div class="gkl-testimonials">
           {%- for block in section.blocks -%}
             <figure class="gkl-testimonial" {{ block.shopify_attributes }}>
@@ -116,7 +119,7 @@
 
 {% schema %}
 {
-  "name": "GK Gristle — proof",
+  "name": "GK Gristle - proof",
   "tag": "section",
   "settings": [
     {
@@ -156,6 +159,12 @@
       "default": "Full pedal breakdown, straight from Greg's channel"
     },
     {
+      "type": "text",
+      "id": "testimonials_heading",
+      "label": "Testimonials heading",
+      "default": "What People Are Saying"
+    },
+    {
       "type": "checkbox",
       "id": "show_gallery",
       "label": "Show product image gallery",
@@ -191,7 +200,7 @@
   ],
   "presets": [
     {
-      "name": "GK Gristle — proof",
+      "name": "GK Gristle - proof",
       "blocks": [
         { "type": "testimonial" },
         { "type": "testimonial" }

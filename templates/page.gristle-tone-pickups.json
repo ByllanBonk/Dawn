@@ -1,0 +1,227 @@
+{
+  "layout": "gristle-landing",
+  "sections": {
+    "hero": {
+      "type": "gk-gristle-hero",
+      "blocks": {
+        "bullet_voices": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-switch-horizontal",
+            "text": "Two voices per pickup: hi-fi clarity or mid-forward fatness"
+          }
+        },
+        "bullet_hum": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-volume-off",
+            "text": "Zero sixty-cycle hum, at any volume, on any stage"
+          }
+        },
+        "bullet_loaded": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-tool",
+            "text": "Fully pre-wired pickguard: drop in and go, easy-peasy"
+          }
+        }
+      },
+      "block_order": ["bullet_voices", "bullet_hum", "bullet_loaded"],
+      "settings": {
+        "product": "greg-koch-gristle-tone-signature-series-single-width-3-pickup-set-loaded-pickguard-90",
+        "low_stock_threshold": 5,
+        "kicker": "Fishman Fluence signature series, loaded pickguard",
+        "heading_line1": "All the twang.",
+        "heading_line2": "None of the hum.",
+        "subhead": "The Fishman Fluence Greg Koch Gristle-Tone single-width trio, pre-wired on a loaded pickguard. The same pickups that ship in Greg's Reverend Gristle ST.",
+        "cta_label": "Get my Gristle-Tone set now",
+        "cta_label_soldout": "Join the waiting list",
+        "microcopy": "Pre-wired and ready. Pots, knobs and five-way switch installed."
+      }
+    },
+    "problem": {
+      "type": "gk-gristle-problem",
+      "blocks": {
+        "point_voices": {
+          "type": "point",
+          "settings": {
+            "icon": "ti-switch-horizontal",
+            "title": "Two eras in one guitar",
+            "text": "Voice one is wide-open hi-fi clarity. Voice two is a mid-forward push you can set from mild fatness to full blown searing leads."
+          }
+        },
+        "point_quiet": {
+          "type": "point",
+          "settings": {
+            "icon": "ti-volume-off",
+            "title": "Silence between the notes",
+            "text": "Fluence Core printed coils mean zero sixty-cycle hum and no tone loss down long cables, rechargeable right on the guitar."
+          }
+        }
+      },
+      "block_order": ["point_voices", "point_quiet"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "The Gristle Lowdown",
+        "heading": "The angst of humanity, ameliorated",
+        "body": "<p>Single coils are the sound. The snap, the glass, the quack in positions two and four. They are also, and I say this with love, a sixty-cycle hum machine that makes you pick one favorite era of tone and live with it forever.</p><p>So Fishman and I kept going. After the Gristle-Tone Telecaster set and the P90s, we set forth to bottle the S-style sounds I rely on, with flawless articulation and no hum whatsoever.</p><p>Each pickup carries <strong>two voices</strong>. Voice one is wide-open clarity with that glassy, toothy in-between thing. Voice two brings the girth, adjustable from a gentle nudge to full blown searing leads.</p><p>And this version arrives fully loaded on a pickguard, wired and ready. Drop it in, plug it in, commence the fiendishness. <strong>We ride!</strong></p>",
+        "signature": "Greg Koch",
+        "caption": "Greg Koch",
+        "outro": "<p>Available in white or black, with pots, knobs and five-way switch already installed. An afternoon upgrade for any ax-slinger's S-style companion.</p>"
+      }
+    },
+    "features": {
+      "type": "gk-gristle-features",
+      "blocks": {
+        "feat_voices": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-switch-horizontal",
+            "title": "Two voices per pickup",
+            "text": "Wide-band hi-fi clarity on voice one, an adjustable mid-forward boost on voice two. Two great single-coil eras, one guitar."
+          }
+        },
+        "feat_hum": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-volume-off",
+            "title": "Dead quiet",
+            "text": "Fluence Core technology, no wound-coil hum, no loading from long cables. Your tone survives the whole signal chain."
+          }
+        },
+        "feat_loaded": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-tool",
+            "title": "Drop-in pickguard",
+            "text": "Fully pre-wired with pots, knobs and five-way switch. Minimal soldering, maximal succulence."
+          }
+        },
+        "feat_battery": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-battery-charging",
+            "title": "Rechargeable on the guitar",
+            "text": "Around two hundred hours per charge, with an optional lithium-ion pack for weeks of playing time."
+          }
+        }
+      },
+      "block_order": ["feat_voices", "feat_hum", "feat_loaded", "feat_battery"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "What you're dropping in",
+        "heading": "Fluence, tuned for gristle",
+        "subhead": "Everything single coils do right, nothing they do wrong."
+      }
+    },
+    "proof": {
+      "type": "gk-gristle-proof",
+      "blocks": {
+        "quote_pg": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Remarkably hi-fi sounding, with exceptional definition, clarity, and punch.",
+            "source": "Gear press"
+          }
+        },
+        "quote_forum": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "It was like taking a wet blanket off the Tele. The Fluence pickups are just great.",
+            "source": "Player forum thread"
+          }
+        },
+        "quote_sos": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Really excels in doling out muscular riffage and stinging lead lines.",
+            "source": "Gear press"
+          }
+        }
+      },
+      "block_order": ["quote_pg", "quote_forum", "quote_sos"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "Hear the difference",
+        "heading": "Hum-free succulence, demonstrated",
+        "video_embed_url": "https://www.youtube.com/embed/nsTk6OvneGc",
+        "video_title": "Fishman Greg Koch Gristle-Tone Single Width 3 Pickup Set demo, NAMM 2025",
+        "video_caption": "The Gristle-Tone trio demoed at NAMM 2025",
+        "testimonials_heading": "What People Are Saying About the Gristle-Tone Pickups",
+        "show_gallery": true,
+        "product": "greg-koch-gristle-tone-signature-series-single-width-3-pickup-set-loaded-pickguard-90"
+      }
+    },
+    "quote": {
+      "type": "gk-gristle-quote",
+      "settings": {
+        "show_top_divider": true,
+        "quote_line1": "“Flawless articulation and no hum.",
+        "quote_line2": "That is exactly what Fishman has done for me.”",
+        "attribution": "Greg Koch"
+      }
+    },
+    "faq": {
+      "type": "gk-gristle-faq",
+      "blocks": {
+        "q_fit": {
+          "type": "qa",
+          "settings": {
+            "question": "Will it fit my guitar?",
+            "answer": "<p>It's a standard S-style loaded pickguard with everything pre-wired: three pickups, pots, knobs and the five-way switch. Available in white or black.</p>"
+          }
+        },
+        "q_voices": {
+          "type": "qa",
+          "settings": {
+            "question": "What are the two voices?",
+            "answer": "<p>Voice one is a wide-open, hi-fi single-coil voice with exceptional definition and those glassy in-between tones. Voice two adds an internally adjustable midrange push, from mild fatness to full blown searing leads.</p>"
+          }
+        },
+        "q_battery": {
+          "type": "qa",
+          "settings": {
+            "question": "Do they need batteries?",
+            "answer": "<p>They recharge right on the guitar, with roughly two hundred hours per charge. An optional lithium-ion battery pack stretches that to weeks of playing time.</p>"
+          }
+        },
+        "q_hum": {
+          "type": "qa",
+          "settings": {
+            "question": "Are they actually hum-free?",
+            "answer": "<p>Actually hum-free. Fluence Core printed coils have no winding to pick up sixty-cycle hum, and they're immune to tone loss from long cable runs.</p>"
+          }
+        },
+        "q_shipping": {
+          "type": "qa",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes. International orders are responsible for customs and duties.</p>"
+          }
+        }
+      },
+      "block_order": ["q_fit", "q_voices", "q_battery", "q_hum", "q_shipping"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "Common questions",
+        "heading": "Wait. What's the deal?"
+      }
+    },
+    "cta": {
+      "type": "gk-gristle-cta",
+      "settings": {
+        "show_top_divider": true,
+        "product": "greg-koch-gristle-tone-signature-series-single-width-3-pickup-set-loaded-pickguard-90",
+        "eyebrow": "Ready when you are",
+        "heading": "Load up and ride",
+        "cta_label": "Get my Gristle-Tone set now",
+        "cta_label_soldout": "Join the waiting list",
+        "smallprint": "Pre-wired loaded pickguard. International orders responsible for customs and duties.",
+        "waitlist_tag": "gristle-tone-pickups-waitlist",
+        "waitlist_heading": "Join the waiting list",
+        "waitlist_text": "Leave your email and we'll let you know the moment the Gristle-Tone set is back in stock."
+      }
+    }
+  },
+  "order": ["hero", "problem", "features", "proof", "quote", "faq", "cta"]
+}
