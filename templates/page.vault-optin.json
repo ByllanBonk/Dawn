@@ -87,7 +87,7 @@
           "type": "card",
           "settings": {
             "width": "third",
-            "emblem": "pick",
+            "emblem": "song",
             "free_label": "FREE · 01",
             "title": "Chicken Picking Masterclass",
             "description": "Thumb and finger foundation to full hybrid integration. The muted note, the pop, the banjo rolls, the Magic Sam lick. Everything."
@@ -127,7 +127,7 @@
           "type": "card",
           "settings": {
             "width": "third",
-            "emblem": "tone",
+            "emblem": "clinic",
             "free_label": "FREE · 05",
             "title": "Tone and Gear Rundown",
             "description": "The full live rig. Reverend guitars, Fishman Fluence pickups, Tone King Royalist, every pedal on the board with context for why each one gets used."
@@ -157,7 +157,7 @@
           "type": "card",
           "settings": {
             "width": "half",
-            "emblem": "clinic",
+            "emblem": "pick",
             "free_label": "FREE · 08",
             "title": "Live Clinics and Q&A",
             "description": "Full workshop recordings. A gear walkthrough, a backstage interview, and a live Q&A with working musicians."
@@ -180,7 +180,7 @@
         "heading": "THE FULL STASH.",
         "subhead": "Eight complete sessions. Every one a real lesson. Not a teaser. Not a highlight reel.",
         "show_pdf": true,
-        "pdf_icon": "ti-file-description",
+        "pdf_kicker": "Vault file · PDF included",
         "pdf_title": "The Gristle Vault Master Reference",
         "pdf_desc": "A 12-page document covering every technique, chord voicing, gear spec, and principle from all 8 videos. Built to keep open while you watch."
       }
