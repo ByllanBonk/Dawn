@@ -125,210 +125,172 @@
     "gk_stream_follow_GVbNme": {
       "type": "gk-stream-follow",
       "blocks": {
-        "platform_link_q8HBBn": {
-          "type": "platform_link",
+        "tile_greg_spotify": {
+          "type": "tile",
           "settings": {
-            "column": "podcast",
-            "label": "Apple Podcasts",
-            "url": "https://podcasts.apple.com/us/podcast/chewing-the-gristle-with-greg-koch/id1525643497"
-          }
-        },
-        "platform_link_mLmVKg": {
-          "type": "platform_link",
-          "settings": {
-            "column": "podcast",
-            "label": "Buzzprout",
-            "url": "https://www.buzzsprout.com/1246721"
-          }
-        },
-        "platform_link_exYqQe": {
-          "type": "platform_link",
-          "settings": {
-            "column": "podcast",
-            "label": "Spotify Podcasts",
-            "url": "https://open.spotify.com/show/0J5kQaxZPd1iKqT3Vfzirc"
-          }
-        },
-        "platform_link_BQXf4F": {
-          "type": "platform_link",
-          "settings": {
-            "column": "podcast",
-            "label": "Deezer Podcasts",
-            "url": "https://www.deezer.com/us/show/1572042"
-          }
-        },
-        "platform_link_NYRx3L": {
-          "type": "platform_link",
-          "settings": {
-            "column": "watch_live",
-            "label": "YouTube",
-            "url": "https://www.youtube.com/@GregKochMusic/streams"
-          }
-        },
-        "platform_link_gTtWaD": {
-          "type": "platform_link",
-          "settings": {
-            "column": "watch_live",
-            "label": "Facebook",
-            "url": "https://www.facebook.com/GregKochMusic"
-          }
-        },
-        "platform_link_GLRmRE": {
-          "type": "platform_link",
-          "settings": {
-            "column": "stream_kmt",
-            "label": "Spotify",
-            "url": "https://open.spotify.com/artist/0S1IwDW6PhPmAuC9jtOo1L"
-          }
-        },
-        "platform_link_GjRh34": {
-          "type": "platform_link",
-          "settings": {
-            "column": "stream_kmt",
-            "label": "Apple Music",
-            "url": "https://music.apple.com/us/artist/koch-marshall-trio/1325215495"
-          }
-        },
-        "platform_link_YwtxXf": {
-          "type": "platform_link",
-          "settings": {
-            "column": "stream_kmt",
-            "label": "YouTube Music",
-            "url": "https://music.youtube.com/channel/UCOCLy0S38jVy35han88h_JA"
-          }
-        },
-        "platform_link_aNzFB3": {
-          "type": "platform_link",
-          "settings": {
-            "column": "stream_greg",
-            "label": "Spotify",
+            "group": "stream_greg",
+            "platform_name": "Spotify",
             "url": "https://open.spotify.com/artist/5Y6wPwVr2krTASRASpMLsC",
-            "icon": "shopify://shop_images/Spotify-Icon-Logo.wine.svg"
+            "icon": "auto"
           }
         },
-        "platform_link_EbDTxj": {
-          "type": "platform_link",
+        "tile_greg_apple": {
+          "type": "tile",
           "settings": {
-            "column": "stream_greg",
-            "label": "Apple Music",
-            "url": "https://music.apple.com/us/artist/greg-koch/5517890"
+            "group": "stream_greg",
+            "platform_name": "Apple Music",
+            "url": "https://music.apple.com/us/artist/greg-koch/5517890",
+            "icon": "auto"
           }
         },
-        "platform_link_wR9JCm": {
-          "type": "platform_link",
+        "tile_greg_ytmusic": {
+          "type": "tile",
           "settings": {
-            "column": "stream_greg",
-            "label": "YouTube Music",
-            "url": "https://music.youtube.com/channel/UCX3rdX9oHrDLxb8Ql74Gwaw"
+            "group": "stream_greg",
+            "platform_name": "YouTube Music",
+            "url": "https://music.youtube.com/channel/UCX3rdX9oHrDLxb8Ql74Gwaw",
+            "icon": "auto"
           }
         },
-        "platform_link_ytJhCB": {
-          "type": "platform_link",
+        "tile_greg_bandcamp": {
+          "type": "tile",
           "settings": {
-            "column": "stream_greg",
-            "label": "BandCamp",
-            "url": "https://gregkoch.bandcamp.com/album/live-on-the-radio-volume-2"
+            "group": "stream_greg",
+            "platform_name": "Bandcamp",
+            "url": "https://gregkoch.bandcamp.com/album/live-on-the-radio-volume-2",
+            "icon": "auto"
           }
         },
-        "platform_link_BpyBqF": {
-          "type": "platform_link",
+        "tile_kmt_spotify": {
+          "type": "tile",
           "settings": {
-            "column": "stream_greg",
-            "label": "Deezer",
-            "url": "https://www.deezer.com/us/artist/386838"
+            "group": "stream_kmt",
+            "platform_name": "Spotify",
+            "url": "https://open.spotify.com/artist/0S1IwDW6PhPmAuC9jtOo1L",
+            "icon": "auto"
           }
         },
-        "platform_link_iJMtQK": {
-          "type": "platform_link",
+        "tile_kmt_apple": {
+          "type": "tile",
           "settings": {
-            "column": "stream_greg",
-            "label": "Tidal",
-            "url": "https://tidal.com/artist/4515825"
+            "group": "stream_kmt",
+            "platform_name": "Apple Music",
+            "url": "https://music.apple.com/us/artist/koch-marshall-trio/1325215495",
+            "icon": "auto"
           }
         },
-        "platform_link_jtx7X4": {
-          "type": "platform_link",
+        "tile_kmt_ytmusic": {
+          "type": "tile",
           "settings": {
-            "column": "stream_greg",
-            "label": "Amazon Music",
-            "url": "https://www.amazon.com/music/player/artists/B0013QS4NU/greg-koch?shoppingPortalEnabled=true"
+            "group": "stream_kmt",
+            "platform_name": "YouTube Music",
+            "url": "https://music.youtube.com/channel/UCOCLy0S38jVy35han88h_JA",
+            "icon": "auto"
           }
         },
-        "follow_link_DkFUcd": {
-          "type": "follow_link",
+        "tile_pod_apple": {
+          "type": "tile",
           "settings": {
-            "label": "Instagram",
-            "url": "https://www.instagram.com/gregkochmusic"
+            "group": "podcast",
+            "platform_name": "Apple Podcasts",
+            "url": "https://podcasts.apple.com/us/podcast/chewing-the-gristle-with-greg-koch/id1525643497",
+            "icon": "auto"
           }
         },
-        "follow_link_FNhrbc": {
-          "type": "follow_link",
+        "tile_pod_spotify": {
+          "type": "tile",
           "settings": {
-            "label": "FaceBook",
-            "url": "https://www.facebook.com/GregKochMusic"
+            "group": "podcast",
+            "platform_name": "Spotify Podcasts",
+            "url": "https://open.spotify.com/show/0J5kQaxZPd1iKqT3Vfzirc",
+            "icon": "auto"
           }
         },
-        "follow_link_wEcgbq": {
-          "type": "follow_link",
+        "tile_follow_instagram": {
+          "type": "tile",
           "settings": {
-            "label": "Youtube",
-            "url": "https://www.youtube.com/c/GregKochMusic"
+            "group": "follow",
+            "platform_name": "Instagram",
+            "url": "https://www.instagram.com/gregkochmusic",
+            "icon": "auto"
           }
         },
-        "follow_link_jhpL4B": {
-          "type": "follow_link",
+        "tile_follow_facebook": {
+          "type": "tile",
           "settings": {
-            "label": "X",
-            "url": "https://x.com/Mansqwatch"
+            "group": "follow",
+            "platform_name": "Facebook",
+            "url": "https://www.facebook.com/GregKochMusic",
+            "icon": "auto"
           }
         },
-        "follow_link_pbGjwr": {
-          "type": "follow_link",
+        "tile_follow_youtube": {
+          "type": "tile",
           "settings": {
-            "label": "Tiktok",
-            "url": "https://www.tiktok.com/@gregkochofficial"
+            "group": "follow",
+            "platform_name": "YouTube",
+            "url": "https://www.youtube.com/c/GregKochMusic",
+            "icon": "auto"
+          }
+        },
+        "tile_follow_x": {
+          "type": "tile",
+          "settings": {
+            "group": "follow",
+            "platform_name": "X",
+            "url": "https://x.com/Mansqwatch",
+            "icon": "auto"
+          }
+        },
+        "tile_follow_tiktok": {
+          "type": "tile",
+          "settings": {
+            "group": "follow",
+            "platform_name": "TikTok",
+            "url": "https://www.tiktok.com/@gregkochofficial",
+            "icon": "auto"
+          }
+        },
+        "tile_follow_yt_live": {
+          "type": "tile",
+          "settings": {
+            "group": "follow",
+            "platform_name": "YouTube Live",
+            "url": "https://www.youtube.com/@GregKochMusic/streams",
+            "icon": "auto"
           }
         }
       },
       "block_order": [
-        "platform_link_q8HBBn",
-        "platform_link_mLmVKg",
-        "platform_link_exYqQe",
-        "platform_link_BQXf4F",
-        "platform_link_NYRx3L",
-        "platform_link_gTtWaD",
-        "platform_link_GLRmRE",
-        "platform_link_GjRh34",
-        "platform_link_YwtxXf",
-        "platform_link_aNzFB3",
-        "platform_link_EbDTxj",
-        "platform_link_wR9JCm",
-        "platform_link_ytJhCB",
-        "platform_link_BpyBqF",
-        "platform_link_iJMtQK",
-        "platform_link_jtx7X4",
-        "follow_link_DkFUcd",
-        "follow_link_FNhrbc",
-        "follow_link_wEcgbq",
-        "follow_link_jhpL4B",
-        "follow_link_pbGjwr"
+        "tile_greg_spotify",
+        "tile_greg_apple",
+        "tile_greg_ytmusic",
+        "tile_greg_bandcamp",
+        "tile_kmt_spotify",
+        "tile_kmt_apple",
+        "tile_kmt_ytmusic",
+        "tile_pod_apple",
+        "tile_pod_spotify",
+        "tile_follow_instagram",
+        "tile_follow_facebook",
+        "tile_follow_youtube",
+        "tile_follow_x",
+        "tile_follow_tiktok",
+        "tile_follow_yt_live"
       ],
       "name": "GK Stream + Follow",
       "settings": {
         "eyebrow": "LISTEN & CONNECT",
         "heading": "STREAM + FOLLOW",
         "subtext": "Find Greg Koch on every platform.",
-        "col_1_title": "STREAM GREG",
-        "col_2_title": "STREAM KMT",
-        "col_3_title": "PODCAST",
-        "col_4_title": "LIVE STREAMS",
-        "follow_heading": "FOLLOW",
-        "show_icons": false,
-        "show_dividers": true,
-        "empty_column_text": "Add links for this column in the section blocks.",
+        "stream_title": "STREAM",
+        "tab_greg_label": "GREG",
+        "tab_kmt_label": "KMT",
+        "default_tab": "greg",
+        "podcast_title": "PODCAST",
+        "follow_title": "FOLLOW + LIVE",
         "pad_y": 72,
-        "bg_color": "#0d0d0d",
-        "text_color": "#ffffff"
+        "bg_color": "#0a0a0a"
       }
     },
     "video": {
