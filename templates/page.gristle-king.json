@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "layout": "gristle-landing",
   "sections": {
@@ -26,7 +35,11 @@
           }
         }
       },
-      "block_order": ["bullet_od", "bullet_boost", "bullet_bag"],
+      "block_order": [
+        "bullet_od",
+        "bullet_boost",
+        "bullet_bag"
+      ],
       "settings": {
         "product": "gristle-king-pedal-56",
         "low_stock_threshold": 5,
@@ -59,13 +72,17 @@
           }
         }
       },
-      "block_order": ["point_od", "point_boost"],
+      "block_order": [
+        "point_od",
+        "point_boost"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "The Gristle Lowdown",
         "heading": "The backline is… let's say questionable",
         "body": "<p>When you're gigging as much as I do, you don't always get to play through your favorite amp. Sometimes you walk into a venue and the backline is… let's say questionable.</p><p>Or I'm sitting in with a friend's band in a high-profile situation, handed an amp I may not be that familiar with, and I need to know I'm gonna have my tone dialed.</p><p>Before I got this pedal, these situations may have caused me some angst. <strong>But no more.</strong></p><p>For the last 20+ years, I've kept one pedal in my bag that I know will always get me where I need to go — <strong>the Gristle King.</strong> It's the combination of the two things I rely on most:</p>",
         "signature": "— Greg Koch",
+        "image": "shopify://shop_images/826869ff-8cbf-458d-b779-5ee34a034654.png",
         "caption": "Greg Koch",
         "outro": "<p>Whether it's a tiny club with a dodgy combo or a big stage with a borrowed rig: plug in, get a decent clean sound on the amp, fire up the Gristle King, and the tone delivers <strong>unparalleled savagery</strong>.</p><p>My buddy and tone guru Tim Jauernig designed the Gristle King for me to solve a real problem — and it's never let me down.</p>"
       }
@@ -106,7 +123,12 @@
           }
         }
       },
-      "block_order": ["feat_boost", "feat_tim", "feat_fishman", "feat_road"],
+      "block_order": [
+        "feat_boost",
+        "feat_tim",
+        "feat_fishman",
+        "feat_road"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "What you're plugging into",
@@ -132,7 +154,10 @@
           }
         }
       },
-      "block_order": ["quote_forum", "quote_press"],
+      "block_order": [
+        "quote_forum",
+        "quote_press"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Hear it before you buy it",
@@ -192,7 +217,13 @@
           }
         }
       },
-      "block_order": ["q_original", "q_amp", "q_box", "q_shipping", "q_soldout"],
+      "block_order": [
+        "q_original",
+        "q_amp",
+        "q_box",
+        "q_shipping",
+        "q_soldout"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Common questions",
@@ -214,5 +245,13 @@
       }
     }
   },
-  "order": ["hero", "problem", "features", "proof", "quote", "faq", "cta"]
+  "order": [
+    "hero",
+    "problem",
+    "features",
+    "proof",
+    "quote",
+    "faq",
+    "cta"
+  ]
 }
