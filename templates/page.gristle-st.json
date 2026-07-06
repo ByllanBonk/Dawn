@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "layout": "gristle-landing",
   "sections": {
@@ -26,9 +35,13 @@
           }
         }
       },
-      "block_order": ["bullet_pickups", "bullet_signed", "bullet_tones"],
+      "block_order": [
+        "bullet_pickups",
+        "bullet_signed",
+        "bullet_tones"
+      ],
       "settings": {
-        "product": "gristle-st-avocado-burst-100",
+        "product": "gristle-st-signed-collector-edition-only-available-in-the-continental-united-states-100",
         "low_stock_threshold": 3,
         "kicker": "Signed collector edition, continental US only",
         "heading_line1": "A new era",
@@ -59,13 +72,17 @@
           }
         }
       },
-      "block_order": ["point_fluence", "point_controls"],
+      "block_order": [
+        "point_fluence",
+        "point_controls"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "The Gristle Lowdown",
         "heading": "Built for fiendish musical deeds",
         "body": "<p>Joe Naylor of Reverend and I noodled on this design for years, literally, until the right mix of design and function was landed on. The result is the Gristle ST, the third chapter in the Reverend gristle saga.</p><p>It has the classic sounds, with a second voice in the pickups that adds more girthsome tones. It has a tremolo system that can take a licking and stay in tune. And it is built just a little bit larger, so as to not look like a mandolin when played by a larger soul such as myself.</p><p><strong>This one comes from my own stash.</strong> Signed by yours truly, shipped in a hard case, with a personalized video from me featuring your guitar's serial number. A documented, traceable piece of Gristle history.</p>",
         "signature": "Greg Koch",
+        "image": "shopify://shop_images/s180342207891963160_p100_i6_w960.jpg",
         "caption": "Greg Koch",
         "outro": "<p>Chambered korina body, roasted maple neck, Wilkinson tremolo, pin-lock tuners, and an Avocado Burst finish that lets the grain glow through. <strong>A new era of Gristle. I can dig it.</strong></p>"
       }
@@ -106,7 +123,12 @@
           }
         }
       },
-      "block_order": ["feat_body", "feat_pickups", "feat_controls", "feat_hardware"],
+      "block_order": [
+        "feat_body",
+        "feat_pickups",
+        "feat_controls",
+        "feat_hardware"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "What you're strapping on",
@@ -139,7 +161,11 @@
           }
         }
       },
-      "block_order": ["quote_vg", "quote_boost", "quote_owner"],
+      "block_order": [
+        "quote_vg",
+        "quote_boost",
+        "quote_owner"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Hear it sing",
@@ -200,7 +226,13 @@
           }
         }
       },
-      "block_order": ["q_collector", "q_pickups", "q_guitar", "q_size", "q_shipping"],
+      "block_order": [
+        "q_collector",
+        "q_pickups",
+        "q_guitar",
+        "q_size",
+        "q_shipping"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Common questions",
@@ -211,7 +243,7 @@
       "type": "gk-gristle-cta",
       "settings": {
         "show_top_divider": true,
-        "product": "gristle-st-avocado-burst-100",
+        "product": "gristle-st-signed-collector-edition-only-available-in-the-continental-united-states-100",
         "eyebrow": "Ready when you are",
         "heading": "Claim your piece of Gristle history",
         "cta_label": "Get my Gristle ST now",
@@ -223,5 +255,13 @@
       }
     }
   },
-  "order": ["hero", "problem", "features", "proof", "quote", "faq", "cta"]
+  "order": [
+    "hero",
+    "problem",
+    "features",
+    "proof",
+    "quote",
+    "faq",
+    "cta"
+  ]
 }
