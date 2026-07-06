@@ -1,0 +1,202 @@
+{% comment %}
+  GK Gristle King landing — 4. Proof
+  Demo video (iframe injected only when scrolled near, via
+  IntersectionObserver, to keep initial load light), a 3-image gallery
+  pulled live from the Shopify product, and testimonial cards.
+
+  TODO(Dylan): the two default testimonials are paraphrased from real gear
+  press and player forum sentiment and are deliberately unattributed. Swap
+  in a named, photographed testimonial (with permission) before this page
+  goes fully live.
+{% endcomment %}
+
+{%- assign fallback_handle = 'gristle-king-pedal-56' -%}
+{%- assign product = section.settings.product -%}
+{%- if product == blank -%}
+  {%- assign product = all_products[fallback_handle] -%}
+{%- endif -%}
+
+<div class="gkl">
+  {%- if section.settings.show_top_divider -%}
+    <div class="gkl-divider" aria-hidden="true"><hr></div>
+  {%- endif -%}
+
+  <section class="gkl-proof">
+    <div class="gkl-wrap gkl-wrap--wide">
+      <div class="gkl-section-head">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="gkl-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="gkl-h2">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.video_embed_url != blank -%}
+        <div
+          class="gkl-video__frame"
+          data-gkl-video
+          data-video-src="{{ section.settings.video_embed_url | escape }}"
+          data-video-title="{{ section.settings.video_title | escape }}"
+        ></div>
+        {%- if section.settings.video_caption != blank -%}
+          <p class="gkl-video__caption">{{ section.settings.video_caption | escape }}</p>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if section.settings.show_gallery and product.images.size > 0 -%}
+        <div class="gkl-gallery" aria-label="{{ product.title | escape }} photos">
+          {%- for image in product.images limit: 3 -%}
+            <div class="gkl-gallery__cell">
+              {{
+                image
+                | image_url: width: 900
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '(min-width: 750px) 33vw, 100vw',
+                  widths: '300, 450, 600, 900',
+                  alt: image.alt | default: product.title
+              }}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="gkl-testimonials">
+          {%- for block in section.blocks -%}
+            <figure class="gkl-testimonial" {{ block.shopify_attributes }}>
+              <i class="ti ti-quote" aria-hidden="true"></i>
+              <blockquote>{{ block.settings.quote | escape }}</blockquote>
+              <figcaption>{{ block.settings.source | escape }}</figcaption>
+            </figure>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+<script>
+  (function () {
+    var frames = document.querySelectorAll('#shopify-section-{{ section.id }} [data-gkl-video]');
+    if (!frames.length) return;
+
+    function inject(frame) {
+      if (frame.dataset.loaded) return;
+      frame.dataset.loaded = 'true';
+      var iframe = document.createElement('iframe');
+      iframe.src = frame.dataset.videoSrc;
+      iframe.title = frame.dataset.videoTitle || 'Demo video';
+      iframe.loading = 'lazy';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      frame.appendChild(iframe);
+    }
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              inject(entry.target);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: '600px 0px' }
+      );
+      frames.forEach(function (frame) { observer.observe(frame); });
+    } else {
+      frames.forEach(inject);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "GK Gristle — proof",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_top_divider",
+      "label": "Show top divider",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Hear it before you buy it"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "See what this thing actually does"
+    },
+    {
+      "type": "text",
+      "id": "video_embed_url",
+      "label": "Video embed URL",
+      "default": "https://www.youtube.com/embed/LG6n_28SW_c"
+    },
+    {
+      "type": "text",
+      "id": "video_title",
+      "label": "Video title (accessibility)",
+      "default": "Greg Koch's Secret Weapon? Gristle King Pedal FULL Breakdown"
+    },
+    {
+      "type": "text",
+      "id": "video_caption",
+      "label": "Video caption",
+      "default": "Full pedal breakdown, straight from Greg's channel"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gallery",
+      "label": "Show product image gallery",
+      "default": true
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product (for gallery images)",
+      "info": "Leave empty to use the fallback handle defined at the top of the section file."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "If you have a Strat or Tele, you better be sitting down when you play it through this pedal."
+        },
+        {
+          "type": "text",
+          "id": "source",
+          "label": "Source",
+          "default": "Player forum thread"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Gristle — proof",
+      "blocks": [
+        { "type": "testimonial" },
+        { "type": "testimonial" }
+      ]
+    }
+  ]
+}
+{% endschema %}

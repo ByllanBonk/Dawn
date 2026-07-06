@@ -1,0 +1,241 @@
+{% comment %}
+  GK Gristle King landing — 1. Hero
+  Above the fold: wordmark (trust, not a link — no paths off this page),
+  kicker badge, benefit-led headline, subhead, trust bullets, live price +
+  availability from Shopify, and the primary CTA straight to checkout.
+  Commerce data is never hardcoded: price, compare-at, stock and image all
+  come from the product picked in the section settings (or the fallback
+  handle below — one-line fix if the handle changes).
+{% endcomment %}
+
+{%- assign fallback_handle = 'gristle-king-pedal-56' -%}
+{%- assign product = section.settings.product -%}
+{%- if product == blank -%}
+  {%- assign product = all_products[fallback_handle] -%}
+{%- endif -%}
+{%- assign variant = product.selected_or_first_available_variant | default: product.variants.first -%}
+{%- assign checkout_url = '/cart/' | append: variant.id | append: ':1' -%}
+
+{%- assign sold_out = false -%}
+{%- unless product.available -%}{%- assign sold_out = true -%}{%- endunless -%}
+
+{%- assign low_stock = false -%}
+{%- if sold_out == false
+  and variant.inventory_management == 'shopify'
+  and variant.inventory_policy == 'deny'
+  and variant.inventory_quantity > 0
+  and variant.inventory_quantity <= section.settings.low_stock_threshold
+-%}
+  {%- assign low_stock = true -%}
+{%- endif -%}
+
+{%- if sold_out -%}
+  {%- assign cta_label = section.settings.cta_label_soldout -%}
+  {%- assign cta_url = '#waitlist' -%}
+{%- else -%}
+  {%- assign cta_label = section.settings.cta_label -%}
+  {%- assign cta_url = checkout_url -%}
+{%- endif -%}
+
+{%- if product == blank or product.empty? -%}
+  <div class="gkl gkl-error" role="alert">
+    <div class="gkl-wrap--wide gkl-wrap">
+      <p class="gkl-error__title">Product not found</p>
+      <p>
+        No product selected in the theme editor and no product matches the
+        fallback handle “{{ fallback_handle }}”. Pick the Gristle King product
+        in the section settings, or update the fallback handle at the top of
+        sections/gk-gristle-hero.liquid. Pricing is never hardcoded by design.
+      </p>
+    </div>
+  </div>
+  <script>
+    console.warn('[gk-gristle-hero] Product not found for handle "{{ fallback_handle }}" and no product selected. No fallback pricing is rendered by design.');
+  </script>
+{%- else -%}
+
+<div class="gkl">
+  <header class="gkl-hero">
+    <div class="gkl-hero__glow" aria-hidden="true"></div>
+    <div class="gkl-wrap gkl-wrap--wide">
+
+      <p class="gkl-wordmark">Greg <span>Koch</span></p>
+
+      <div class="gkl-hero__grid">
+        <div class="gkl-hero__copy">
+          {%- if section.settings.kicker != blank -%}
+            <span class="gkl-kicker">{{ section.settings.kicker | escape }}</span>
+          {%- endif -%}
+
+          <h1 class="gkl-hero__heading">
+            {{ section.settings.heading_line1 | escape }}
+            <em>{{ section.settings.heading_line2 | escape }}</em>
+          </h1>
+
+          {%- if section.settings.subhead != blank -%}
+            <p class="gkl-hero__subhead">{{ section.settings.subhead | escape }}</p>
+          {%- endif -%}
+
+          <ul class="gkl-hero__bullets">
+            {%- for block in section.blocks -%}
+              <li {{ block.shopify_attributes }}>
+                <i class="ti {{ block.settings.icon | escape }}" aria-hidden="true"></i>
+                <span>{{ block.settings.text | escape }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          <div class="gkl-hero__buy">
+            <p class="gkl-price">
+              <span class="gkl-price__label">{{ product.title | escape }}</span>
+              <span class="gkl-price__amount">{{ variant.price | money }}</span>
+              {%- if variant.compare_at_price > variant.price -%}
+                <s class="gkl-price__compare">{{ variant.compare_at_price | money }}</s>
+              {%- endif -%}
+            </p>
+
+            <p class="gkl-stock{% if sold_out %} gkl-stock--out{% elsif low_stock %} gkl-stock--low{% endif %}">
+              {%- if sold_out -%}
+                Sold out — join the waiting list below
+              {%- elsif low_stock -%}
+                Only {{ variant.inventory_quantity }} left in stock
+              {%- else -%}
+                In stock and ready to ship
+              {%- endif -%}
+            </p>
+
+            <a class="gkl-btn" href="{{ cta_url }}">{{ cta_label | escape }}</a>
+
+            {%- if section.settings.microcopy != blank -%}
+              <p class="gkl-microcopy">{{ section.settings.microcopy | escape }}</p>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="gkl-hero__media">
+          <div class="gkl-hero__frame">
+            {%- assign hero_image = section.settings.image | default: product.featured_image -%}
+            {%- if hero_image != blank -%}
+              {{
+                hero_image
+                | image_url: width: 1400
+                | image_tag:
+                  loading: 'eager',
+                  fetchpriority: 'high',
+                  sizes: '(min-width: 750px) 46vw, 100vw',
+                  widths: '500, 700, 900, 1100, 1400',
+                  class: 'gkl-hero__img',
+                  alt: hero_image.alt | default: product.title
+              }}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GK Gristle — hero",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Leave empty to use the fallback handle defined at the top of the section file."
+    },
+    {
+      "type": "range",
+      "id": "low_stock_threshold",
+      "label": "Low stock threshold",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker badge",
+      "default": "Now built by Fishman for wider availability"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Heading line 1",
+      "default": "Your tone."
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Heading line 2 (accent color)",
+      "default": "No matter what amp they throw at you."
+    },
+    {
+      "type": "textarea",
+      "id": "subhead",
+      "label": "Subhead",
+      "default": "The Gristle King. The pedal Greg Koch built his sound on — designed with Greg and original builder Tim Jauernig. Warm bluesy breakup to searing sustain, in one pedal."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label (in stock)",
+      "default": "Get my Gristle King now"
+    },
+    {
+      "type": "text",
+      "id": "cta_label_soldout",
+      "label": "CTA label (sold out)",
+      "default": "Join the waiting list"
+    },
+    {
+      "type": "text",
+      "id": "microcopy",
+      "label": "Microcopy under CTA",
+      "default": "Ships fast. Includes instruction booklet."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image",
+      "info": "Leave empty to use the product's featured image from Shopify."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bullet",
+      "name": "Trust bullet",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Tabler icon class",
+          "default": "ti-circle-check"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "A super dynamic, amp-like overdrive that sounds great at any volume"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Gristle — hero",
+      "blocks": [
+        { "type": "bullet" },
+        { "type": "bullet" },
+        { "type": "bullet" }
+      ]
+    }
+  ]
+}
+{% endschema %}

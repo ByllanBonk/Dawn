@@ -1,0 +1,61 @@
+{% comment %}
+  GK Gristle King landing — 5. Greg quote ("about" beat of the page)
+
+  TODO(Dylan): the default quote was DRAFTED for the page — it is not
+  something Greg actually said. Get Greg's sign-off (or his own wording)
+  before launch.
+{% endcomment %}
+
+<div class="gkl">
+  {%- if section.settings.show_top_divider -%}
+    <div class="gkl-divider" aria-hidden="true"><hr></div>
+  {%- endif -%}
+
+  <section class="gkl-quote">
+    <div class="gkl-wrap gkl-wrap--wide">
+      <blockquote class="gkl-quote__text">
+        {{ section.settings.quote_line1 | escape }}
+        <em>{{ section.settings.quote_line2 | escape }}</em>
+      </blockquote>
+      {%- if section.settings.attribution != blank -%}
+        <p class="gkl-quote__attribution">{{ section.settings.attribution | escape }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "GK Gristle — quote",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_top_divider",
+      "label": "Show top divider",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "quote_line1",
+      "label": "Quote line 1",
+      "default": "“This is the sound. Been chasing it for twenty years, now anyone can plug it in."
+    },
+    {
+      "type": "text",
+      "id": "quote_line2",
+      "label": "Quote line 2 (accent color)",
+      "default": "We ride!”"
+    },
+    {
+      "type": "text",
+      "id": "attribution",
+      "label": "Attribution",
+      "default": "— Greg Koch"
+    }
+  ],
+  "presets": [
+    { "name": "GK Gristle — quote" }
+  ]
+}
+{% endschema %}

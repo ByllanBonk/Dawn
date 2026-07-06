@@ -1,0 +1,94 @@
+{% comment %}
+  GK Gristle King landing — 6. FAQ (objection handling)
+  Native <details> accordions, no JS. Questions and answers are blocks so
+  Dylan can add or edit them in the theme editor.
+{% endcomment %}
+
+<div class="gkl">
+  {%- if section.settings.show_top_divider -%}
+    <div class="gkl-divider" aria-hidden="true"><hr></div>
+  {%- endif -%}
+
+  <section class="gkl-faq">
+    <div class="gkl-wrap">
+      <div class="gkl-section-head">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="gkl-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="gkl-h2">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+      </div>
+
+      <div class="gkl-faq__list">
+        {%- for block in section.blocks -%}
+          <details class="gkl-faq__item" {{ block.shopify_attributes }}>
+            <summary>
+              <i class="ti ti-plus" aria-hidden="true"></i>
+              {{ block.settings.question | escape }}
+            </summary>
+            <div class="gkl-faq__answer">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "GK Gristle — FAQ",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_top_divider",
+      "label": "Show top divider",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Common questions"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Wait. What's the deal?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Is this the same pedal as the original Gristle King?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Same signature circuit, same tone DNA — designed with Greg and original builder Tim Jauernig, now built by Fishman so it's actually available.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Gristle — FAQ",
+      "blocks": [
+        { "type": "qa" },
+        { "type": "qa" },
+        { "type": "qa" },
+        { "type": "qa" }
+      ]
+    }
+  ]
+}
+{% endschema %}
