@@ -35,9 +35,13 @@
           }
         }
       },
-      "block_order": ["bullet_chain", "bullet_gk", "bullet_presets"],
+      "block_order": [
+        "bullet_chain",
+        "bullet_gk",
+        "bullet_presets"
+      ],
       "settings": {
-        "product": "kochness-monster-supreme-pedal-91",
+        "product": "the-kochness-monster-supreme",
         "low_stock_threshold": 3,
         "kicker": "The 15-year JAM pedals collaboration, supreme edition",
         "heading_line1": "Greg's whole rig.",
@@ -68,7 +72,10 @@
           }
         }
       },
-      "block_order": ["point_circuits", "point_expand"],
+      "block_order": [
+        "point_circuits",
+        "point_expand"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "The Gristle Lowdown",
@@ -115,7 +122,12 @@
           }
         }
       },
-      "block_order": ["feat_chain", "feat_gk", "feat_presets", "feat_io"],
+      "block_order": [
+        "feat_chain",
+        "feat_gk",
+        "feat_presets",
+        "feat_io"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "What you're plugging into",
@@ -141,7 +153,10 @@
           }
         }
       },
-      "block_order": ["quote_press", "quote_owner"],
+      "block_order": [
+        "quote_press",
+        "quote_owner"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Hear it roar",
@@ -202,7 +217,13 @@
           }
         }
       },
-      "block_order": ["q_inside", "q_gk", "q_expand", "q_box", "q_shipping"],
+      "block_order": [
+        "q_inside",
+        "q_gk",
+        "q_expand",
+        "q_box",
+        "q_shipping"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Common questions",
@@ -225,5 +246,13 @@
       }
     }
   },
-  "order": ["hero", "problem", "features", "proof", "quote", "faq", "cta"]
+  "order": [
+    "hero",
+    "problem",
+    "features",
+    "proof",
+    "quote",
+    "faq",
+    "cta"
+  ]
 }
