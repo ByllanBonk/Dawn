@@ -1,0 +1,163 @@
+{% comment %}
+  GK Gristle King landing — 2. Problem → solution story
+  The "Gristle Lowdown" letter, lifted from Greg's backline email (the
+  campaign that performed well): the problem (questionable backline,
+  borrowed amps) agitated in Greg's own voice, then the two-circuit answer
+  as point cards, then the bridge to Tim Jauernig. All copy is editable in
+  the theme editor.
+{% endcomment %}
+
+<div class="gkl">
+  {%- if section.settings.show_top_divider -%}
+    <div class="gkl-divider" aria-hidden="true"><hr></div>
+  {%- endif -%}
+
+  <section class="gkl-problem">
+    <div class="gkl-wrap gkl-wrap--wide">
+      <div class="gkl-section-head">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="gkl-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="gkl-h2">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+      </div>
+
+      <div class="gkl-problem__grid">
+        <div class="gkl-problem__photoCol">
+          {%- if section.settings.image != blank -%}
+            <div class="gkl-problem__photoFrame">
+              {{
+                section.settings.image
+                | image_url: width: 1000
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '(min-width: 750px) 42vw, 100vw',
+                  widths: '400, 600, 800, 1000',
+                  alt: section.settings.image.alt | default: 'Greg Koch'
+              }}
+            </div>
+            {%- if section.settings.caption != blank -%}
+              <p class="gkl-problem__caption">{{ section.settings.caption | escape }}</p>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+
+        <div>
+          <div class="gkl-problem__body">{{ section.settings.body }}</div>
+          {%- if section.settings.signature != blank -%}
+            <p class="gkl-problem__sig">{{ section.settings.signature | escape }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="gkl-problem__points">
+          {%- for block in section.blocks -%}
+            <div class="gkl-point" {{ block.shopify_attributes }}>
+              <i class="ti {{ block.settings.icon | escape }}" aria-hidden="true"></i>
+              <h3 class="gkl-point__title">{{ block.settings.title | escape }}</h3>
+              <p class="gkl-point__text">{{ block.settings.text | escape }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.outro != blank -%}
+        <div class="gkl-problem__outro">{{ section.settings.outro }}</div>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "GK Gristle — problem",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_top_divider",
+      "label": "Show top divider",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The Gristle Lowdown"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The backline is… let's say questionable"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Story",
+      "default": "<p>When you're gigging as much as I do, you don't always get to play through your favorite amp. Sometimes you walk into a venue and the backline is… let's say questionable.</p><p>Or I'm sitting in with a friend's band in a high-profile situation, handed an amp I may not be that familiar with, and I need to know I'm gonna have my tone dialed.</p><p>Before I got this pedal, these situations may have caused me some angst. <strong>But no more.</strong></p><p>For the last 20+ years, I've kept one pedal in my bag that I know will always get me where I need to go — <strong>the Gristle King.</strong></p>"
+    },
+    {
+      "type": "text",
+      "id": "signature",
+      "label": "Signature",
+      "default": "— Greg Koch"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photo"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Photo caption",
+      "default": "Greg Koch"
+    },
+    {
+      "type": "richtext",
+      "id": "outro",
+      "label": "Outro",
+      "default": "<p>Whether it's a tiny club with a dodgy combo or a big stage with a borrowed rig: plug in, get a decent clean sound on the amp, fire up the Gristle King, and the tone delivers <strong>unparalleled savagery</strong>.</p><p>My buddy and tone guru Tim Jauernig designed the Gristle King for me to solve a real problem — and it's never let me down.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Point card",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Tabler icon class",
+          "default": "ti-wave-sine"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Amp-like overdrive"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "A super dynamic, amp-like overdrive that sounds great at any volume."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK Gristle — problem",
+      "blocks": [
+        { "type": "point" },
+        { "type": "point" }
+      ]
+    }
+  ]
+}
+{% endschema %}

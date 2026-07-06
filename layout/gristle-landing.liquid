@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#0d0d0d">
     <meta name="robots" content="noindex, nofollow">
     <link rel="canonical" href="{{ canonical_url }}">
 
@@ -18,11 +18,11 @@
 
     {{ content_for_header }}
 
-    {%- comment -%} Fonts + icons for the naked Gristle King landing page {%- endcomment -%}
+    {%- comment -%} Fonts + icons, matching the GK Vault / Press / Shop design system {%- endcomment -%}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     >
     <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css" rel="stylesheet">
@@ -30,8 +30,8 @@
 
     {%- comment -%}
       Naked conversion layout for paid traffic. No Dawn header, footer,
-      navigation, drawers or page padding. The only paths off this page are
-      the CTA and checkout.
+      navigation or drawers. The only paths off this page are the CTA and
+      Shopify checkout.
     {%- endcomment -%}
     {% style %}
       *,
@@ -40,19 +40,16 @@
 
       html {
         height: 100%;
-        font-size: 62.5%; /* 1rem = 10px, matching Dawn's rem scale */
         scroll-behavior: smooth;
         -webkit-text-size-adjust: 100%;
       }
-
-      body { font-size: 1.6rem; }
 
       body {
         min-height: 100%;
         margin: 0;
         padding: 0;
-        background-color: #ffffff;
-        color: #1c1814;
+        background-color: #0d0d0d;
+        color: #e8e2d9;
         font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -61,6 +58,10 @@
       img { max-width: 100%; height: auto; display: block; }
 
       a { color: inherit; }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+      }
     {% endstyle %}
   </head>
 

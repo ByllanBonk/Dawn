@@ -1,14 +1,218 @@
 {
   "layout": "gristle-landing",
   "sections": {
-    "landing": {
-      "type": "gk-gristle-king-landing",
+    "hero": {
+      "type": "gk-gristle-hero",
+      "blocks": {
+        "bullet_od": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-wave-sine",
+            "text": "A super dynamic, amp-like overdrive that sounds great at any volume"
+          }
+        },
+        "bullet_boost": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-bolt",
+            "text": "A clean boost that adds just the right push without coloring your tone"
+          }
+        },
+        "bullet_bag": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-guitar-pick",
+            "text": "The one pedal Greg has kept in his bag for 20+ years"
+          }
+        }
+      },
+      "block_order": ["bullet_od", "bullet_boost", "bullet_bag"],
       "settings": {
         "product": "gristle-king-pedal-56",
         "low_stock_threshold": 5,
-        "video_embed_url": "https://www.youtube.com/embed/LG6n_28SW_c"
+        "kicker": "Now built by Fishman for wider availability",
+        "heading_line1": "Your tone.",
+        "heading_line2": "No matter what amp they throw at you.",
+        "subhead": "The Gristle King. The pedal Greg Koch built his sound on — designed with Greg and original builder Tim Jauernig. Warm bluesy breakup to searing sustain, in one pedal.",
+        "cta_label": "Get my Gristle King now",
+        "cta_label_soldout": "Join the waiting list",
+        "microcopy": "Ships fast. Includes instruction booklet."
+      }
+    },
+    "problem": {
+      "type": "gk-gristle-problem",
+      "blocks": {
+        "point_od": {
+          "type": "point",
+          "settings": {
+            "icon": "ti-wave-sine",
+            "title": "Amp-like overdrive",
+            "text": "A super dynamic, amp-like overdrive that sounds great at any volume."
+          }
+        },
+        "point_boost": {
+          "type": "point",
+          "settings": {
+            "icon": "ti-bolt",
+            "title": "A boost with just the right push",
+            "text": "Adds push without coloring everything — your guitar still sounds like your guitar."
+          }
+        }
+      },
+      "block_order": ["point_od", "point_boost"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "The Gristle Lowdown",
+        "heading": "The backline is… let's say questionable",
+        "body": "<p>When you're gigging as much as I do, you don't always get to play through your favorite amp. Sometimes you walk into a venue and the backline is… let's say questionable.</p><p>Or I'm sitting in with a friend's band in a high-profile situation, handed an amp I may not be that familiar with, and I need to know I'm gonna have my tone dialed.</p><p>Before I got this pedal, these situations may have caused me some angst. <strong>But no more.</strong></p><p>For the last 20+ years, I've kept one pedal in my bag that I know will always get me where I need to go — <strong>the Gristle King.</strong> It's the combination of the two things I rely on most:</p>",
+        "signature": "— Greg Koch",
+        "caption": "Greg Koch",
+        "outro": "<p>Whether it's a tiny club with a dodgy combo or a big stage with a borrowed rig: plug in, get a decent clean sound on the amp, fire up the Gristle King, and the tone delivers <strong>unparalleled savagery</strong>.</p><p>My buddy and tone guru Tim Jauernig designed the Gristle King for me to solve a real problem — and it's never let me down.</p>"
+      }
+    },
+    "features": {
+      "type": "gk-gristle-features",
+      "blocks": {
+        "feat_boost": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-adjustments",
+            "title": "Clean boost and overdrive",
+            "text": "Dial in warm bluesy breakup or push into searing sustain, all in one box."
+          }
+        },
+        "feat_tim": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-wave-sine",
+            "title": "Designed with Tim Jauernig",
+            "text": "Same signature circuit, same tone DNA the original was built on."
+          }
+        },
+        "feat_fishman": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-building-factory-2",
+            "title": "Built by Fishman",
+            "text": "The same sought-after sound, now produced for wider availability."
+          }
+        },
+        "feat_road": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-shield-check",
+            "title": "Road-ready durability",
+            "text": "Studio-quality tone built to survive the touring grind."
+          }
+        }
+      },
+      "block_order": ["feat_boost", "feat_tim", "feat_fishman", "feat_road"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "What you're plugging into",
+        "heading": "One box. The whole arsenal.",
+        "subhead": "Two circuits, endless mileage: run the boost, run the drive, or stack them and let it sing."
+      }
+    },
+    "proof": {
+      "type": "gk-gristle-proof",
+      "blocks": {
+        "quote_forum": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "If you have a Strat or Tele, you better be sitting down when you play it through this pedal.",
+            "source": "Player forum thread"
+          }
+        },
+        "quote_press": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "A dynamic tone sculptor that puts you in control of your sound's destiny.",
+            "source": "Gear press"
+          }
+        }
+      },
+      "block_order": ["quote_forum", "quote_press"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "Hear it before you buy it",
+        "heading": "See what this thing actually does",
+        "video_embed_url": "https://www.youtube.com/embed/LG6n_28SW_c",
+        "video_title": "Greg Koch's Secret Weapon? Gristle King Pedal FULL Breakdown",
+        "video_caption": "Full pedal breakdown, straight from Greg's channel",
+        "show_gallery": true,
+        "product": "gristle-king-pedal-56"
+      }
+    },
+    "quote": {
+      "type": "gk-gristle-quote",
+      "settings": {
+        "show_top_divider": true,
+        "quote_line1": "“This is the sound. Been chasing it for twenty years, now anyone can plug it in.",
+        "quote_line2": "We ride!”",
+        "attribution": "— Greg Koch"
+      }
+    },
+    "faq": {
+      "type": "gk-gristle-faq",
+      "blocks": {
+        "q_original": {
+          "type": "qa",
+          "settings": {
+            "question": "Is this the same pedal as the original Gristle King?",
+            "answer": "<p>Same signature circuit, same tone DNA — designed with Greg and original builder Tim Jauernig, now built by Fishman so it's actually available.</p>"
+          }
+        },
+        "q_amp": {
+          "type": "qa",
+          "settings": {
+            "question": "Will it work with my amp?",
+            "answer": "<p>That's the whole point. Set a decent clean sound on whatever amp you're handed — a tiny club combo or a borrowed stage rig — and the Gristle King does the rest, at any volume.</p>"
+          }
+        },
+        "q_box": {
+          "type": "qa",
+          "settings": {
+            "question": "What's in the box?",
+            "answer": "<p>The Gristle King pedal and an instruction booklet.</p>"
+          }
+        },
+        "q_shipping": {
+          "type": "qa",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes. International orders are responsible for customs and duties.</p>"
+          }
+        },
+        "q_soldout": {
+          "type": "qa",
+          "settings": {
+            "question": "What if it's sold out?",
+            "answer": "<p>Join the waiting list and we'll email you the moment it's back in stock.</p>"
+          }
+        }
+      },
+      "block_order": ["q_original", "q_amp", "q_box", "q_shipping", "q_soldout"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "Common questions",
+        "heading": "Wait. What's the deal?"
+      }
+    },
+    "cta": {
+      "type": "gk-gristle-cta",
+      "settings": {
+        "show_top_divider": true,
+        "product": "gristle-king-pedal-56",
+        "eyebrow": "Ready when you are",
+        "heading": "Your Gristle King is waiting",
+        "cta_label": "Get my Gristle King now",
+        "cta_label_soldout": "Join the waiting list",
+        "smallprint": "Includes instruction booklet. International orders responsible for customs and duties.",
+        "waitlist_heading": "Join the waiting list",
+        "waitlist_text": "Leave your email and we'll let you know the moment the Gristle King is back in stock."
       }
     }
   },
-  "order": ["landing"]
+  "order": ["hero", "problem", "features", "proof", "quote", "faq", "cta"]
 }
