@@ -14,7 +14,7 @@
   {%- endif -%}
 
   {%- comment -%}
-    Each lesson gets a distinct scene + waveform. If a card has no emblem set
+    Each lesson gets a distinct illustration. If a card has no emblem set
     (for example after a theme-editor reset), fall back to a unique emblem by
     position so the cards never collapse into eight identical wells.
   {%- endcomment -%}
@@ -36,9 +36,7 @@
             <span class="vopt-card-rivet" aria-hidden="true"></span>
           </div>
           <div class="vopt-card-well">
-            {% render 'vault-scene', key: emblem %}
-            <span class="vopt-play" aria-hidden="true"></span>
-            <span class="vopt-wave vopt-wave--{{ emblem | escape }}" aria-hidden="true"></span>
+            {% render 'vault-illustration', key: emblem %}
           </div>
           <div class="vopt-card-body">
             {%- if block.settings.title != blank -%}
@@ -150,14 +148,14 @@
           "label": "Lesson emblem",
           "default": "pick",
           "options": [
-            { "value": "pick", "label": "Guitar pick medallion" },
-            { "value": "travis", "label": "Fingerpicking marks" },
-            { "value": "chords", "label": "Fretboard chord dots" },
-            { "value": "outside", "label": "Note breaking outside" },
-            { "value": "tone", "label": "Amp knob" },
+            { "value": "pick", "label": "Pick-attack starburst" },
+            { "value": "travis", "label": "Boom-chuck grid" },
+            { "value": "chords", "label": "Chord diagram" },
+            { "value": "outside", "label": "Wave breaking outside" },
+            { "value": "tone", "label": "Pedalboard signal chain" },
             { "value": "blues", "label": "String bend" },
-            { "value": "song", "label": "Film strip waveform" },
-            { "value": "clinic", "label": "Ribbon microphone" }
+            { "value": "song", "label": "Stereo waveform" },
+            { "value": "clinic", "label": "Stage diagram" }
           ]
         },
         {
@@ -186,14 +184,14 @@
     {
       "name": "Vault Stash",
       "blocks": [
-        { "type": "card", "settings": { "width": "third", "icon": "ti-guitar-pick", "free_label": "FREE · 01", "title": "Chicken Picking Masterclass", "description": "Thumb and finger foundation to full hybrid integration. The muted note, the pop, the banjo rolls, the Magic Sam lick. Everything." } },
-        { "type": "card", "settings": { "width": "third", "icon": "ti-music", "free_label": "FREE · 02", "title": "Travis Picking Deep Dive", "description": "Learned with a flat pick. How to build the boom-chuck foundation without speeding up before you are ready." } },
-        { "type": "card", "settings": { "width": "third", "icon": "ti-piano", "free_label": "FREE · 03", "title": "Chord Vocabulary", "description": "James Burton ninth chord bend, Robben Ford chord melody, Allan Holdsworth minor 11th, the Steely Dan sus chord." } },
-        { "type": "card", "settings": { "width": "third", "icon": "ti-wave-sine", "free_label": "FREE · 04", "title": "Outside Playing", "description": "Pentatonic substitutions, chromatic approaches, diminished arpeggios, the tritone sub, and the Mahavishnu scale. Sound outside without sounding lost." } },
-        { "type": "card", "settings": { "width": "third", "icon": "ti-adjustments", "free_label": "FREE · 05", "title": "Tone and Gear Rundown", "description": "The full live rig. Reverend guitars, Fishman Fluence pickups, Tone King Royalist, every pedal on the board with context for why each one gets used." } },
-        { "type": "card", "settings": { "width": "third", "icon": "ti-microphone", "free_label": "FREE · 06", "title": "Blues Soloing Concepts", "description": "Playing over changes instead of camping on pentatonic. Jeff Beck whammy techniques, self-accompanied blues, the Allman Brothers approach to major and minor." } },
-        { "type": "card", "settings": { "width": "half", "icon": "ti-file-music", "free_label": "FREE · 07", "title": "Song Breakdowns", "description": "Note-for-note construction of Tonus Diabolicus and Spank It. Where every idea came from, how it was mutated, and exactly how to play it." } },
-        { "type": "card", "settings": { "width": "half", "icon": "ti-video", "free_label": "FREE · 08", "title": "Live Clinics and Q&A", "description": "Full workshop recordings. A gear walkthrough, a backstage interview, and a live Q&A with working musicians." } }
+        { "type": "card", "settings": { "width": "third", "emblem": "pick", "free_label": "FREE · 01", "title": "Chicken Picking Masterclass", "description": "Thumb and finger foundation to full hybrid integration. The muted note, the pop, the banjo rolls, the Magic Sam lick. Everything." } },
+        { "type": "card", "settings": { "width": "third", "emblem": "travis", "free_label": "FREE · 02", "title": "Travis Picking Deep Dive", "description": "Learned with a flat pick. How to build the boom-chuck foundation without speeding up before you are ready." } },
+        { "type": "card", "settings": { "width": "third", "emblem": "chords", "free_label": "FREE · 03", "title": "Chord Vocabulary", "description": "James Burton ninth chord bend, Robben Ford chord melody, Allan Holdsworth minor 11th, the Steely Dan sus chord." } },
+        { "type": "card", "settings": { "width": "third", "emblem": "outside", "free_label": "FREE · 04", "title": "Outside Playing", "description": "Pentatonic substitutions, chromatic approaches, diminished arpeggios, the tritone sub, and the Mahavishnu scale. Sound outside without sounding lost." } },
+        { "type": "card", "settings": { "width": "third", "emblem": "tone", "free_label": "FREE · 05", "title": "Tone and Gear Rundown", "description": "The full live rig. Reverend guitars, Fishman Fluence pickups, Tone King Royalist, every pedal on the board with context for why each one gets used." } },
+        { "type": "card", "settings": { "width": "third", "emblem": "blues", "free_label": "FREE · 06", "title": "Blues Soloing Concepts", "description": "Playing over changes instead of camping on pentatonic. Jeff Beck whammy techniques, self-accompanied blues, the Allman Brothers approach to major and minor." } },
+        { "type": "card", "settings": { "width": "half", "emblem": "song", "free_label": "FREE · 07", "title": "Song Breakdowns", "description": "Note-for-note construction of Tonus Diabolicus and Spank It. Where every idea came from, how it was mutated, and exactly how to play it." } },
+        { "type": "card", "settings": { "width": "half", "emblem": "clinic", "free_label": "FREE · 08", "title": "Live Clinics and Q&A", "description": "Full workshop recordings. A gear walkthrough, a backstage interview, and a live Q&A with working musicians." } }
       ]
     }
   ]
