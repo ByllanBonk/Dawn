@@ -250,15 +250,6 @@
             "url": "https://www.tiktok.com/@gregkochofficial",
             "icon": "auto"
           }
-        },
-        "tile_follow_yt_live": {
-          "type": "tile",
-          "settings": {
-            "group": "follow",
-            "platform_name": "YouTube Live",
-            "url": "https://www.youtube.com/@GregKochMusic/streams",
-            "icon": "auto"
-          }
         }
       },
       "block_order": [
@@ -275,8 +266,7 @@
         "tile_follow_facebook",
         "tile_follow_youtube",
         "tile_follow_x",
-        "tile_follow_tiktok",
-        "tile_follow_yt_live"
+        "tile_follow_tiktok"
       ],
       "name": "GK Stream + Follow",
       "settings": {
