@@ -199,7 +199,7 @@
           "type": "qa",
           "settings": {
             "question": "What's in the box?",
-            "answer": "<p>The Gristle King pedal and an instruction booklet.</p>"
+            "answer": "<p>The Gristle King pedal, sticker, and an instruction booklet.</p>"
           }
         },
         "q_shipping": {
