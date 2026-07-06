@@ -1,0 +1,220 @@
+{
+  "layout": "gristle-landing",
+  "sections": {
+    "hero": {
+      "type": "gk-gristle-hero",
+      "blocks": {
+        "bullet_circuits": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-stack-2",
+            "text": "Four hand-wired JAM pedals circuits in one grab-and-go box"
+          }
+        },
+        "bullet_lineup": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-wave-sine",
+            "text": "LucyDreamer overdrive, Eureka! fuzz, Harmonious Monk tremolo, Delay Llama delay"
+          }
+        },
+        "bullet_analog": {
+          "type": "bullet",
+          "settings": {
+            "icon": "ti-brush",
+            "text": "All analog, hand-built and hand-painted in Athens, Greece"
+          }
+        }
+      },
+      "block_order": ["bullet_circuits", "bullet_lineup", "bullet_analog"],
+      "settings": {
+        "product": "kochness-monster-pedal",
+        "low_stock_threshold": 5,
+        "kicker": "Hand-built by JAM pedals in Athens, Greece",
+        "heading_line1": "Four pedals.",
+        "heading_line2": "One monster.",
+        "subhead": "The Kochness Monster. Greg's essential overdrive, fuzz, harmonic tremolo and analog delay, fused into one orange clad warrior of the sonic night.",
+        "cta_label": "Get my Kochness Monster now",
+        "cta_label_soldout": "Join the waiting list",
+        "microcopy": "Ships fast. Hand-made in Athens, Greece."
+      }
+    },
+    "problem": {
+      "type": "gk-gristle-problem",
+      "blocks": {
+        "point_drive": {
+          "type": "point",
+          "settings": {
+            "icon": "ti-flame",
+            "title": "Drive and fuzz",
+            "text": "LucyDreamer dry-blend overdrive and Eureka! fuzz, from a gentle simmer to unparalleled savagery."
+          }
+        },
+        "point_time": {
+          "type": "point",
+          "settings": {
+            "icon": "ti-wave-sine",
+            "title": "Time and throb",
+            "text": "Delay Llama analog delay tap-synced to the Harmonious Monk harmonic tremolo. One tap controls both."
+          }
+        }
+      },
+      "block_order": ["point_drive", "point_time"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "The Gristle Lowdown",
+        "heading": "The board got out of hand",
+        "body": "<p>People of the Gristle Night, a confession. I met Jannis of JAM pedals back in 2009, and over the following fifteen years his hand-painted contraptions colonized my pedalboard one delicious circuit at a time.</p><p>Which presented a problem of physics. A board full of boutique pedals is a glorious thing right up until you have to haul it through an airport, and I am far too large a man to be seen weeping at a gate.</p><p>So we decided, let us make a couple of pedals together. One that is lean and mean with the bare essentials, and one that just has everything.</p><p><strong>This is the lean and mean one.</strong> Four delicious flavors of JAM pedals glory to get the job done in the service of rock. Easy-peasy.</p>",
+        "signature": "Greg Koch",
+        "caption": "Greg Koch",
+        "outro": "<p>All analog, hand-wired and hand-painted in Athens, Greece, and voiced to get any ax-slinger through any gig or session scenario <strong>with great aplomb</strong>.</p>"
+      }
+    },
+    "features": {
+      "type": "gk-gristle-features",
+      "blocks": {
+        "feat_circuits": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-stack-2",
+            "title": "Four flavors of JAM glory",
+            "text": "LucyDreamer dry-blend overdrive, Eureka! fuzz, Harmonious Monk harmonic tremolo and Delay Llama analog delay."
+          }
+        },
+        "feat_sync": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-wave-sine",
+            "title": "One-tap rhythm sorcery",
+            "text": "The delay's tap tempo syncs to the harmonic tremolo, with subdivisions on tap for otherworldly rhythmic textures."
+          }
+        },
+        "feat_travel": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-plane",
+            "title": "Throw and go",
+            "text": "One box, one power cable, zero patch cables. The fly rig that replaces the whole back-breaking board."
+          }
+        },
+        "feat_handmade": {
+          "type": "feature",
+          "settings": {
+            "icon": "ti-brush",
+            "title": "Hand-made in Athens",
+            "text": "All analog, hand-wired and hand-painted by JAM pedals in Greece. No menus, no screens, no nonsense."
+          }
+        }
+      },
+      "block_order": ["feat_circuits", "feat_sync", "feat_travel", "feat_handmade"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "What you're plugging into",
+        "heading": "Lean, mean, orange",
+        "subhead": "The bare essentials, chosen by a man who owns entirely too many pedals."
+      }
+    },
+    "proof": {
+      "type": "gk-gristle-proof",
+      "blocks": {
+        "quote_forum": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I just listened to the whole demo. Great stuff.",
+            "source": "Player forum thread"
+          }
+        },
+        "quote_press": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Equipped with the essential set of effects to get Greg comfortably through any gig or session scenario.",
+            "source": "Gear press"
+          }
+        }
+      },
+      "block_order": ["quote_forum", "quote_press"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "Hear the beast",
+        "heading": "Behold the Monster in action",
+        "video_embed_url": "https://www.youtube.com/embed/DqGqps2AeN4",
+        "video_title": "Greg Koch - Not So Slight Return! JAM Koch Ness Monster and more",
+        "video_caption": "Greg unleashes the Monster on his own channel",
+        "testimonials_heading": "What People Are Saying About the Kochness Monster",
+        "show_gallery": true,
+        "product": "kochness-monster-pedal"
+      }
+    },
+    "quote": {
+      "type": "gk-gristle-quote",
+      "settings": {
+        "show_top_divider": true,
+        "quote_line1": "“A pared down, throw and go,",
+        "quote_line2": "orange clad warrior of the sonic night.”",
+        "attribution": "Greg Koch"
+      }
+    },
+    "faq": {
+      "type": "gk-gristle-faq",
+      "blocks": {
+        "q_inside": {
+          "type": "qa",
+          "settings": {
+            "question": "What exactly is inside?",
+            "answer": "<p>Four JAM pedals circuits: LucyDreamer dry-blend overdrive, Eureka! fuzz, Harmonious Monk harmonic tremolo and Delay Llama analog delay. All analog, hand-wired, with the delay's tap tempo syncable to the tremolo.</p>"
+          }
+        },
+        "q_supreme": {
+          "type": "qa",
+          "settings": {
+            "question": "How is this different from the Supreme?",
+            "answer": "<p>The Supreme carries all ten circuits of Greg's full rig, with wah, presets and expression inputs. This is the lean and mean edition, the bare essentials for any gig, at a fraction of the price.</p>"
+          }
+        },
+        "q_builder": {
+          "type": "qa",
+          "settings": {
+            "question": "Who builds it?",
+            "answer": "<p>JAM pedals, hand-made and hand-painted in Athens, Greece. It is the product of a fifteen year friendship between Greg and JAM founder Jannis Anastasakis.</p>"
+          }
+        },
+        "q_shipping": {
+          "type": "qa",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes. International orders are responsible for customs and duties.</p>"
+          }
+        },
+        "q_soldout": {
+          "type": "qa",
+          "settings": {
+            "question": "What if it's sold out?",
+            "answer": "<p>Join the waiting list and we'll email you the moment it's back in stock. These are hand-made in small batches, so the list moves fast.</p>"
+          }
+        }
+      },
+      "block_order": ["q_inside", "q_supreme", "q_builder", "q_shipping", "q_soldout"],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "Common questions",
+        "heading": "Wait. What's the deal?"
+      }
+    },
+    "cta": {
+      "type": "gk-gristle-cta",
+      "settings": {
+        "show_top_divider": true,
+        "product": "kochness-monster-pedal",
+        "eyebrow": "Ready when you are",
+        "heading": "Unleash the Monster",
+        "cta_label": "Get my Kochness Monster now",
+        "cta_label_soldout": "Join the waiting list",
+        "smallprint": "Hand-made in small batches. International orders responsible for customs and duties.",
+        "waitlist_tag": "kochness-monster-waitlist",
+        "waitlist_heading": "Join the waiting list",
+        "waitlist_text": "Leave your email and we'll let you know the moment the Kochness Monster is back in stock."
+      }
+    }
+  },
+  "order": ["hero", "problem", "features", "proof", "quote", "faq", "cta"]
+}

@@ -72,7 +72,7 @@
           <p class="gkl-waitlist__text">{{ section.settings.waitlist_text | escape }}</p>
 
           {%- form 'customer', class: 'gkl-waitlist__form', id: 'gkl-waitlist-form' -%}
-            <input type="hidden" name="contact[tags]" value="gristle-king-waitlist">
+            <input type="hidden" name="contact[tags]" value="{{ section.settings.waitlist_tag | default: 'gristle-king-waitlist' | escape }}">
 
             {%- if form.posted_successfully? -%}
               <p class="gkl-waitlist__success" tabindex="-1" autofocus>You're on the list. We'll email you when it's back.</p>
@@ -171,6 +171,13 @@
       "id": "smallprint",
       "label": "Small print",
       "default": "Includes instruction booklet. International orders responsible for customs and duties."
+    },
+    {
+      "type": "text",
+      "id": "waitlist_tag",
+      "label": "Waitlist customer tag",
+      "info": "Tag applied to captured emails in Shopify customers, one per product.",
+      "default": "gristle-king-waitlist"
     },
     {
       "type": "text",
