@@ -35,7 +35,11 @@
           }
         }
       },
-      "block_order": ["bullet_voices", "bullet_hum", "bullet_loaded"],
+      "block_order": [
+        "bullet_voices",
+        "bullet_hum",
+        "bullet_loaded"
+      ],
       "settings": {
         "product": "greg-koch-gristle-tone-signature-series-single-width-3-pickup-set-loaded-pickguard-90",
         "low_stock_threshold": 5,
@@ -68,13 +72,17 @@
           }
         }
       },
-      "block_order": ["point_voices", "point_quiet"],
+      "block_order": [
+        "point_voices",
+        "point_quiet"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "The Gristle Lowdown",
         "heading": "The angst of humanity, ameliorated",
         "body": "<p>Single coils are the sound. The snap, the glass, the quack in positions two and four. They are also, and I say this with love, a sixty-cycle hum machine that makes you pick one favorite era of tone and live with it forever.</p><p>So Fishman and I kept going. After the Gristle-Tone Telecaster set and the P90s, we set forth to bottle the S-style sounds I rely on, with flawless articulation and no hum whatsoever.</p><p>Each pickup carries <strong>two voices</strong>. Voice one is wide-open clarity with that glassy, toothy in-between thing. Voice two brings the girth, adjustable from a gentle nudge to full blown searing leads.</p><p>And this version arrives fully loaded on a pickguard, wired and ready. Drop it in, plug it in, commence the fiendishness. <strong>We ride!</strong></p>",
         "signature": "Greg Koch",
+        "image": "shopify://shop_images/images_9.jpg",
         "caption": "Greg Koch",
         "outro": "<p>Available in white or black, with pots, knobs and five-way switch already installed. An afternoon upgrade for any ax-slinger's S-style companion.</p>"
       }
@@ -115,7 +123,12 @@
           }
         }
       },
-      "block_order": ["feat_voices", "feat_hum", "feat_loaded", "feat_battery"],
+      "block_order": [
+        "feat_voices",
+        "feat_hum",
+        "feat_loaded",
+        "feat_battery"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "What you're dropping in",
@@ -148,7 +161,11 @@
           }
         }
       },
-      "block_order": ["quote_pg", "quote_forum", "quote_sos"],
+      "block_order": [
+        "quote_pg",
+        "quote_forum",
+        "quote_sos"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Hear the difference",
@@ -209,7 +226,13 @@
           }
         }
       },
-      "block_order": ["q_fit", "q_voices", "q_battery", "q_hum", "q_shipping"],
+      "block_order": [
+        "q_fit",
+        "q_voices",
+        "q_battery",
+        "q_hum",
+        "q_shipping"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Common questions",
@@ -232,5 +255,13 @@
       }
     }
   },
-  "order": ["hero", "problem", "features", "proof", "quote", "faq", "cta"]
+  "order": [
+    "hero",
+    "problem",
+    "features",
+    "proof",
+    "quote",
+    "faq",
+    "cta"
+  ]
 }
