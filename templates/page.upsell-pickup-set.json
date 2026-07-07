@@ -1,0 +1,22 @@
+{
+  "layout": "gristle-landing",
+  "sections": {
+    "offer": {
+      "type": "gk-funnel-offer",
+      "settings": {
+        "product": "fishman-fluence-greg-koch-gristle-tone-signature-pickup-set-38",
+        "image_side": "right",
+        "compact_image": false,
+        "eyebrow": "One more for the road",
+        "heading": "Stack the Gristle-Tone pickups with what you just bought",
+        "body": "<p>You just secured the effects chain. Now feed it the signal it deserves. The Gristle-Tone signature set pours hum-free single-coil succulence straight into the front of your new Monster.</p><p>Two voices per pickup, flawless articulation, and not one cycle of hum to muddy up all that hand-wired glory.</p><p>Toss it in now and it rides along with this order. Easy-peasy.</p>",
+        "accept_label": "Yes, add it",
+        "decline_label": "No thanks, take me to my order",
+        "decline_url": "/pages/lil-heat-offer",
+        "testimonial_quote": "Remarkably hi-fi sounding, with exceptional definition, clarity, and punch.",
+        "testimonial_source": "Gear press"
+      }
+    }
+  },
+  "order": ["offer"]
+}
