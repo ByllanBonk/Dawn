@@ -29,24 +29,34 @@ What was built so it works either way:
 | Component | Where | File |
 |---|---|---|
 | Order bump (picks/capo toggle) | Cart page, between line items and checkout button | `sections/gk-order-bump.liquid` + `templates/cart.json` |
-| Post-purchase upsell page | `/pages/gristle-king-offer` (create page, template `upsell-gristle-king`) | `sections/gk-funnel-offer.liquid` + `templates/page.upsell-gristle-king.json` |
-| Downsell page | `/pages/capo-offer` (create page, template `downsell-capo`) | same section + `templates/page.downsell-capo.json` |
+| Post-purchase upsell page (Lil Heat / Pickguard buyers) | `/pages/gristle-king-offer` (create page, template `upsell-gristle-king`) | `sections/gk-funnel-offer.liquid` + `templates/page.upsell-gristle-king.json` |
+| Downsell page (declined Gristle King) | `/pages/capo-offer` (create page, template `downsell-capo`) | same section + `templates/page.downsell-capo.json` |
+| Post-purchase upsell page (Kochness Monster buyers) | `/pages/pickup-set-offer` (create page, template `upsell-pickup-set`) | same section + `templates/page.upsell-pickup-set.json` |
+| Downsell page (declined pickup set) | `/pages/lil-heat-offer` (create page, template `downsell-lil-heat`) | same section + `templates/page.downsell-lil-heat.json` |
 | Waitlist gate (sold out) | Hero of any landing page whose product is sold out | `sections/gk-gristle-hero.liquid` |
 | Collector's kit bonus card | Hero of Gristle ST and Supreme pages | hero section, `bonus_*` settings |
 | Cross-sell module | Bottom of Gristle ST and Supreme pages | `sections/gk-gristle-crossell.liquid` |
 
 ## Setup checklist (Shopify admin)
 
-1. **Create two pages** with these exact handles so the decline chain works:
+1. **Create four pages** with these exact handles so the decline chains work:
    - "Gristle King offer", handle `gristle-king-offer`, template `upsell-gristle-king`
    - "Capo offer", handle `capo-offer`, template `downsell-capo`
-   The upsell page's decline link already points at `/pages/capo-offer`.
+   - "Pickup set offer", handle `pickup-set-offer`, template `upsell-pickup-set`
+   - "Lil Heat offer", handle `lil-heat-offer`, template `downsell-lil-heat`
+   Decline chains: Gristle King offer -> `/pages/capo-offer`; pickup set
+   offer -> `/pages/lil-heat-offer`.
 2. **Pick the bump product**: theme editor → cart page → "GK order bump"
    section → choose the Gristle Picks (or Capo) product. Add the Gristle ST
    and Kochness Monster Supreme products as "Hide when in cart" blocks so
    collector orders never see the bump. If the picks/capo products don't
    exist in the store yet, create them first; the bump hides itself until a
    product is picked.
+   **Kochness Monster rule:** the bump section has a "Swap bump when in
+   cart" rule pre-wired with the Monster as the trigger. Open it and pick
+   the Gristle Capo as the rule's bump product; the rule stays inert until
+   that product is picked. Result: Monster in cart -> capo bump; anything
+   else -> the default picks bump.
 3. **Pick the downsell product**: theme editor → Capo offer page → offer
    section → choose the Gristle Capo product.
 4. **Bonus card thumbnails**: theme editor → Gristle ST and Supreme pages →
@@ -80,6 +90,14 @@ tags, which sync to Klaviyo as profile properties. Suggested flows:
 - Same structure as Flow 1. Copy angle: new pickups deserve the drive Greg
   runs behind them.
 
+### Flow 2b: post-purchase upsell (Kochness Monster -> Gristle-Tone pickup set)
+- Trigger: Placed Order where item title contains "Kochness Monster" (and
+  does not contain "Supreme": the Supreme is collector tier, no upsell)
+- Timing: 1 hour after purchase
+- Email: "Feed the Monster" -> `https://gregkoch.com/pages/pickup-set-offer`
+- Filter: has not purchased the Gristle-Tone Signature Pickup Set
+- Decline chain on the page goes to the Lil Heat offer
+
 ### Flow 3: downsell (clicked but didn't buy)
 - Trigger: Clicked Email (Flow 1 or 2) and no Placed Order within 3 days
 - Email: "Since the King's not for today" → `https://gregkoch.com/pages/capo-offer`
@@ -96,9 +114,11 @@ tags, which sync to Klaviyo as profile properties. Suggested flows:
 ## Inventory holds (do not run ads yet)
 
 - **Kochness Monster** (1 in stock) and **Kochness Monster Supreme**
-  (0 in stock): pages are fully built and safe to merge; the Supreme
-  already renders its waitlist gate automatically. Hold paid traffic to
-  both until inventory is confirmed. Everything else is ad-ready.
+  (0 in stock): the FULL funnel is wired for both (Monster: capo bump rule,
+  pickup-set upsell, Lil Heat downsell, waitlist tag; Supreme: collector's
+  kit bonus, cross-sell module, notify-me gate). The only thing held back
+  is paid traffic, not the funnel: hold ads to both until inventory is
+  confirmed. Everything else is ad-ready.
 
 ## Voice and behavior guardrails baked in
 

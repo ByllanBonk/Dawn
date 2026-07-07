@@ -35,7 +35,11 @@
           }
         }
       },
-      "block_order": ["bullet_circuits", "bullet_lineup", "bullet_analog"],
+      "block_order": [
+        "bullet_circuits",
+        "bullet_lineup",
+        "bullet_analog"
+      ],
       "settings": {
         "product": "kochness-monster-pedal",
         "low_stock_threshold": 5,
@@ -45,7 +49,9 @@
         "subhead": "The Kochness Monster. Greg's essential overdrive, fuzz, harmonic tremolo and analog delay, fused into one orange clad warrior of the sonic night.",
         "cta_label": "Get my Kochness Monster now",
         "cta_label_soldout": "Join the waiting list",
-        "microcopy": "Ships fast. Hand-made in Athens, Greece."
+        "microcopy": "Ships fast. Hand-made in Athens, Greece.",
+        "waitlist_tag": "kochness-monster-waitlist",
+        "soldout_note": "Every Monster is hand-wired in Athens in small batches. Get on the list and we'll holler the moment the next batch lands."
       }
     },
     "problem": {
@@ -68,7 +74,10 @@
           }
         }
       },
-      "block_order": ["point_drive", "point_time"],
+      "block_order": [
+        "point_drive",
+        "point_time"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "The Gristle Lowdown",
@@ -115,7 +124,12 @@
           }
         }
       },
-      "block_order": ["feat_circuits", "feat_sync", "feat_travel", "feat_handmade"],
+      "block_order": [
+        "feat_circuits",
+        "feat_sync",
+        "feat_travel",
+        "feat_handmade"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "What you're plugging into",
@@ -141,7 +155,10 @@
           }
         }
       },
-      "block_order": ["quote_forum", "quote_press"],
+      "block_order": [
+        "quote_forum",
+        "quote_press"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Hear the beast",
@@ -202,7 +219,13 @@
           }
         }
       },
-      "block_order": ["q_inside", "q_supreme", "q_builder", "q_shipping", "q_soldout"],
+      "block_order": [
+        "q_inside",
+        "q_supreme",
+        "q_builder",
+        "q_shipping",
+        "q_soldout"
+      ],
       "settings": {
         "show_top_divider": true,
         "eyebrow": "Common questions",
@@ -225,5 +248,13 @@
       }
     }
   },
-  "order": ["hero", "problem", "features", "proof", "quote", "faq", "cta"]
+  "order": [
+    "hero",
+    "problem",
+    "features",
+    "proof",
+    "quote",
+    "faq",
+    "cta"
+  ]
 }

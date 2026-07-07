@@ -48,7 +48,33 @@
       "type": "gk-order-bump",
       "settings": {
         "copy": "The exact picks Greg's got in his pocket right now, tossed in with your order."
-      }
+      },
+      "blocks": {
+        "rule_kochness": {
+          "type": "rule",
+          "settings": {
+            "trigger": "kochness-monster-pedal",
+            "copy": "The exact capo Greg's got on his headstock right now, tossed in with your order."
+          }
+        },
+        "exclude_st": {
+          "type": "exclude",
+          "settings": {
+            "product": "gristle-st-signed-collector-edition-only-available-in-the-continental-united-states-100"
+          }
+        },
+        "exclude_supreme": {
+          "type": "exclude",
+          "settings": {
+            "product": "kochness-monster-supreme-pedal-91"
+          }
+        }
+      },
+      "block_order": [
+        "rule_kochness",
+        "exclude_st",
+        "exclude_supreme"
+      ]
     }
   },
   "order": [

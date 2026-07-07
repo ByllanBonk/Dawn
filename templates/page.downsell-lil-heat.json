@@ -1,0 +1,22 @@
+{
+  "layout": "gristle-landing",
+  "sections": {
+    "offer": {
+      "type": "gk-funnel-offer",
+      "settings": {
+        "product": "lil-heat-overdrive-pedal-93",
+        "image_side": "left",
+        "compact_image": true,
+        "eyebrow": "Or take the small win",
+        "heading": "Since the pickups are for another day, here's the Lil Heat",
+        "body": "<p>The mini overdrive Greg voiced himself, built to nudge any amp into that sweet vintage breakup. Three knobs, true bypass, fits any board.</p><p>Toss it in with your order and call it a day. I can dig it.</p>",
+        "accept_label": "Yes, add it",
+        "decline_label": "No thanks, take me to my order",
+        "decline_url": "/",
+        "testimonial_quote": "That's a big sound for a Champ!",
+        "testimonial_source": "Player forum thread"
+      }
+    }
+  },
+  "order": ["offer"]
+}

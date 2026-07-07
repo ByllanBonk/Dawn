@@ -15,7 +15,30 @@
     lives on the cart page, directly above the checkout button.
 {% endcomment %}
 
+{%- comment -%}
+  Rule blocks let the bump offer change based on what's in the cart:
+  the first rule whose trigger product is in the cart swaps in that rule's
+  bump product and copy (e.g. Kochness Monster in cart -> bump the Gristle
+  Capo instead of the default Gristle Picks). No match -> section default.
+{%- endcomment -%}
 {%- assign bump_product = section.settings.product -%}
+{%- assign bump_copy = section.settings.copy -%}
+{%- assign rule_matched = false -%}
+{%- for block in section.blocks -%}
+  {%- if rule_matched == false and block.type == 'rule' and block.settings.trigger != blank and block.settings.bump != blank -%}
+    {%- for item in cart.items -%}
+      {%- if item.product_id == block.settings.trigger.id -%}
+        {%- assign bump_product = block.settings.bump -%}
+        {%- if block.settings.copy != blank -%}
+          {%- assign bump_copy = block.settings.copy -%}
+        {%- endif -%}
+        {%- assign rule_matched = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
+
 {%- if bump_product != blank and bump_product.available and cart.item_count > 0 -%}
   {%- assign bump_variant = bump_product.selected_or_first_available_variant | default: bump_product.variants.first -%}
 
@@ -26,7 +49,7 @@
       {%- assign bump_qty = item.quantity -%}
     {%- endif -%}
     {%- for block in section.blocks -%}
-      {%- if block.settings.product != blank and item.product_id == block.settings.product.id -%}
+      {%- if block.type == 'exclude' and block.settings.product != blank and item.product_id == block.settings.product.id -%}
         {%- assign hide_bump = true -%}
       {%- endif -%}
     {%- endfor -%}
@@ -144,8 +167,8 @@
           <p class="gk-bump__name">
             {{ section.settings.heading | default: bump_product.title | escape }}
           </p>
-          {%- if section.settings.copy != blank -%}
-            <p class="gk-bump__copy">{{ section.settings.copy | escape }}</p>
+          {%- if bump_copy != blank -%}
+            <p class="gk-bump__copy">{{ bump_copy | escape }}</p>
           {%- endif -%}
         </div>
         <span class="gk-bump__price">{{ bump_variant.price | money }}</span>
@@ -244,6 +267,27 @@
           "id": "product",
           "label": "Product",
           "info": "If this product is in the cart, the bump is not shown. Use for the Gristle ST and Kochness Monster Supreme."
+        }
+      ]
+    },
+    {
+      "type": "rule",
+      "name": "Swap bump when in cart",
+      "settings": [
+        {
+          "type": "product",
+          "id": "trigger",
+          "label": "When this product is in the cart"
+        },
+        {
+          "type": "product",
+          "id": "bump",
+          "label": "Offer this bump product instead"
+        },
+        {
+          "type": "text",
+          "id": "copy",
+          "label": "Copy override (optional)"
         }
       ]
     }
