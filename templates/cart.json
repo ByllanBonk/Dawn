@@ -12,13 +12,11 @@
       "blocks": {
         "subtotal": {
           "type": "subtotal",
-          "settings": {
-          }
+          "settings": {}
         },
         "buttons": {
           "type": "buttons",
-          "settings": {
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -45,10 +43,17 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "gk-order-bump": {
+      "type": "gk-order-bump",
+      "settings": {
+        "copy": "The exact picks Greg's got in his pocket right now, tossed in with your order."
+      }
     }
   },
   "order": [
     "cart-items",
+    "gk-order-bump",
     "cart-footer",
     "featured-collection"
   ]

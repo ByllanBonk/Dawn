@@ -1,0 +1,19 @@
+{
+  "layout": "gristle-landing",
+  "sections": {
+    "offer": {
+      "type": "gk-funnel-offer",
+      "settings": {
+        "image_side": "right",
+        "compact_image": true,
+        "eyebrow": "Or take the small win",
+        "heading": "Since the King's not for today, here's the capo Greg actually uses on tour",
+        "body": "<p>No pedal, no problem. This is the capo that lives on Greg's headstock from soundcheck to encore, and it clamps with great aplomb.</p><p>Toss it in with your order and call it a day. I can dig it.</p>",
+        "accept_label": "Yes, add it",
+        "decline_label": "No thanks, take me to my order",
+        "decline_url": "/"
+      }
+    }
+  },
+  "order": ["offer"]
+}

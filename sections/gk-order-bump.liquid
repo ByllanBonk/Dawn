@@ -1,0 +1,255 @@
+{% comment %}
+  GK order bump (cart page)
+  A single horizontal card that sits between the cart line items and the
+  subtotal/checkout footer. Quiet, confident add: thumbnail, name, one line
+  of Greg-voice copy, price, and a toggle switch. No timers, no urgency.
+
+  - Toggling adds/removes one unit of the bump product via /cart/add.js and
+    /cart/change.js, then soft-refreshes the cart markup in place (no full
+    page reload). Falls back to a reload only if the fetch fails.
+  - Hidden automatically when: no bump product picked, the bump product is
+    sold out, the cart is empty, or the cart contains any of the excluded
+    products (used to keep the bump off Gristle ST / Supreme orders, which
+    are too high-consideration for impulse logic).
+  - Shopify checkout itself is not theme-editable on this plan, so the bump
+    lives on the cart page, directly above the checkout button.
+{% endcomment %}
+
+{%- assign bump_product = section.settings.product -%}
+{%- if bump_product != blank and bump_product.available and cart.item_count > 0 -%}
+  {%- assign bump_variant = bump_product.selected_or_first_available_variant | default: bump_product.variants.first -%}
+
+  {%- assign hide_bump = false -%}
+  {%- assign bump_qty = 0 -%}
+  {%- for item in cart.items -%}
+    {%- if item.variant_id == bump_variant.id -%}
+      {%- assign bump_qty = item.quantity -%}
+    {%- endif -%}
+    {%- for block in section.blocks -%}
+      {%- if block.settings.product != blank and item.product_id == block.settings.product.id -%}
+        {%- assign hide_bump = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+
+  {%- unless hide_bump -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    {% style %}
+      .gk-bump-wrap {
+        max-width: 68rem;
+        margin: 0 auto;
+        padding: 0 1.5rem 1rem;
+      }
+
+      .gk-bump {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 18px;
+        background: #161616;
+        border: 1px solid rgba(200, 96, 26, 0.55);
+        border-radius: 14px;
+        color: #e8e2d9;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      .gk-bump__thumb {
+        flex: none;
+        width: 64px;
+        height: 64px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #181818;
+        border: 1px solid #2a2a2a;
+      }
+
+      .gk-bump__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+      .gk-bump__body { flex: 1; min-width: 0; }
+
+      .gk-bump__name {
+        margin: 0;
+        font-family: 'Bebas Neue', 'Inter', sans-serif;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 1;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: #f4efe6;
+      }
+
+      .gk-bump__copy {
+        margin: 4px 0 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #a89e90;
+      }
+
+      .gk-bump__price {
+        flex: none;
+        font-family: 'Bebas Neue', 'Inter', sans-serif;
+        font-size: 20px;
+        line-height: 1;
+        color: #f4efe6;
+        white-space: nowrap;
+      }
+
+      .gk-bump__switch { flex: none; position: relative; display: inline-block; width: 46px; height: 26px; }
+      .gk-bump__switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+
+      .gk-bump__track {
+        position: absolute;
+        inset: 0;
+        border-radius: 26px;
+        background: #2a2a2a;
+        border: 1px solid #3a3530;
+        transition: background 0.15s ease;
+        pointer-events: none;
+      }
+
+      .gk-bump__track::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #a89e90;
+        transition: transform 0.15s ease, background 0.15s ease;
+      }
+
+      .gk-bump__switch input:checked + .gk-bump__track { background: #c8601a; border-color: #c8601a; }
+      .gk-bump__switch input:checked + .gk-bump__track::after { transform: translateX(20px); background: #ffffff; }
+      .gk-bump__switch input:focus-visible + .gk-bump__track { outline: 2px solid #c8601a; outline-offset: 2px; }
+      .gk-bump__switch input:disabled + .gk-bump__track { opacity: 0.6; }
+
+      @media screen and (max-width: 600px) {
+        .gk-bump { flex-wrap: wrap; }
+        .gk-bump__body { flex-basis: calc(100% - 80px); }
+        .gk-bump__price { margin-left: 80px; }
+      }
+    {% endstyle %}
+
+    <div class="gk-bump-wrap">
+      <div class="gk-bump">
+        <div class="gk-bump__thumb">
+          {%- if bump_product.featured_image != blank -%}
+            {{ bump_product.featured_image | image_url: width: 128 | image_tag: loading: 'lazy', alt: bump_product.title }}
+          {%- endif -%}
+        </div>
+        <div class="gk-bump__body">
+          <p class="gk-bump__name">
+            {{ section.settings.heading | default: bump_product.title | escape }}
+          </p>
+          {%- if section.settings.copy != blank -%}
+            <p class="gk-bump__copy">{{ section.settings.copy | escape }}</p>
+          {%- endif -%}
+        </div>
+        <span class="gk-bump__price">{{ bump_variant.price | money }}</span>
+        <label class="gk-bump__switch">
+          <input
+            type="checkbox"
+            data-gk-bump-toggle
+            data-variant-id="{{ bump_variant.id }}"
+            data-cart-qty="{{ bump_qty }}"
+            {% if bump_qty > 0 %}checked{% endif %}
+          >
+          <span class="gk-bump__track" aria-hidden="true"></span>
+          <span class="visually-hidden">Add {{ bump_product.title | escape }} to my order</span>
+        </label>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        if (window.gkBumpBound) return;
+        window.gkBumpBound = true;
+        document.addEventListener('change', function (e) {
+          var toggle = e.target.closest ? e.target.closest('[data-gk-bump-toggle]') : null;
+          if (!toggle) return;
+          var variantId = toggle.dataset.variantId;
+          var inCart = parseInt(toggle.dataset.cartQty || '0', 10) > 0;
+          var request;
+          toggle.disabled = true;
+          if (toggle.checked && !inCart) {
+            request = fetch('/cart/add.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: Number(variantId), quantity: 1 })
+            });
+          } else if (!toggle.checked && inCart) {
+            request = fetch('/cart/change.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: variantId, quantity: 0 })
+            });
+          } else {
+            toggle.disabled = false;
+            return;
+          }
+          request
+            .then(function (r) { if (!r.ok) throw new Error(r.status); return fetch(window.location.pathname); })
+            .then(function (r) { return r.text(); })
+            .then(function (html) {
+              var doc = new DOMParser().parseFromString(html, 'text/html');
+              var next = doc.querySelector('#MainContent');
+              var current = document.querySelector('#MainContent');
+              if (next && current) {
+                current.innerHTML = next.innerHTML;
+              } else {
+                window.location.reload();
+              }
+            })
+            .catch(function () { window.location.reload(); });
+        });
+      })();
+    </script>
+  {%- endunless -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GK order bump",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Bump product",
+      "info": "Pick the Gristle Picks or Gristle Capo product. The card hides itself if this is empty or sold out."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Name override",
+      "info": "Leave empty to use the product title."
+    },
+    {
+      "type": "text",
+      "id": "copy",
+      "label": "One-line copy",
+      "default": "The exact picks Greg's got in his pocket right now, tossed in with your order."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "exclude",
+      "name": "Hide when in cart",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "If this product is in the cart, the bump is not shown. Use for the Gristle ST and Kochness Monster Supreme."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "GK order bump" }
+  ]
+}
+{% endschema %}

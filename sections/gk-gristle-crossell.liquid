@@ -1,0 +1,120 @@
+{% comment %}
+  GK cross-sell module ("Not ready for the one-of-one? Get the tone.")
+  For the two collector items only (Gristle ST, Kochness Monster Supreme),
+  which deliberately get no order bump or post-purchase upsell. Sits at the
+  bottom of the landing page, below the final CTA: quiet cards pointing
+  players who aren't ready for the big purchase at the attainable tone
+  products. Same glass card style as the rest of the system.
+{% endcomment %}
+
+<div class="gkl">
+  {%- if section.settings.show_top_divider -%}
+    <div class="gkl-divider" aria-hidden="true"><hr></div>
+  {%- endif -%}
+
+  <section class="gkl-xsell">
+    <div class="gkl-wrap gkl-wrap--wide">
+      <div class="gkl-section-head">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="gkl-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="gkl-h2">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subhead != blank -%}
+          <p class="gkl-subhead">{{ section.settings.subhead | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="gkl-xsell__grid">
+        {%- for block in section.blocks -%}
+          {%- assign xp = block.settings.product -%}
+          {%- if xp != blank and block.settings.link != blank -%}
+            <a class="gkl-xsell__card" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+              <div class="gkl-xsell__thumb">
+                {%- if xp.featured_image != blank -%}
+                  {{ xp.featured_image | image_url: width: 400 | image_tag: loading: 'lazy', alt: xp.title }}
+                {%- endif -%}
+              </div>
+              <div class="gkl-xsell__body">
+                <h3 class="gkl-xsell__title">{{ xp.title | escape }}</h3>
+                {%- if block.settings.note != blank -%}
+                  <p class="gkl-xsell__note">{{ block.settings.note | escape }}</p>
+                {%- endif -%}
+                <p class="gkl-xsell__price">
+                  {{ xp.price | money }}
+                  <i class="ti ti-arrow-right" aria-hidden="true"></i>
+                </p>
+              </div>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "GK cross-sell",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_top_divider",
+      "label": "Show top divider",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The attainable path"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Not ready for the one-of-one? Get the tone."
+    },
+    {
+      "type": "textarea",
+      "id": "subhead",
+      "label": "Subhead"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Product card",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product (image, title, live price)"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (landing page, not the product page)"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "One-line note"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK cross-sell",
+      "blocks": [
+        { "type": "card" },
+        { "type": "card" }
+      ]
+    }
+  ]
+}
+{% endschema %}

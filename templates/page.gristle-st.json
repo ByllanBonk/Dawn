@@ -49,7 +49,12 @@
         "subhead": "The Reverend Greg Koch Signature Gristle ST in Avocado Burst. Signed by the man himself, shipped in a hard case, with a personalized video for your guitar's serial number.",
         "cta_label": "Get my Gristle ST now",
         "cta_label_soldout": "Join the waiting list",
-        "microcopy": "Includes hard case, signature and serial-number video."
+        "microcopy": "Includes hard case, signature and serial-number video.",
+        "waitlist_tag": "gristle-st-waitlist",
+        "soldout_note": "Each signed Gristle ST comes out of Greg's own stash, one at a time. Get on the list and we'll email you when the next one surfaces.",
+        "bonus_enabled": true,
+        "bonus_badge": "Included free",
+        "bonus_text": "Every Gristle ST ships with a set of Gristle Picks and a Gristle Capo, on us."
       }
     },
     "problem": {
@@ -253,6 +258,37 @@
         "waitlist_heading": "Join the waiting list",
         "waitlist_text": "Leave your email and we'll let you know the moment a signed Gristle ST is available again."
       }
+    },
+    "crossell": {
+      "type": "gk-gristle-crossell",
+      "blocks": {
+        "card_pickguard": {
+          "type": "card",
+          "settings": {
+            "product": "greg-koch-gristle-tone-signature-series-single-width-3-pickup-set-loaded-pickguard-90",
+            "link": "/pages/gristle-tone-pickups",
+            "note": "The exact Fluence trio from the Gristle ST, wired and ready to drop in."
+          }
+        },
+        "card_king": {
+          "type": "card",
+          "settings": {
+            "product": "gristle-king-pedal-56",
+            "link": "/pages/gristle-king",
+            "note": "The drive and boost Greg built his sound on."
+          }
+        }
+      },
+      "block_order": [
+        "card_pickguard",
+        "card_king"
+      ],
+      "settings": {
+        "show_top_divider": true,
+        "eyebrow": "The attainable path",
+        "heading": "Not ready for the one-of-one? Get the tone.",
+        "subhead": "The same gristle, sized for mortals."
+      }
     }
   },
   "order": [
@@ -262,6 +298,7 @@
     "proof",
     "quote",
     "faq",
-    "cta"
+    "cta",
+    "crossell"
   ]
 }
