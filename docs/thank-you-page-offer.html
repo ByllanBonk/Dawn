@@ -1,0 +1,90 @@
+<!-- ============================================================
+  GK post-purchase offer for the CHECKOUT THANK YOU / ORDER STATUS page.
+
+  PASTE-IN, NOT DEPLOYED BY THE THEME: the checkout thank-you page cannot
+  host theme sections. This goes in Shopify admin under
+  Settings > Checkout > Order status page > Additional scripts.
+
+  HONEST CAVEATS:
+  - Additional scripts is a legacy feature that Shopify is phasing out in
+    favor of checkout extensibility (which is app/extension territory).
+    It works today; treat it as temporary and keep the theme section
+    (customer order page) and the confirmation email as the durable
+    channels.
+  - This is NOT theme-editor editable. Copy changes happen by editing
+    this pasted block in admin. Keep the trigger mapping in sync with
+    gk-order-status-offer and the confirmation email block.
+
+  TRIGGER MAPPING (priority order, first match wins), same as everywhere:
+    1. order contains "Lil Heat"          -> offer Gristle King
+    2. order contains "Gristle King"      -> offer Lil Heat
+    3. order contains "Loaded Pickguard"  -> offer Gristle King
+    4. order contains "Kochness Monster"  -> offer Gristle-Tone Pickup Set
+       (Supreme orders excluded)
+
+  Replace LIL_HEAT_VARIANT_ID and PICKUP_SET_VARIANT_ID before going live
+  (the Gristle King variant is pre-filled).
+============================================================= -->
+
+{% assign gk_has_lilheat = false %}
+{% assign gk_has_king = false %}
+{% assign gk_has_pickguard = false %}
+{% assign gk_has_monster = false %}
+{% assign gk_has_supreme = false %}
+{% assign gk_has_set = false %}
+{% for line_item in checkout.line_items %}
+  {% if line_item.title contains 'Lil Heat' %}{% assign gk_has_lilheat = true %}{% endif %}
+  {% if line_item.title contains 'Gristle King' %}{% assign gk_has_king = true %}{% endif %}
+  {% if line_item.title contains 'Loaded Pickguard' %}{% assign gk_has_pickguard = true %}{% endif %}
+  {% if line_item.title contains 'Kochness Monster Supreme' %}{% assign gk_has_supreme = true %}{% endif %}
+  {% if line_item.title contains 'Kochness Monster' %}{% assign gk_has_monster = true %}{% endif %}
+  {% if line_item.title contains 'Pickup Set' %}{% assign gk_has_set = true %}{% endif %}
+{% endfor %}
+
+{% assign gk_offer = '' %}
+{% if gk_has_lilheat and gk_has_king == false %}
+  {% assign gk_offer = 'king' %}
+{% elsif gk_has_king and gk_has_lilheat == false %}
+  {% assign gk_offer = 'lilheat' %}
+{% elsif gk_has_pickguard and gk_has_king == false %}
+  {% assign gk_offer = 'king' %}
+{% elsif gk_has_monster and gk_has_supreme == false and gk_has_set == false %}
+  {% assign gk_offer = 'set' %}
+{% endif %}
+
+{% if gk_offer == 'king' %}
+  {% assign gk_offer_title = 'The Gristle King' %}
+  {% assign gk_offer_heading = 'Add the Gristle King to your order' %}
+  {% assign gk_offer_copy = 'What you just grabbed handles its end of the tone chain. The Gristle King is the drive and boost the whole legend was built on. Stack them and achieve succulence in the extreme.' %}
+  {% assign gk_offer_url = 'https://gregkoch.com/cart/51420301492545:1' %}
+{% elsif gk_offer == 'lilheat' %}
+  {% assign gk_offer_title = 'The Lil Heat' %}
+  {% assign gk_offer_heading = 'Stack the Lil Heat with what you just bought' %}
+  {% assign gk_offer_copy = 'The King holds court in the middle of the chain. The Lil Heat is the fiery little box that nudges the whole affair further into the fire. Three knobs, great aplomb, easy-peasy.' %}
+  {% assign gk_offer_url = 'https://gregkoch.com/cart/LIL_HEAT_VARIANT_ID:1' %}
+{% elsif gk_offer == 'set' %}
+  {% assign gk_offer_title = 'The Gristle-Tone Pickup Set' %}
+  {% assign gk_offer_heading = 'Stack the Gristle-Tone pickups with what you just bought' %}
+  {% assign gk_offer_copy = 'You secured the effects chain. Now feed it the signal it deserves. The Gristle-Tone set pours hum-free single-coil succulence straight into the front of your new Monster.' %}
+  {% assign gk_offer_url = 'https://gregkoch.com/cart/PICKUP_SET_VARIANT_ID:1' %}
+{% endif %}
+
+{% if gk_offer != '' %}
+<div style="margin: 24px 0; padding: 24px; background-color: #161616; border: 1px solid #c8601a; border-radius: 12px; font-family: Helvetica, Arial, sans-serif;">
+  <p style="margin: 0 0 6px; font-size: 11px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; color: #e8853a;">
+    One more for the road
+  </p>
+  <p style="margin: 0 0 8px; font-size: 22px; font-weight: bold; line-height: 1.15; color: #f4efe6;">
+    {{ gk_offer_heading }}
+  </p>
+  <p style="margin: 0 0 18px; font-size: 14px; line-height: 1.6; color: #e8e2d9;">
+    {{ gk_offer_copy }}
+  </p>
+  <a href="{{ gk_offer_url }}" style="display: block; padding: 15px 28px; background-color: #c8601a; border-radius: 40px; font-size: 15px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; text-decoration: none; text-align: center;">
+    Yes, add {{ gk_offer_title }} to my order
+  </a>
+  <p style="margin: 12px 0 0; font-size: 12px; color: #a89e90; text-align: center;">
+    No pressure. Your order ships either way. We ride.
+  </p>
+</div>
+{% endif %}

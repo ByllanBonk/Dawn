@@ -33,6 +33,9 @@ What was built so it works either way:
 | Downsell page (declined Gristle King) | `/pages/capo-offer` (create page, template `downsell-capo`) | same section + `templates/page.downsell-capo.json` |
 | Post-purchase upsell page (Kochness Monster buyers) | `/pages/pickup-set-offer` (create page, template `upsell-pickup-set`) | same section + `templates/page.upsell-pickup-set.json` |
 | Downsell page (declined pickup set) | `/pages/lil-heat-offer` (create page, template `downsell-lil-heat`) | same section + `templates/page.downsell-lil-heat.json` |
+| Post-purchase offer, customer order page | `/account` order pages, native + editable | `sections/gk-order-status-offer.liquid` + `templates/customers/order.json` |
+| Post-purchase offer, thank-you page | Settings > Checkout > Additional scripts (manual paste) | `docs/thank-you-page-offer.html` |
+| Post-purchase offer, confirmation email | Settings > Notifications > Order confirmation (manual paste) | `docs/order-confirmation-offer.html` |
 | Waitlist gate (sold out) | Hero of any landing page whose product is sold out | `sections/gk-gristle-hero.liquid` |
 | Collector's kit bonus card | Hero of Gristle ST and Supreme pages | hero section, `bonus_*` settings |
 | Cross-sell module | Bottom of Gristle ST and Supreme pages | `sections/gk-gristle-crossell.liquid` |
@@ -70,6 +73,102 @@ What was built so it works either way:
 6. **Fulfillment note**: the collector's kit is a display-only promise. Add
    the picks and capo to Gristle ST / Supreme orders during fulfillment, or
    attach them as a free-gift automation later.
+
+## Native post-purchase offers (no app, no Klaviyo)
+
+Three channels show the same single offer per order, chosen by the same
+priority mapping. None of them require an app or Klaviyo.
+
+**Trigger mapping (priority order, first match wins; a rule is skipped if
+the offer product is already in the order):**
+
+| # | Order contains | Offer shown |
+|---|---|---|
+| 1 | Lil Heat | Gristle King |
+| 2 | Gristle King | Lil Heat |
+| 3 | Loaded Pickguard | Gristle King |
+| 4 | Kochness Monster (not Supreme) | Gristle-Tone Signature Pickup Set |
+
+**Channels:**
+
+1. **Customer order page (theme, deploys with this repo, theme-editor
+   editable):** `sections/gk-order-status-offer.liquid`, registered on
+   `templates/customers/order.json` with the four rules pre-wired as
+   blocks. Drag blocks to change priority; every pairing, copy line, image
+   and label is a block setting. Accept is a cart permalink into a
+   pre-filled cart. Decline links to /account/orders.
+   Honest scope note: the checkout THANK YOU page cannot host theme
+   sections, so the theme-owned surface is the account order page (which
+   the confirmation email's "view your order" button also lands on).
+2. **Checkout thank-you page (manual paste-in):**
+   `docs/thank-you-page-offer.html` goes into Settings > Checkout > Order
+   status page > Additional scripts. Same mapping, same look, inline
+   styles. Legacy feature being phased out by Shopify in favor of checkout
+   extensibility (app territory); works today, treat as temporary. Not
+   theme-editor editable.
+3. **Order confirmation email (manual paste-in):**
+   `docs/order-confirmation-offer.html` goes into Settings > Notifications
+   > Order confirmation. Backup channel showing the SAME offer, table-based
+   HTML with inline styles (no web fonts in email). The mapping is
+   duplicated in a comment at the top of the file: when you change the
+   theme section's rules, update the email block by hand to match.
+   Replace the two placeholder variant IDs before going live (the Gristle
+   King's is pre-filled).
+
+**What still needs an app (out of scope for all of the above, on purpose):**
+
+- One-click accept that charges the saved card without re-entering payment
+  (Zipify OCU / Rebuy / AfterSell territory). All native accepts land in a
+  pre-filled cart and go through normal checkout.
+- Click-based downsell chaining ("show the downsell only if they did not
+  click the upsell"). A theme and a static email cannot detect a link
+  click. The native approximation is time-based, via Shopify Flow below.
+
+## Shopify Flow: delayed downsell (spec to build manually)
+
+Flow is built in Shopify admin (Apps > Flow, free on every plan), so it
+cannot ship in this repo. Build three workflows, one per trigger group.
+The logic is time-based, not click-based: 24 hours after the order, if the
+customer has not ordered again, they get the downsell email.
+
+### Workflow A: "Downsell capo (Gristle King path)"
+1. Trigger: **Order created**
+2. Condition: **Check order line items** - any line item title contains
+   "Lil Heat" OR "Loaded Pickguard" OR "Gristle King"
+3. Condition (same step or nested): NO line item title contains "Gristle
+   Capo" (already bought the downsell)
+4. Action: **Wait** - 24 hours
+5. Condition: **Customer's last order ID equals this order's ID**
+   (in Flow's condition builder: customer > lastOrder > id, equals,
+   order > id). If a newer order exists, they came back on their own: stop.
+6. Action: **Send internal email** is for staff; use **Send email**
+   (marketing-safe transactional alternative) or, once Klaviyo is
+   reconnected, **Send Klaviyo event** instead. Email to
+   {{ order.customer.email }}:
+   - Subject: Since the King's not for today
+   - Body: short Greg-voice note plus one link:
+     https://gregkoch.com/pages/capo-offer
+   Note: Flow's plain "Send email" sends from the store with basic
+   formatting only; if you want the branded template, the Klaviyo event
+   route is the upgrade path.
+
+### Workflow B: "Downsell Lil Heat (Kochness Monster path)"
+Same six steps with:
+- Step 2 condition: any line item title contains "Kochness Monster" AND no
+  line item title contains "Supreme"
+- Step 3: NO line item title contains "Lil Heat"
+- Step 6 link: https://gregkoch.com/pages/lil-heat-offer
+- Subject: Since the pickups are for another day
+
+### Downsell product per trigger pair (matches the existing decline chains)
+
+| Bought | Upsell shown (status page/email) | Flow downsell after 24h |
+|---|---|---|
+| Lil Heat | Gristle King | Gristle Capo (/pages/capo-offer) |
+| Gristle King | Lil Heat | Gristle Capo (/pages/capo-offer) |
+| Loaded Pickguard | Gristle King | Gristle Capo (/pages/capo-offer) |
+| Kochness Monster | Gristle-Tone Pickup Set | Lil Heat (/pages/lil-heat-offer) |
+| Gristle ST / Supreme | none (collector tier) | none |
 
 ## Klaviyo flows to build
 

@@ -1,0 +1,120 @@
+<!-- ============================================================
+  GK post-purchase offer block for the ORDER CONFIRMATION email.
+
+  PASTE-IN, NOT DEPLOYED BY THE THEME: notification templates live in
+  Shopify admin (Settings > Notifications > Customer notifications >
+  Order confirmation > Edit code) and cannot ship via theme PR.
+  Paste this whole block near the bottom of the email body, above the
+  footer/signature.
+
+  KEEP IN SYNC MANUALLY with the theme section gk-order-status-offer
+  (templates/customers/order.json). This email is a backup channel and
+  must always show the SAME primary offer as the order status page,
+  since neither channel can detect whether the other was seen.
+
+  TRIGGER MAPPING (priority order, first match wins):
+    1. order contains "Lil Heat"          -> offer Gristle King
+    2. order contains "Gristle King"      -> offer Lil Heat
+    3. order contains "Loaded Pickguard"  -> offer Gristle King
+    4. order contains "Kochness Monster"  -> offer Gristle-Tone Pickup Set
+       (Supreme orders are excluded: collector tier gets no offers)
+    A rule is skipped if the offer product is already in the order.
+
+  BEFORE GOING LIVE, replace the two placeholder variant IDs below.
+  Find a variant ID in admin: Products > open the product > the number
+  in the URL when editing the variant, or Copy link on the variant.
+    - Gristle King variant is pre-filled: 51420301492545
+    - LIL_HEAT_VARIANT_ID     -> the Lil Heat's variant ID
+    - PICKUP_SET_VARIANT_ID   -> the Gristle-Tone Signature Pickup Set's variant ID
+
+  Prices are deliberately NOT shown here: notification Liquid cannot
+  read live prices for products outside the order, and a hardcoded
+  price would go stale. The landing cart shows the live price on click.
+============================================================= -->
+
+{% assign gk_has_lilheat = false %}
+{% assign gk_has_king = false %}
+{% assign gk_has_pickguard = false %}
+{% assign gk_has_monster = false %}
+{% assign gk_has_supreme = false %}
+{% assign gk_has_set = false %}
+{% for line_item in line_items %}
+  {% if line_item.title contains 'Lil Heat' %}{% assign gk_has_lilheat = true %}{% endif %}
+  {% if line_item.title contains 'Gristle King' %}{% assign gk_has_king = true %}{% endif %}
+  {% if line_item.title contains 'Loaded Pickguard' %}{% assign gk_has_pickguard = true %}{% endif %}
+  {% if line_item.title contains 'Kochness Monster Supreme' %}{% assign gk_has_supreme = true %}{% endif %}
+  {% if line_item.title contains 'Kochness Monster' %}{% assign gk_has_monster = true %}{% endif %}
+  {% if line_item.title contains 'Pickup Set' %}{% assign gk_has_set = true %}{% endif %}
+{% endfor %}
+
+{% assign gk_offer = '' %}
+{% if gk_has_lilheat and gk_has_king == false %}
+  {% assign gk_offer = 'king' %}
+{% elsif gk_has_king and gk_has_lilheat == false %}
+  {% assign gk_offer = 'lilheat' %}
+{% elsif gk_has_pickguard and gk_has_king == false %}
+  {% assign gk_offer = 'king' %}
+{% elsif gk_has_monster and gk_has_supreme == false and gk_has_set == false %}
+  {% assign gk_offer = 'set' %}
+{% endif %}
+
+{% if gk_offer == 'king' %}
+  {% assign gk_offer_title = 'The Gristle King' %}
+  {% assign gk_offer_heading = 'Add the Gristle King to your order' %}
+  {% assign gk_offer_copy = 'What you just grabbed handles its end of the tone chain. The Gristle King is the drive and boost the whole legend was built on. Stack them and achieve succulence in the extreme.' %}
+  {% assign gk_offer_url = 'https://gregkoch.com/cart/51420301492545:1' %}
+{% elsif gk_offer == 'lilheat' %}
+  {% assign gk_offer_title = 'The Lil Heat' %}
+  {% assign gk_offer_heading = 'Stack the Lil Heat with what you just bought' %}
+  {% assign gk_offer_copy = 'The King holds court in the middle of the chain. The Lil Heat is the fiery little box that nudges the whole affair further into the fire. Three knobs, great aplomb, easy-peasy.' %}
+  {% assign gk_offer_url = 'https://gregkoch.com/cart/LIL_HEAT_VARIANT_ID:1' %}
+{% elsif gk_offer == 'set' %}
+  {% assign gk_offer_title = 'The Gristle-Tone Pickup Set' %}
+  {% assign gk_offer_heading = 'Stack the Gristle-Tone pickups with what you just bought' %}
+  {% assign gk_offer_copy = 'You secured the effects chain. Now feed it the signal it deserves. The Gristle-Tone set pours hum-free single-coil succulence straight into the front of your new Monster.' %}
+  {% assign gk_offer_url = 'https://gregkoch.com/cart/PICKUP_SET_VARIANT_ID:1' %}
+{% endif %}
+
+{% if gk_offer != '' %}
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin: 32px 0 8px;">
+  <tr>
+    <td style="background-color: #161616; border: 1px solid #c8601a; border-radius: 12px; padding: 28px;">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td style="font-family: Helvetica, Arial, sans-serif; font-size: 11px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; color: #e8853a; padding-bottom: 8px;">
+            One more for the road
+          </td>
+        </tr>
+        <tr>
+          <td style="font-family: Helvetica, Arial, sans-serif; font-size: 24px; font-weight: bold; line-height: 1.15; color: #f4efe6; padding-bottom: 10px;">
+            {{ gk_offer_heading }}
+          </td>
+        </tr>
+        <tr>
+          <td style="font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #e8e2d9; padding-bottom: 20px;">
+            {{ gk_offer_copy }}
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <table border="0" cellspacing="0" cellpadding="0" width="100%">
+              <tr>
+                <td align="center" style="background-color: #c8601a; border-radius: 40px;">
+                  <a href="{{ gk_offer_url }}" target="_blank" style="display: block; padding: 16px 30px; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; text-decoration: none;">
+                    Yes, add {{ gk_offer_title }} to my order
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px; color: #a89e90; padding-top: 14px;">
+            No pressure. Your order ships either way. We ride.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+{% endif %}

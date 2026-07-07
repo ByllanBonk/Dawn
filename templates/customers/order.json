@@ -2,9 +2,66 @@
   "sections": {
     "main": {
       "type": "main-order"
+    },
+    "post_purchase_offer": {
+      "type": "gk-order-status-offer",
+      "blocks": {
+        "rule_lilheat_gk": {
+          "type": "trigger_rule",
+          "settings": {
+            "trigger_product": "lil-heat-overdrive-pedal-93",
+            "offer_product": "gristle-king-pedal-56",
+            "eyebrow": "One more for the road",
+            "heading": "Add the Gristle King to your order",
+            "body": "<p>The Lil Heat warms the amp. The Gristle King is the drive and boost the whole legend was built on. Stack them and achieve <strong>succulence in the extreme</strong>.</p>",
+            "accept_label": "Yes, add it",
+            "decline_label": "No thanks, take me to my order"
+          }
+        },
+        "rule_gk_lilheat": {
+          "type": "trigger_rule",
+          "settings": {
+            "trigger_product": "gristle-king-pedal-56",
+            "offer_product": "lil-heat-overdrive-pedal-93",
+            "eyebrow": "One more for the road",
+            "heading": "Stack the Lil Heat with what you just bought",
+            "body": "<p>The King holds court in the middle of the chain. The Lil Heat is the fiery little box that nudges the whole affair further into the fire. Three knobs, <strong>great aplomb</strong>, easy-peasy.</p>",
+            "accept_label": "Yes, add it",
+            "decline_label": "No thanks, take me to my order"
+          }
+        },
+        "rule_pickguard_gk": {
+          "type": "trigger_rule",
+          "settings": {
+            "trigger_product": "greg-koch-gristle-tone-signature-series-single-width-3-pickup-set-loaded-pickguard-90",
+            "offer_product": "gristle-king-pedal-56",
+            "eyebrow": "One more for the road",
+            "heading": "Add the Gristle King to your order",
+            "body": "<p>New pickups deserve the drive Greg runs behind them. The Gristle King takes all that hum-free articulation and pushes it from bluesy simmer to <strong>searing sustain</strong>.</p>",
+            "accept_label": "Yes, add it",
+            "decline_label": "No thanks, take me to my order"
+          }
+        },
+        "rule_kochness_set": {
+          "type": "trigger_rule",
+          "settings": {
+            "trigger_product": "kochness-monster-pedal",
+            "offer_product": "fishman-fluence-greg-koch-gristle-tone-signature-pickup-set-38",
+            "eyebrow": "One more for the road",
+            "heading": "Stack the Gristle-Tone pickups with what you just bought",
+            "body": "<p>You secured the effects chain. Now feed it the signal it deserves. The Gristle-Tone set pours hum-free single-coil succulence straight into the front of your new Monster.</p>",
+            "accept_label": "Yes, add it",
+            "decline_label": "No thanks, take me to my order"
+          }
+        }
+      },
+      "block_order": [
+        "rule_lilheat_gk",
+        "rule_gk_lilheat",
+        "rule_pickguard_gk",
+        "rule_kochness_set"
+      ]
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main", "post_purchase_offer"]
 }
