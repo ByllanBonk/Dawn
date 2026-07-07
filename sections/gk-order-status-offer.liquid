@@ -1,0 +1,283 @@
+{% comment %}
+  GK order status offer (post-purchase, app-free)
+  Renders on the customer order page (templates/customers/order.json), the
+  theme-ownable order status surface. The checkout thank-you page itself
+  cannot host theme sections; a paste-in version for that page lives in
+  docs/thank-you-page-offer.html (Settings > Checkout > Additional scripts).
+
+  Behavior:
+  - trigger_rule blocks pair a trigger product (must be in the order) with
+    an offer product. The FIRST matching block wins, so priority is block
+    order, same convention as the cart bump rules.
+  - A rule is skipped when the offer product is already in the order or is
+    sold out. No match, or no order in context: the section renders nothing.
+  - Accept is a cart permalink (adds one unit, lands in a pre-filled cart).
+    A silent one-click charge is deliberately NOT attempted: that requires
+    a checkout app and is out of scope for theme code.
+  - Decline is a quiet link back to the customer's orders. No timers, no
+    urgency, addition framing only.
+  - Everything (pairings, copy, images, labels) is editable per block in
+    the theme editor. Styles are self-contained because the account area
+    uses the main theme layout, not the landing layout.
+{% endcomment %}
+
+{%- assign matched_block = blank -%}
+{%- if order != blank -%}
+  {%- for block in section.blocks -%}
+    {%- if matched_block == blank
+      and block.type == 'trigger_rule'
+      and block.settings.trigger_product != blank
+      and block.settings.offer_product != blank
+      and block.settings.offer_product.available
+    -%}
+      {%- assign trigger_hit = false -%}
+      {%- assign offer_in_order = false -%}
+      {%- for line in order.line_items -%}
+        {%- if line.product_id == block.settings.trigger_product.id -%}
+          {%- assign trigger_hit = true -%}
+        {%- endif -%}
+        {%- if line.product_id == block.settings.offer_product.id -%}
+          {%- assign offer_in_order = true -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if trigger_hit and offer_in_order == false -%}
+        {%- assign matched_block = block -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if matched_block != blank -%}
+  {%- assign offer_product = matched_block.settings.offer_product -%}
+  {%- assign offer_variant = offer_product.selected_or_first_available_variant | default: offer_product.variants.first -%}
+  {%- assign offer_image = matched_block.settings.image | default: offer_product.featured_image -%}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  {% style %}
+    .gk-oso-wrap {
+      max-width: 72rem;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    .gk-oso {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      padding: 26px;
+      background: #161616;
+      border: 1px solid rgba(200, 96, 26, 0.55);
+      border-radius: 16px;
+      color: #e8e2d9;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .gk-oso__media {
+      flex: none;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #2a2a2a;
+      background: #181818;
+    }
+
+    .gk-oso__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .gk-oso__eyebrow {
+      margin: 0;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #e8853a;
+    }
+
+    .gk-oso__heading {
+      margin: 8px 0 0;
+      font-family: 'Bebas Neue', 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: clamp(28px, 4.4vw, 40px);
+      line-height: 0.98;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #f4efe6;
+    }
+
+    .gk-oso__body { margin-top: 10px; font-size: 15px; line-height: 1.65; color: #e8e2d9; }
+    .gk-oso__body p { margin: 0 0 10px; }
+    .gk-oso__body p:last-child { margin-bottom: 0; }
+    .gk-oso__body strong { color: #f4efe6; }
+
+    .gk-oso__price {
+      margin: 14px 0 0;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .gk-oso__price-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #a89e90;
+    }
+
+    .gk-oso__price-amount {
+      font-family: 'Bebas Neue', 'Inter', sans-serif;
+      font-size: 30px;
+      line-height: 1;
+      color: #f4efe6;
+    }
+
+    .gk-oso__accept {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      margin-top: 16px;
+      border: 0;
+      border-radius: 40px;
+      background: linear-gradient(180deg, #d4701f 0%, #c8601a 55%, #b3530f 100%);
+      color: #ffffff;
+      font-family: 'Bebas Neue', 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 21px;
+      line-height: 1;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 16px 30px;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 8px 26px rgba(200, 96, 26, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    }
+
+    .gk-oso__accept:hover { filter: brightness(1.05); }
+
+    .gk-oso__decline {
+      display: block;
+      margin-top: 12px;
+      text-align: center;
+      font-size: 13px;
+      color: #a89e90;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .gk-oso__decline:hover { color: #e8e2d9; }
+
+    @media screen and (min-width: 750px) {
+      .gk-oso {
+        flex-direction: row;
+        align-items: center;
+        gap: 28px;
+      }
+      .gk-oso__media { width: 280px; }
+      .gk-oso__copy { flex: 1; min-width: 0; }
+    }
+  {% endstyle %}
+
+  <div class="gk-oso-wrap">
+    <div class="gk-oso">
+      <div class="gk-oso__media">
+        {%- if offer_image != blank -%}
+          {{
+            offer_image
+            | image_url: width: 640
+            | image_tag: loading: 'lazy', alt: offer_image.alt | default: offer_product.title
+          }}
+        {%- endif -%}
+      </div>
+      <div class="gk-oso__copy">
+        {%- if matched_block.settings.eyebrow != blank -%}
+          <p class="gk-oso__eyebrow">{{ matched_block.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="gk-oso__heading">{{ matched_block.settings.heading | escape }}</h2>
+        {%- if matched_block.settings.body != blank -%}
+          <div class="gk-oso__body">{{ matched_block.settings.body }}</div>
+        {%- endif -%}
+        <p class="gk-oso__price">
+          <span class="gk-oso__price-label">{{ offer_product.title | escape }}</span>
+          <span class="gk-oso__price-amount">{{ offer_variant.price | money }}</span>
+        </p>
+        <a class="gk-oso__accept" href="/cart/{{ offer_variant.id }}:1">
+          {{ matched_block.settings.accept_label | escape }} for {{ offer_variant.price | money }}
+        </a>
+        <a class="gk-oso__decline" href="/account/orders">
+          {{ matched_block.settings.decline_label | escape }}
+        </a>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GK order status offer",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows one post-purchase offer based on what's in the order. The first rule whose trigger product is in the order wins; drag blocks to set priority. A rule is skipped if the customer already bought the offer product or it's sold out."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trigger_rule",
+      "name": "Trigger rule",
+      "settings": [
+        {
+          "type": "product",
+          "id": "trigger_product",
+          "label": "Trigger product (must be in the order)"
+        },
+        {
+          "type": "product",
+          "id": "offer_product",
+          "label": "Offer product (what to show)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image override",
+          "info": "Leave empty to use the offer product's featured image."
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "One more for the road"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Add the Gristle King to your order"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Copy (Greg voice)"
+        },
+        {
+          "type": "text",
+          "id": "accept_label",
+          "label": "Accept button label",
+          "info": "The live price is appended automatically.",
+          "default": "Yes, add it"
+        },
+        {
+          "type": "text",
+          "id": "decline_label",
+          "label": "Decline link label",
+          "default": "No thanks, take me to my order"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "GK order status offer" }
+  ]
+}
+{% endschema %}
