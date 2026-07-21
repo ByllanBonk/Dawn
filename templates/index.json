@@ -9,53 +9,48 @@
  */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Home Of The Gristle",
-            "heading_size": "h0"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "",
-            "text_style": "body"
-          }
-        },
-        "button": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text",
-        "button"
-      ],
+    "gk_hero": {
+      "type": "gk-hero",
       "settings": {
+        "mode": "standard",
+        "std_eyebrow": "Guitar Fiend. Gristle King.",
+        "std_heading": "Welcome to the Gristleverse",
+        "std_subheading": "Guitars, gear, lessons, and music from Greg Koch.",
+        "std_button_label": "Shop the Gristle",
+        "std_button_link": "shopify://collections/all",
+        "rel_eyebrow": "New Release",
+        "rel_heading": "NEW ALBUM: [Title], Out Now",
+        "rel_subheading": "The new record from Greg Koch. Get your copy today.",
+        "rel_button_label": "Get the Album",
         "image": "shopify://shop_images/new_hero.png",
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "image_behavior": "none",
-        "gk_hero_bloom": true,
-        "desktop_content_position": "bottom-center",
-        "desktop_content_alignment": "center",
-        "show_text_box": false,
-        "color_scheme": "scheme-3",
-        "stack_images_on_mobile": false,
-        "mobile_content_alignment": "center",
-        "show_text_below": false
+        "image_position": "center center",
+        "overlay_opacity": 40,
+        "overlay_end_opacity": 85,
+        "gradient_direction": "bottom",
+        "hero_height": 90,
+        "mobile_height": 80,
+        "content_position": "flex-end",
+        "text_alignment": "center",
+        "content_width": 900,
+        "heading_size": 7,
+        "enable_intro": true
+      }
+    },
+    "gk_youtube_feed": {
+      "type": "gk-youtube-feed",
+      "settings": {
+        "channel_id": "UCn1ehSV6VYJc8fMwfeo8yZw",
+        "channel_url": "https://www.youtube.com/c/GregKochMusic",
+        "eyebrow": "Fresh Gristle",
+        "heading": "Latest Videos",
+        "subtext": "The newest uploads from Greg's YouTube channel, updated automatically.",
+        "watch_label": "Watch on YouTube",
+        "embed_title": "Latest videos from Greg Koch on YouTube",
+        "embed_width": 900,
+        "bg_color": "#0d0d0d",
+        "accent": "#e8690a",
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
     "gk_tour_dates_home_dLWg9B": {
@@ -285,6 +280,7 @@
     },
     "video": {
       "type": "video",
+      "disabled": true,
       "settings": {
         "heading": "",
         "heading_size": "h1",
@@ -448,7 +444,8 @@
     }
   },
   "order": [
-    "image_banner",
+    "gk_hero",
+    "gk_youtube_feed",
     "gk_tour_dates_home_dLWg9B",
     "collection_list_iMMYRG",
     "gk_stream_follow_GVbNme",

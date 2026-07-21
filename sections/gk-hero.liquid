@@ -1,5 +1,36 @@
+{%- liquid
+  comment
+    GK Hero. One section, two modes (standard and release).
+    Switching modes is a single dropdown in the customizer.
+    Both modes render the identical DOM structure so there is
+    no layout shift when the mode changes.
+  endcomment
+
+  assign mode = section.settings.mode
+
+  if mode == 'release'
+    assign eyebrow = section.settings.rel_eyebrow
+    assign heading = section.settings.rel_heading
+    assign subheading = section.settings.rel_subheading
+    assign button_label = section.settings.rel_button_label
+    assign button_link = section.settings.rel_button_link
+    if section.settings.rel_image != blank
+      assign hero_image = section.settings.rel_image
+    else
+      assign hero_image = section.settings.image
+    endif
+  else
+    assign eyebrow = section.settings.std_eyebrow
+    assign heading = section.settings.std_heading
+    assign subheading = section.settings.std_subheading
+    assign button_label = section.settings.std_button_label
+    assign button_link = section.settings.std_button_link
+    assign hero_image = section.settings.image
+  endif
+-%}
+
 {%- style -%}
-  .gk-hero {
+  #GkHero-{{ section.id }} {
     position: relative;
     width: 100%;
     min-height: {{ section.settings.hero_height }}vh;
@@ -10,23 +41,25 @@
     background-color: #0D0D0D;
   }
 
-  .gk-hero__media {
+  #GkHero-{{ section.id }} .gk-hero__media {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
+    overflow: hidden;
   }
 
-  .gk-hero__media img {
+  #GkHero-{{ section.id }} .gk-hero__media img,
+  #GkHero-{{ section.id }} .gk-hero__media video {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: {{ section.settings.image_position }};
   }
 
-  .gk-hero__overlay {
+  #GkHero-{{ section.id }} .gk-hero__overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -38,9 +71,10 @@
       rgba(13, 13, 13, {{ section.settings.overlay_end_opacity | divided_by: 100.0 }}) 100%
     );
     z-index: 2;
+    pointer-events: none;
   }
 
-  .gk-hero__content {
+  #GkHero-{{ section.id }} .gk-hero__content {
     position: relative;
     z-index: 3;
     text-align: {{ section.settings.text_alignment }};
@@ -49,7 +83,7 @@
     width: 100%;
   }
 
-  .gk-hero__eyebrow {
+  #GkHero-{{ section.id }} .gk-hero__eyebrow {
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -57,9 +91,10 @@
     color: #E8690A;
     margin-bottom: 16px;
     display: block;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
   }
 
-  .gk-hero__heading {
+  #GkHero-{{ section.id }} .gk-hero__heading {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(3rem, 8vw, {{ section.settings.heading_size }}rem);
     line-height: 0.95;
@@ -67,31 +102,34 @@
     margin: 0 0 16px 0;
     text-transform: uppercase;
     letter-spacing: 2px;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
   }
 
-  .gk-hero__subheading {
+  #GkHero-{{ section.id }} .gk-hero__subheading {
     font-family: 'DM Sans', sans-serif;
     font-size: 1.1rem;
-    color: #777777;
-    margin-bottom: 32px;
+    color: #C9C9C9;
+    margin: 0 0 32px 0;
     line-height: 1.6;
     max-width: 600px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
     {% if section.settings.text_alignment == 'center' %}
       margin-left: auto;
       margin-right: auto;
     {% endif %}
   }
 
-  .gk-hero__buttons {
+  #GkHero-{{ section.id }} .gk-hero__buttons {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
+    min-height: 52px;
     {% if section.settings.text_alignment == 'center' %}
       justify-content: center;
     {% endif %}
   }
 
-  .gk-hero__btn {
+  #GkHero-{{ section.id }} .gk-hero__btn {
     font-family: 'DM Sans', sans-serif;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -103,101 +141,163 @@
     display: inline-block;
     transition: all 0.3s ease;
     cursor: pointer;
-  }
-
-  .gk-hero__btn--primary {
     background-color: #E8690A;
     color: #FFFFFF;
     border: 2px solid #E8690A;
   }
 
-  .gk-hero__btn--primary:hover {
+  #GkHero-{{ section.id }} .gk-hero__btn:hover {
     background-color: transparent;
     color: #E8690A;
   }
 
-  .gk-hero__btn--secondary {
-    background-color: transparent;
-    color: #E8690A;
-    border: 2px solid #E8690A;
+  /* Intro animation: image depth slide plus staggered text fly-in */
+  #GkHero-{{ section.id }}.gk-hero--pre .gk-hero__media img,
+  #GkHero-{{ section.id }}.gk-hero--pre .gk-hero__media video {
+    opacity: 0;
+    transform: translateY(12px) scale(1.09);
+    will-change: transform, opacity;
   }
 
-  .gk-hero__btn--secondary:hover {
-    background-color: #E8690A;
-    color: #FFFFFF;
+  #GkHero-{{ section.id }}.gk-hero--in .gk-hero__media img,
+  #GkHero-{{ section.id }}.gk-hero--in .gk-hero__media video {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+      opacity 700ms cubic-bezier(.16, .84, .44, 1),
+      transform 900ms cubic-bezier(.16, .84, .44, 1);
+  }
+
+  #GkHero-{{ section.id }}.gk-hero--pre .gk-hero__eyebrow,
+  #GkHero-{{ section.id }}.gk-hero--pre .gk-hero__heading,
+  #GkHero-{{ section.id }}.gk-hero--pre .gk-hero__subheading,
+  #GkHero-{{ section.id }}.gk-hero--pre .gk-hero__buttons {
+    opacity: 0;
+    transform: translateY(22px);
+    will-change: transform, opacity;
+  }
+
+  #GkHero-{{ section.id }}.gk-hero--in .gk-hero__eyebrow {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 650ms cubic-bezier(.16, .84, .44, 1) 120ms,
+      transform 650ms cubic-bezier(.16, .84, .44, 1) 120ms;
+  }
+
+  #GkHero-{{ section.id }}.gk-hero--in .gk-hero__heading {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 650ms cubic-bezier(.16, .84, .44, 1) 180ms,
+      transform 650ms cubic-bezier(.16, .84, .44, 1) 180ms;
+  }
+
+  #GkHero-{{ section.id }}.gk-hero--in .gk-hero__subheading {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 650ms cubic-bezier(.16, .84, .44, 1) 260ms,
+      transform 650ms cubic-bezier(.16, .84, .44, 1) 260ms;
+  }
+
+  #GkHero-{{ section.id }}.gk-hero--in .gk-hero__buttons {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 650ms cubic-bezier(.16, .84, .44, 1) 340ms,
+      transform 650ms cubic-bezier(.16, .84, .44, 1) 340ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #GkHero-{{ section.id }} .gk-hero__media img,
+    #GkHero-{{ section.id }} .gk-hero__media video,
+    #GkHero-{{ section.id }} .gk-hero__eyebrow,
+    #GkHero-{{ section.id }} .gk-hero__heading,
+    #GkHero-{{ section.id }} .gk-hero__subheading,
+    #GkHero-{{ section.id }} .gk-hero__buttons {
+      transition: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
   }
 
   @media screen and (max-width: 749px) {
-    .gk-hero {
+    #GkHero-{{ section.id }} {
       min-height: {{ section.settings.mobile_height }}vh;
     }
 
-    .gk-hero__heading {
+    #GkHero-{{ section.id }} .gk-hero__heading {
       font-size: clamp(2.5rem, 10vw, 4rem);
-    }
-
-    .gk-hero__buttons {
-      flex-direction: column;
-      align-items: {% if section.settings.text_alignment == 'center' %}center{% else %}flex-start{% endif %};
-    }
-
-    .gk-hero__btn {
-      width: auto;
     }
   }
 {%- endstyle -%}
 
-<section class="gk-hero" id="section-{{ section.id }}">
-  {%- if section.settings.image != blank -%}
-    <div class="gk-hero__media">
-      {{ section.settings.image | image_url: width: 2000 | image_tag:
+<section
+  id="GkHero-{{ section.id }}"
+  class="gk-hero{% if section.settings.enable_intro %} gk-hero--pre{% endif %}"
+  data-gk-hero-intro="{{ section.settings.enable_intro }}"
+>
+  <div class="gk-hero__media">
+    {%- if section.settings.video != blank -%}
+      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata' }}
+    {%- elsif hero_image != blank -%}
+      {{ hero_image | image_url: width: 2000 | image_tag:
         loading: 'eager',
+        fetchpriority: 'high',
         sizes: '100vw',
         widths: '375, 750, 1100, 1500, 2000',
-        alt: section.settings.image.alt | default: section.settings.heading
+        alt: hero_image.alt | default: heading
       }}
-    </div>
-  {%- else -%}
-    <div class="gk-hero__media" style="background-color: #141414;"></div>
-  {%- endif -%}
+    {%- else -%}
+      <div style="width: 100%; height: 100%; background-color: #141414;"></div>
+    {%- endif -%}
+  </div>
 
   <div class="gk-hero__overlay"></div>
 
   <div class="gk-hero__content">
-    {%- for block in section.blocks -%}
-      {%- case block.type -%}
-        {%- when 'eyebrow' -%}
-          {%- if block.settings.text != blank -%}
-            <span class="gk-hero__eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
-          {%- endif -%}
+    {%- if eyebrow != blank -%}
+      <span class="gk-hero__eyebrow">{{ eyebrow }}</span>
+    {%- endif -%}
 
-        {%- when 'heading' -%}
-          {%- if block.settings.heading != blank -%}
-            <h1 class="gk-hero__heading" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h1>
-          {%- endif -%}
+    {%- if heading != blank -%}
+      <h1 class="gk-hero__heading">{{ heading }}</h1>
+    {%- endif -%}
 
-        {%- when 'subheading' -%}
-          {%- if block.settings.text != blank -%}
-            <p class="gk-hero__subheading" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
-          {%- endif -%}
+    {%- if subheading != blank -%}
+      <p class="gk-hero__subheading">{{ subheading }}</p>
+    {%- endif -%}
 
-        {%- when 'buttons' -%}
-          <div class="gk-hero__buttons" {{ block.shopify_attributes }}>
-            {%- if block.settings.button_label_1 != blank -%}
-              <a href="{{ block.settings.button_link_1 }}" class="gk-hero__btn gk-hero__btn--primary">
-                {{ block.settings.button_label_1 }}
-              </a>
-            {%- endif -%}
-            {%- if block.settings.button_label_2 != blank -%}
-              <a href="{{ block.settings.button_link_2 }}" class="gk-hero__btn gk-hero__btn--secondary">
-                {{ block.settings.button_label_2 }}
-              </a>
-            {%- endif -%}
-          </div>
-      {%- endcase -%}
-    {%- endfor -%}
+    <div class="gk-hero__buttons">
+      {%- if button_label != blank -%}
+        <a href="{{ button_link | default: routes.all_products_collection_url }}" class="gk-hero__btn">
+          {{- button_label -}}
+        </a>
+      {%- endif -%}
+    </div>
   </div>
 </section>
+
+<script>
+  (function () {
+    var hero = document.getElementById('GkHero-{{ section.id }}');
+    if (!hero || hero.getAttribute('data-gk-hero-intro') !== 'true') return;
+    var reveal = function () {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          hero.classList.remove('gk-hero--pre');
+          hero.classList.add('gk-hero--in');
+        });
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', reveal);
+    } else {
+      reveal();
+    }
+  })();
+</script>
 
 {% schema %}
 {
@@ -206,14 +306,116 @@
   "class": "gk-hero-section",
   "settings": [
     {
+      "type": "header",
+      "content": "Mode"
+    },
+    {
+      "type": "paragraph",
+      "content": "Standard is the everyday hero. Release swaps the copy and CTA for an album or product launch. Switching is this one dropdown, nothing else to rebuild."
+    },
+    {
+      "type": "select",
+      "id": "mode",
+      "label": "Hero Mode",
+      "default": "standard",
+      "options": [
+        { "value": "standard", "label": "Standard" },
+        { "value": "release", "label": "Release" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Standard Mode Content"
+    },
+    {
+      "type": "text",
+      "id": "std_eyebrow",
+      "label": "Eyebrow",
+      "default": "Guitar Fiend. Gristle King."
+    },
+    {
+      "type": "text",
+      "id": "std_heading",
+      "label": "Headline",
+      "default": "Welcome to the Gristleverse"
+    },
+    {
+      "type": "text",
+      "id": "std_subheading",
+      "label": "Subheadline",
+      "default": "Guitars, gear, lessons, and music from Greg Koch."
+    },
+    {
+      "type": "text",
+      "id": "std_button_label",
+      "label": "Button Label",
+      "default": "Shop the Gristle"
+    },
+    {
+      "type": "url",
+      "id": "std_button_link",
+      "label": "Button Link",
+      "info": "Defaults to the all-products collection if left empty."
+    },
+    {
+      "type": "header",
+      "content": "Release Mode Content"
+    },
+    {
+      "type": "text",
+      "id": "rel_eyebrow",
+      "label": "Eyebrow",
+      "default": "New Release"
+    },
+    {
+      "type": "text",
+      "id": "rel_heading",
+      "label": "Headline",
+      "default": "NEW ALBUM: [Title], Out Now"
+    },
+    {
+      "type": "text",
+      "id": "rel_subheading",
+      "label": "Subheadline",
+      "default": "The new record from Greg Koch. Get your copy today."
+    },
+    {
+      "type": "text",
+      "id": "rel_button_label",
+      "label": "Button Label",
+      "default": "Get the Album"
+    },
+    {
+      "type": "url",
+      "id": "rel_button_link",
+      "label": "Button Link",
+      "info": "Point this at the release product page."
+    },
+    {
+      "type": "image_picker",
+      "id": "rel_image",
+      "label": "Release Background Image",
+      "info": "Optional. Falls back to the main hero image if empty."
+    },
+    {
+      "type": "header",
+      "content": "Background Media"
+    },
+    {
       "type": "image_picker",
       "id": "image",
       "label": "Hero Image"
     },
     {
+      "type": "video",
+      "id": "video",
+      "label": "Hero Video",
+      "info": "Optional. Plays muted on a loop and takes priority over the image."
+    },
+    {
       "type": "select",
       "id": "image_position",
-      "label": "Image Position",
+      "label": "Media Position",
       "default": "center center",
       "options": [
         { "value": "top center", "label": "Top" },
@@ -224,24 +426,8 @@
       ]
     },
     {
-      "type": "range",
-      "id": "hero_height",
-      "label": "Hero Height (vh)",
-      "min": 50,
-      "max": 100,
-      "step": 5,
-      "default": 100,
-      "unit": "vh"
-    },
-    {
-      "type": "range",
-      "id": "mobile_height",
-      "label": "Mobile Height (vh)",
-      "min": 50,
-      "max": 100,
-      "step": 5,
-      "default": 85,
-      "unit": "vh"
+      "type": "header",
+      "content": "Overlay (keeps text readable)"
     },
     {
       "type": "range",
@@ -274,6 +460,30 @@
         { "value": "left", "label": "Left" },
         { "value": "right", "label": "Right" }
       ]
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "hero_height",
+      "label": "Hero Height",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "default": 100,
+      "unit": "vh"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile Height",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "default": 85,
+      "unit": "vh"
     },
     {
       "type": "select",
@@ -316,87 +526,18 @@
       "step": 1,
       "default": 7,
       "unit": "rem"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "eyebrow",
-      "name": "Eyebrow Text",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Eyebrow Text",
-          "default": "Guitar Fiend • Gristle King"
-        }
-      ]
     },
     {
-      "type": "heading",
-      "name": "Heading",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "GREG KOCH"
-        }
-      ]
-    },
-    {
-      "type": "subheading",
-      "name": "Subheading",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Subheading Text",
-          "default": "Unleashing his own brand of musical mayhem from Milwaukee, WI."
-        }
-      ]
-    },
-    {
-      "type": "buttons",
-      "name": "Buttons",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "button_label_1",
-          "label": "Primary Button Label",
-          "default": "SHOP THE GRISTLE"
-        },
-        {
-          "type": "url",
-          "id": "button_link_1",
-          "label": "Primary Button Link"
-        },
-        {
-          "type": "text",
-          "id": "button_label_2",
-          "label": "Secondary Button Label",
-          "default": "TOUR DATES"
-        },
-        {
-          "type": "url",
-          "id": "button_link_2",
-          "label": "Secondary Button Link"
-        }
-      ]
+      "type": "checkbox",
+      "id": "enable_intro",
+      "label": "Enable Intro Animation",
+      "default": true,
+      "info": "Image depth slide with staggered text reveal. Respects reduced motion settings."
     }
   ],
   "presets": [
     {
-      "name": "GK Hero",
-      "blocks": [
-        { "type": "eyebrow" },
-        { "type": "heading" },
-        { "type": "subheading" },
-        { "type": "buttons" }
-      ]
+      "name": "GK Hero"
     }
   ]
 }
