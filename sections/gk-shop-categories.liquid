@@ -32,16 +32,6 @@
     </header>
 
     {%- comment -%}
-      Featured "Right Now" row. Curated from a collection in section settings,
-      renders between the hero and the category grid, hides itself when the
-      collection is empty or unset (see snippets/gk-featured-row.liquid).
-    {%- endcomment -%}
-    {% render 'gk-featured-row',
-      featured_collection: section.settings.featured_collection,
-      kicker: section.settings.featured_kicker
-    %}
-
-    {%- comment -%}
       Count UNIQUE category blocks (by title, falling back to collection handle)
       so the row divider lands correctly and a duplicate tile can never inflate
       the layout into an orphan wrap.
@@ -337,6 +327,16 @@
         {% endfor %}
       </nav>
     {% endif %}
+
+    {%- comment -%}
+      Featured "Right Now" row. Curated from a collection in section settings,
+      renders below the category grid and chips, hides itself when the
+      collection is empty or unset (see snippets/gk-featured-row.liquid).
+    {%- endcomment -%}
+    {% render 'gk-featured-row',
+      featured_collection: section.settings.featured_collection,
+      kicker: section.settings.featured_kicker
+    %}
   </div>
 
   {% style %}
