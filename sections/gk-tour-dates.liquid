@@ -498,9 +498,9 @@
 
 .gk-tour-dates__more {
   appearance: none;
-  border: 1px solid rgba(255,255,255,0.16);
-  background: rgba(0,0,0,0.22);
-  color: rgba(255,255,255,0.88);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #0D0D0D;
   border-radius: 999px;
   padding: 12px 16px;
   font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -508,13 +508,18 @@
   letter-spacing: 0.10em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  transition: transform 160ms ease, opacity 160ms ease, box-shadow 160ms ease;
 }
 
 .gk-tour-dates__more:hover {
   transform: translateY(-1px);
-  border-color: rgba(232,105,10,0.30);
-  background: rgba(0,0,0,0.34);
+  opacity: 0.92;
+  box-shadow: 0 10px 26px rgba(232,105,10,0.28);
+}
+
+.gk-tour-dates__more:focus-visible {
+  outline: 2px solid rgba(232,105,10,0.75);
+  outline-offset: 3px;
 }
 
 .gk-tour-dates__empty {
@@ -747,28 +752,15 @@
   font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  border: 1px solid rgba(255,255,255,0.16);
-  background: rgba(232,105,10,0.90);
+  border: 1px solid var(--accent);
+  background: var(--accent);
   color: #0D0D0D;
   text-decoration: none;
   transition: transform 140ms ease, opacity 140ms ease, border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
 }
 
-.gk-dates__btn:hover  { transform: translateY(-1px); opacity: 0.96; box-shadow: 0 10px 26px rgba(232,105,10,0.20); }
+.gk-dates__btn:hover  { transform: translateY(-1px); opacity: 0.92; box-shadow: 0 10px 26px rgba(232,105,10,0.28); }
 .gk-dates__btn:active { transform: translateY(0); }
-
-.gk-dates__btn--ghost {
-  background: rgba(0,0,0,0.22);
-  color: rgba(255,255,255,0.86);
-  border-color: rgba(255,255,255,0.16);
-  box-shadow: none;
-}
-
-.gk-dates__btn--ghost:hover {
-  background: rgba(0,0,0,0.30);
-  border-color: rgba(255,255,255,0.26);
-  box-shadow: none;
-}
 
 @media (max-width: 820px) {
   .gk-date {

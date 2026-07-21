@@ -208,25 +208,33 @@
   }
 
   .gk-contact__submit {
-    font-family: 'DM Sans', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.85rem;
-    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 14px 48px;
-    border-radius: 0;
-    background-color: #E8690A;
-    color: #FFFFFF;
-    border: 2px solid #E8690A;
+    border-radius: 999px;
+    background: #E8690A;
+    color: #0D0D0D;
+    border: 1px solid #E8690A;
+    font-family: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-block;
+    transition: transform 140ms ease, opacity 140ms ease, box-shadow 140ms ease;
     width: {{ section.settings.button_width }};
   }
 
   .gk-contact__submit:hover {
-    background-color: transparent;
-    color: #E8690A;
+    opacity: 0.92;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px rgba(232, 105, 10, 0.28);
+  }
+
+  .gk-contact__submit:focus-visible {
+    outline: 2px solid rgba(232, 105, 10, 0.75);
+    outline-offset: 3px;
   }
 
   .gk-contact__info {
