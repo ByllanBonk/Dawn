@@ -89,22 +89,63 @@
             "icon": "dvds",
             "featured": false
           }
+        },
+        "chip_all_9k2mQa": {
+          "type": "chip",
+          "settings": {
+            "label": "All"
+          }
+        },
+        "chip_cds_Xw31Lp": {
+          "type": "chip",
+          "settings": {
+            "label": "CDs",
+            "collection": "cds"
+          }
+        },
+        "chip_vinyl_R8tYzn": {
+          "type": "chip",
+          "settings": {
+            "label": "Vinyl",
+            "collection": "vinyl"
+          }
+        },
+        "chip_merch_Fq64Dv": {
+          "type": "chip",
+          "settings": {
+            "label": "Merch",
+            "collection": "merch"
+          }
+        },
+        "chip_gear_Hs27Bj": {
+          "type": "chip",
+          "settings": {
+            "label": "Gear",
+            "collection": "gear"
+          }
         }
       },
       "block_order": [
         "category_EnefxE",
         "category_fjLqRH",
-        "category_yXfR4W",
         "category_wCWXhd",
+        "category_yXfR4W",
         "category_JDyWJn",
         "category_r7z3hp",
-        "category_RJjqz6"
+        "category_RJjqz6",
+        "chip_all_9k2mQa",
+        "chip_cds_Xw31Lp",
+        "chip_vinyl_R8tYzn",
+        "chip_merch_Fq64Dv",
+        "chip_gear_Hs27Bj"
       ],
       "name": "GK Shop Categories",
       "settings": {
         "kicker": "Browse the goods",
         "heading": "The Gristle Shop",
-        "subheading": "<p>Records. Gear. Tools of tone. Wear the sound.</p>"
+        "subheading": "<p>Records. Gear. Tools of tone. Wear the sound.</p>",
+        "featured_collection": "shop-featured",
+        "featured_kicker": "Right Now"
       }
     }
   },
