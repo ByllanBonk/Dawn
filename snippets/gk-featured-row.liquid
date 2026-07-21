@@ -14,6 +14,9 @@
   Accepts:
   - featured_collection: {Object} collection picked in section settings
   - kicker: {String} eyebrow label above the row
+  - style: {String} 'full' for tall image cards, 'compact' for short
+    horizontal cards (thumbnail left, details right) that keep the
+    category grid close to the fold
 {% endcomment %}
 
 {%- liquid
@@ -25,7 +28,7 @@
 -%}
 
 {%- if feat_count > 0 -%}
-  <div class="gk-feat" data-gk-featured>
+  <div class="gk-feat{% if style == 'compact' %} gk-feat--compact{% endif %}" data-gk-featured>
     {% if kicker != blank %}
       <div class="gk-feat__kicker">{{ kicker | escape }}</div>
     {% endif %}
@@ -316,8 +319,89 @@
     .gk-feat__cta:hover .gk-feat__pip { transform: scale(1.45); }
 
     /* =========================================================
+       COMPACT VARIANT
+       Short horizontal cards (thumbnail left, details right) so the
+       featured row plus the category grid stay near the fold.
+       ========================================================= */
+    .gk-feat--compact {
+      margin-bottom: clamp(20px, 2.5vw, 32px);
+    }
+
+    .gk-feat--compact .gk-feat__kicker {
+      margin-bottom: 10px;
+    }
+
+    .gk-feat--compact .gk-feat__row {
+      gap: 12px;
+    }
+
+    .gk-feat--compact .gk-feat__card {
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    .gk-feat--compact .gk-feat__media {
+      flex: 0 0 96px;
+      width: 96px;
+      aspect-ratio: auto;
+      border-bottom: none;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .gk-feat--compact .gk-feat__body {
+      padding: 10px 12px 9px;
+      min-width: 0;
+    }
+
+    .gk-feat--compact .gk-feat__title {
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .gk-feat--compact .gk-feat__price {
+      margin-top: 4px;
+      font-size: 12px;
+      gap: 6px;
+    }
+
+    .gk-feat--compact .gk-feat__compare {
+      font-size: 11px;
+    }
+
+    .gk-feat--compact .gk-feat__cta {
+      padding-top: 7px;
+      gap: 7px;
+    }
+
+    .gk-feat--compact .gk-feat__pip {
+      width: 6px;
+      height: 6px;
+    }
+
+    .gk-feat--compact .gk-feat__ctaText {
+      font-size: 10px;
+    }
+
+    .gk-feat--compact .gk-feat__arrow svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .gk-feat--compact .gk-feat__badge {
+      top: 8px;
+      right: 8px;
+      font-size: 9px;
+      padding: 3px 7px;
+    }
+
+    /* =========================================================
        RESPONSIVE
-       Desktop: 3-4 across. Tablet: 2-up. Mobile: swipe row.
+       Desktop: 3-4 across. Tablet: 2-up. Mobile: swipe row
+       (full cards) or a single-column stack (compact cards).
        ========================================================= */
     @media (max-width: 980px) {
       .gk-feat__row { grid-template-columns: repeat(2, 1fr); }
@@ -339,6 +423,20 @@
         flex: 0 0 78%;
         max-width: 78%;
         scroll-snap-align: start;
+      }
+
+      /* Compact cards are already short, so stack them instead of swiping. */
+      .gk-feat--compact .gk-feat__row {
+        display: grid;
+        grid-template-columns: 1fr;
+        overflow-x: visible;
+        margin: 0;
+        padding: 0;
+        gap: 10px;
+      }
+      .gk-feat--compact .gk-feat__card {
+        flex: 1 1 auto;
+        max-width: none;
       }
     }
 

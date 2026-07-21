@@ -145,7 +145,8 @@
         "heading": "The Gristle Shop",
         "subheading": "<p>Records. Gear. Tools of tone. Wear the sound.</p>",
         "featured_collection": "shop-featured",
-        "featured_kicker": "Right Now"
+        "featured_kicker": "Right Now",
+        "featured_style": "compact"
       }
     }
   },

@@ -38,7 +38,8 @@
     {%- endcomment -%}
     {% render 'gk-featured-row',
       featured_collection: section.settings.featured_collection,
-      kicker: section.settings.featured_kicker
+      kicker: section.settings.featured_kicker,
+      style: section.settings.featured_style
     %}
 
     {%- comment -%}
@@ -905,6 +906,17 @@
       "id": "featured_kicker",
       "label": "Featured row label",
       "default": "Right Now"
+    },
+    {
+      "type": "select",
+      "id": "featured_style",
+      "label": "Featured row style",
+      "info": "Compact keeps the category grid visible near the top of the page.",
+      "options": [
+        { "value": "compact", "label": "Compact (small thumbnails)" },
+        { "value": "full", "label": "Full (large image cards)" }
+      ],
+      "default": "compact"
     }
   ],
   "blocks": [
