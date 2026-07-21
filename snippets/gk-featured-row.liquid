@@ -1,0 +1,372 @@
+{% comment %}
+  GK Featured Row ("Right Now" merch push)
+  - Rendered by gk-shop-categories between the hero and the category grid.
+  - Pulls up to 4 products from a merchant-curated collection (admin sort
+    order controls what shows), so campaign swaps never need a deploy.
+  - Price logic mirrors snippets/price.liquid (compare-at strikethrough,
+    "from" pricing when the price varies, currency code setting).
+  - Badges reuse the category tile pill style (Sold out > Sale > New).
+  - Hidden entirely when no collection is picked or it has no products
+    (a setup hint shows inside the theme editor only).
+  - Mobile is a native scroll-snap swipe row, no JS, consistent with the
+    other gk- sections. Scoped CSS only (prefix: .gk-feat).
+
+  Accepts:
+  - featured_collection: {Object} collection picked in section settings
+  - kicker: {String} eyebrow label above the row
+{% endcomment %}
+
+{%- liquid
+  assign feat_col = featured_collection
+  assign feat_count = 0
+  if feat_col != blank
+    assign feat_count = feat_col.products_count
+  endif
+-%}
+
+{%- if feat_count > 0 -%}
+  <div class="gk-feat" data-gk-featured>
+    {% if kicker != blank %}
+      <div class="gk-feat__kicker">{{ kicker | escape }}</div>
+    {% endif %}
+
+    <div class="gk-feat__row" role="list">
+      {%- for product in feat_col.products limit: 4 -%}
+        {%- liquid
+          assign compare_at_price = product.compare_at_price
+          assign price = product.price
+          assign on_sale = false
+          if compare_at_price > price
+            assign on_sale = true
+          endif
+          assign money_price = price | money
+          assign money_compare = compare_at_price | money
+          if settings.currency_code_enabled
+            assign money_price = price | money_with_currency
+            assign money_compare = compare_at_price | money_with_currency
+          endif
+          if product.price_varies
+            assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+          endif
+          assign is_new = false
+          if product.tags contains 'new' or product.tags contains 'New' or product.tags contains 'NEW'
+            assign is_new = true
+          endif
+        -%}
+
+        <div class="gk-feat__card" role="listitem" style="--gk-delay: {{ forloop.index | times: 70 }}ms;">
+          {%- if product.available == false -%}
+            <span class="gk-feat__badge gk-feat__badge--soldout">Sold out</span>
+          {%- elsif on_sale -%}
+            <span class="gk-feat__badge">Sale</span>
+          {%- elsif is_new -%}
+            <span class="gk-feat__badge">New</span>
+          {%- endif -%}
+
+          <a class="gk-feat__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+            {%- if product.featured_image != blank -%}
+              <img
+                src="{{ product.featured_image | image_url: width: 600 }}"
+                srcset="
+                  {{ product.featured_image | image_url: width: 400 }} 400w,
+                  {{ product.featured_image | image_url: width: 600 }} 600w,
+                  {{ product.featured_image | image_url: width: 800 }} 800w
+                "
+                sizes="(max-width: 560px) 78vw, (max-width: 980px) 46vw, 280px"
+                alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                width="{{ product.featured_image.width }}"
+                height="{{ product.featured_image.height }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              <span class="gk-feat__noimg" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke-width="1.5" stroke-linecap="round">
+                  <circle cx="12" cy="12" r="8" stroke="currentColor"/>
+                  <circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/>
+                </svg>
+              </span>
+            {%- endif -%}
+          </a>
+
+          <div class="gk-feat__body">
+            <a class="gk-feat__title" href="{{ product.url }}">{{ product.title | escape }}</a>
+
+            <div class="gk-feat__price">
+              {%- if on_sale -%}
+                <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+                <s class="gk-feat__compare">{{ money_compare }}</s>
+                <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+                <span class="gk-feat__amount gk-feat__amount--sale">{{ money_price }}</span>
+              {%- else -%}
+                <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+                <span class="gk-feat__amount">{{ money_price }}</span>
+              {%- endif -%}
+            </div>
+
+            <a class="gk-feat__cta" href="{{ product.url }}" aria-label="Shop {{ product.title | escape }}">
+              <span class="gk-feat__pip" aria-hidden="true"></span>
+              <span class="gk-feat__ctaText">Shop Now</span>
+              <span class="gk-feat__arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+                  <path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {% style %}
+    /* =========================================================
+       GK FEATURED ROW (scoped under .gk-feat)
+       Inherits the section accent via --gk-accent from .gk-shop
+       ========================================================= */
+    .gk-feat {
+      margin-bottom: clamp(30px, 4vw, 52px);
+    }
+
+    .gk-feat__kicker {
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--gk-accent);
+      margin-bottom: 14px;
+    }
+
+    .gk-feat__row {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+      align-items: stretch;
+    }
+
+    /* ---- Card (matches the category card surface) ---- */
+    .gk-feat__card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      border-radius: 12px;
+      overflow: hidden;
+      isolation: isolate;
+
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 22%),
+        rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow:
+        0 10px 30px -12px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+      transition:
+        transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 220ms ease,
+        box-shadow 220ms ease;
+      will-change: transform;
+
+      opacity: 0;
+      transform: translateY(16px);
+      animation: gk-fadeUp 520ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: var(--gk-delay, 0ms);
+    }
+
+    .gk-feat__card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gk-accent-soft);
+      box-shadow:
+        0 18px 44px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(200, 96, 26, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .gk-feat__badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #120a04;
+      background: var(--gk-accent);
+      padding: 4px 8px;
+      border-radius: 999px;
+      box-shadow: 0 0 16px rgba(200, 96, 26, 0.5);
+    }
+
+    .gk-feat__badge--soldout {
+      background: rgba(255, 255, 255, 0.22);
+      color: #f4f4f5;
+      box-shadow: none;
+    }
+
+    /* ---- Product image ---- */
+    .gk-feat__media {
+      display: block;
+      aspect-ratio: 1 / 1;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .gk-feat__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .gk-feat__card:hover .gk-feat__media img {
+      transform: scale(1.04);
+    }
+
+    .gk-feat__noimg {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: var(--gk-accent);
+      opacity: 0.5;
+    }
+
+    /* ---- Body ---- */
+    .gk-feat__body {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      padding: 16px 16px 14px;
+    }
+
+    .gk-feat__title {
+      color: inherit;
+      text-decoration: none;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .gk-feat__title:hover {
+      color: var(--gk-hi);
+    }
+
+    .gk-feat__price {
+      margin-top: 8px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .gk-feat__compare {
+      opacity: 0.55;
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    .gk-feat__amount--sale {
+      color: var(--gk-hi);
+    }
+
+    /* ---- CTA (mirrors the Explore treatment) ---- */
+    .gk-feat__cta {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--gk-card-line);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .gk-feat__pip {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--gk-accent);
+      box-shadow: 0 0 16px rgba(200, 96, 26, 0.6);
+      flex: 0 0 auto;
+      transition: transform 220ms ease;
+    }
+
+    .gk-feat__ctaText {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .gk-feat__arrow {
+      margin-left: auto;
+      display: inline-flex;
+      color: var(--gk-accent);
+      transition: transform 220ms ease;
+    }
+
+    .gk-feat__cta:hover .gk-feat__arrow { transform: translateX(4px); }
+    .gk-feat__cta:hover .gk-feat__pip { transform: scale(1.45); }
+
+    /* =========================================================
+       RESPONSIVE
+       Desktop: 3-4 across. Tablet: 2-up. Mobile: swipe row.
+       ========================================================= */
+    @media (max-width: 980px) {
+      .gk-feat__row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 560px) {
+      .gk-feat__row {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 14px;
+        margin: 0 -14px;
+        padding: 0 14px 10px;
+        scrollbar-width: none;
+      }
+      .gk-feat__row::-webkit-scrollbar { display: none; }
+      .gk-feat__card {
+        flex: 0 0 78%;
+        max-width: 78%;
+        scroll-snap-align: start;
+      }
+    }
+
+    /* =========================================================
+       REDUCED MOTION
+       ========================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      .gk-feat__card {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+        transition: none !important;
+      }
+      .gk-feat__media img,
+      .gk-feat__pip,
+      .gk-feat__arrow {
+        transition: none !important;
+      }
+    }
+  {% endstyle %}
+{%- elsif request.design_mode -%}
+  {%- comment -%} Theme editor only: help the merchant wire the row up. Storefront renders nothing. {%- endcomment -%}
+  <div class="gk-feat" style="margin-bottom: 32px; border: 1px dashed rgba(200,96,26,0.5); border-radius: 12px; padding: 18px;">
+    <div style="letter-spacing:0.18em; text-transform:uppercase; font-size:12px; font-weight:800; color:#C8601A; margin-bottom:8px;">
+      Featured row (hidden on storefront)
+    </div>
+    <div style="opacity:0.78; font-size:14px; line-height:1.5;">
+      Pick a featured collection with at least one product in the section settings to show this row. It stays hidden until then.
+    </div>
+  </div>
+{%- endif -%}
