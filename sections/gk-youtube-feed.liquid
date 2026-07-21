@@ -1,0 +1,325 @@
+{%- liquid
+  comment
+    GK YouTube Feed. Embeds the channel's uploads playlist, which
+    YouTube keeps sorted newest first. When a new video is published
+    it appears here automatically, no admin edit and no API key needed.
+
+    How it works: every YouTube channel ID starts with UC. Swapping
+    that prefix for UU gives the channel's auto-generated uploads
+    playlist, and the playlist embed always leads with the latest video.
+
+    Fallback: the Watch on YouTube button is always rendered. If the
+    embed cannot load (network block, bad channel ID), a script hides
+    the empty player so there is never a broken box.
+  endcomment
+
+  assign channel_id = section.settings.channel_id | strip
+  assign id_prefix = channel_id | slice: 0, 2
+  assign uploads_id = channel_id | replace_first: 'UC', 'UU'
+-%}
+
+{%- style -%}
+  #GkYtFeed-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 24px {{ section.settings.padding_bottom }}px;
+  }
+
+  #GkYtFeed-{{ section.id }} .gk-yt__inner {
+    max-width: {{ section.settings.embed_width }}px;
+    margin: 0 auto;
+  }
+
+  #GkYtFeed-{{ section.id }} .gk-yt__header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  #GkYtFeed-{{ section.id }} .gk-yt__eyebrow {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.75rem;
+    color: {{ section.settings.accent }};
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  #GkYtFeed-{{ section.id }} .gk-yt__heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 10px 0;
+  }
+
+  #GkYtFeed-{{ section.id }} .gk-yt__subtext {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  #GkYtFeed-{{ section.id }} .gk-yt__player {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #141414;
+    border: 1px solid #272727;
+    overflow: hidden;
+  }
+
+  #GkYtFeed-{{ section.id }} .gk-yt__player iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  #GkYtFeed-{{ section.id }}.gk-yt--embed-failed .gk-yt__player {
+    display: none;
+  }
+
+  #GkYtFeed-{{ section.id }} .gk-yt__actions {
+    text-align: center;
+    margin-top: 28px;
+  }
+
+  #GkYtFeed-{{ section.id }} .gk-yt__btn {
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 14px 36px;
+    border-radius: 0;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    color: {{ section.settings.accent }};
+    border: 2px solid {{ section.settings.accent }};
+  }
+
+  #GkYtFeed-{{ section.id }} .gk-yt__btn:hover {
+    background-color: {{ section.settings.accent }};
+    color: #FFFFFF;
+  }
+
+  @media screen and (max-width: 749px) {
+    #GkYtFeed-{{ section.id }} {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    #GkYtFeed-{{ section.id }} .gk-yt__header {
+      margin-bottom: 24px;
+    }
+  }
+{%- endstyle -%}
+
+{%- if id_prefix == 'UC' or section.settings.channel_url != blank -%}
+  <section class="gk-yt" id="GkYtFeed-{{ section.id }}">
+    <div class="gk-yt__inner">
+      <div class="gk-yt__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="gk-yt__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="gk-yt__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subtext != blank -%}
+          <p class="gk-yt__subtext">{{ section.settings.subtext }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if id_prefix == 'UC' -%}
+        <div class="gk-yt__player">
+          <iframe
+            id="GkYtFrame-{{ section.id }}"
+            src="https://www.youtube-nocookie.com/embed/videoseries?list={{ uploads_id }}&rel=0"
+            title="{{ section.settings.embed_title | escape }}"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.channel_url != blank and section.settings.watch_label != blank -%}
+        <div class="gk-yt__actions">
+          <a
+            class="gk-yt__btn"
+            href="{{ section.settings.channel_url }}"
+            target="_blank"
+            rel="noopener"
+          >
+            {{- section.settings.watch_label -}}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- if id_prefix == 'UC' -%}
+    <script>
+      (function () {
+        var section = document.getElementById('GkYtFeed-{{ section.id }}');
+        var frame = document.getElementById('GkYtFrame-{{ section.id }}');
+        if (!section || !frame) return;
+        var fail = function () {
+          section.classList.add('gk-yt--embed-failed');
+        };
+        frame.addEventListener('error', fail);
+        /* Cross-origin iframes fire a load event even when the request is
+           blocked, so probing the iframe alone cannot detect an outage.
+           Instead, load a tiny image from the embed host: if YouTube is
+           unreachable the probe errors or times out and we hide the empty
+           player, leaving only the Watch on YouTube button. */
+        var probe = function () {
+          var done = false;
+          var img = new Image();
+          var timer = setTimeout(function () {
+            if (!done) {
+              done = true;
+              fail();
+            }
+          }, 8000);
+          img.onload = function () {
+            done = true;
+            clearTimeout(timer);
+          };
+          img.onerror = function () {
+            if (!done) {
+              done = true;
+              clearTimeout(timer);
+              fail();
+            }
+          };
+          img.src = 'https://www.youtube-nocookie.com/favicon.ico?_=' + new Date().getTime();
+        };
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                observer.disconnect();
+                probe();
+              }
+            });
+          });
+          observer.observe(frame);
+        } else {
+          probe();
+        }
+      })();
+    </script>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GK YouTube Feed",
+  "tag": "section",
+  "class": "gk-yt-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows the channel's uploads playlist. The newest video always appears first, automatically, with no API key and no manual updates. If the embed cannot load, only the Watch on YouTube button is shown."
+    },
+    {
+      "type": "text",
+      "id": "channel_id",
+      "label": "YouTube Channel ID",
+      "default": "UCn1ehSV6VYJc8fMwfeo8yZw",
+      "info": "Starts with UC. Find it at YouTube Studio under Settings, Channel, Advanced settings."
+    },
+    {
+      "type": "text",
+      "id": "channel_url",
+      "label": "Channel URL (fallback button)",
+      "default": "https://www.youtube.com/c/GregKochMusic"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Fresh Gristle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Latest Videos"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "The newest uploads from Greg's YouTube channel, updated automatically."
+    },
+    {
+      "type": "text",
+      "id": "watch_label",
+      "label": "Watch Button Label",
+      "default": "Watch on YouTube"
+    },
+    {
+      "type": "text",
+      "id": "embed_title",
+      "label": "Embed Accessibility Title",
+      "default": "Latest videos from Greg Koch on YouTube"
+    },
+    {
+      "type": "range",
+      "id": "embed_width",
+      "label": "Player Max Width",
+      "min": 600,
+      "max": 1200,
+      "step": 50,
+      "default": 900,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0D0D0D"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent Color",
+      "default": "#E8690A"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 64,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "GK YouTube Feed"
+    }
+  ]
+}
+{% endschema %}

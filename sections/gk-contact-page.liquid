@@ -43,6 +43,120 @@
     line-height: 1.6;
   }
 
+  /* ---------- Contact lanes ---------- */
+  .gk-contact__lanes-wrap {
+    max-width: {{ section.settings.lanes_width }}px;
+    margin: 0 auto 56px;
+    padding: 0 24px;
+  }
+
+  .gk-contact__lanes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .gk-contact__lane {
+    background-color: #141414;
+    border: 1px solid #272727;
+    border-top: 3px solid #E8690A;
+    padding: 28px;
+    min-width: 0;
+  }
+
+  .gk-contact__lane-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 14px 0;
+  }
+
+  .gk-contact__lane-who {
+    font-family: 'DM Sans', sans-serif;
+    color: #E8E8E8;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 12px 0;
+    overflow-wrap: anywhere;
+  }
+
+  .gk-contact__lane-address {
+    font-family: 'DM Sans', sans-serif;
+    color: #999999;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 12px 0;
+    overflow-wrap: anywhere;
+  }
+
+  .gk-contact__lane-line {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: #C9C9C9;
+    line-height: 1.7;
+    margin: 0 0 6px 0;
+    overflow-wrap: anywhere;
+  }
+
+  .gk-contact__lane-line a {
+    color: #E8E8E8;
+    text-decoration: none;
+    border-bottom: 1px solid #3a3a3a;
+    transition: color 0.3s ease, border-color 0.3s ease;
+    overflow-wrap: anywhere;
+  }
+
+  .gk-contact__lane-line a:hover {
+    color: #E8690A;
+    border-color: #E8690A;
+  }
+
+  .gk-contact__lane-note {
+    color: #777777;
+    font-size: 0.85rem;
+  }
+
+  @media screen and (max-width: 749px) {
+    .gk-contact__lanes {
+      grid-template-columns: 1fr;
+    }
+
+    .gk-contact__lanes-wrap {
+      padding: 0 16px;
+      margin-bottom: 44px;
+    }
+
+    .gk-contact__lane {
+      padding: 22px;
+    }
+  }
+
+  /* ---------- Catch-all form ---------- */
+  .gk-contact__form-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .gk-contact__form-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: #E8E8E8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 8px 0;
+  }
+
+  .gk-contact__form-intro {
+    font-family: 'DM Sans', sans-serif;
+    color: #777777;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 480px;
+  }
+
   .gk-contact__form {
     background-color: #141414;
     border: 1px solid #272727;
@@ -172,6 +286,77 @@
         <p class="gk-contact__subtext">{{ section.settings.subtext }}</p>
       {%- endif -%}
     </div>
+  </div>
+
+  {%- assign has_lanes = false -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'lane' -%}
+      {%- assign has_lanes = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if has_lanes -%}
+    <div class="gk-contact__lanes-wrap">
+      <div class="gk-contact__lanes">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'lane' -%}
+            <div class="gk-contact__lane" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}
+                <h2 class="gk-contact__lane-heading">{{ block.settings.heading }}</h2>
+              {%- endif -%}
+
+              {%- if block.settings.who != blank -%}
+                <p class="gk-contact__lane-who">{{ block.settings.who | newline_to_br }}</p>
+              {%- endif -%}
+
+              {%- if block.settings.address != blank -%}
+                <p class="gk-contact__lane-address">{{ block.settings.address | newline_to_br }}</p>
+              {%- endif -%}
+
+              {%- if block.settings.phone_1 != blank -%}
+                {%- assign tel_1 = block.settings.phone_1_tel | default: block.settings.phone_1 -%}
+                {%- assign tel_1 = tel_1 | replace: ' ', '' | replace: '(', '' | replace: ')', '' -%}
+                <p class="gk-contact__lane-line">
+                  <a href="tel:{{ tel_1 }}">{{ block.settings.phone_1 }}</a>
+                  {%- if block.settings.phone_1_note != blank %} <span class="gk-contact__lane-note">{{ block.settings.phone_1_note }}</span>{% endif -%}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.phone_2 != blank -%}
+                {%- assign tel_2 = block.settings.phone_2_tel | default: block.settings.phone_2 -%}
+                {%- assign tel_2 = tel_2 | replace: ' ', '' | replace: '(', '' | replace: ')', '' -%}
+                <p class="gk-contact__lane-line">
+                  <a href="tel:{{ tel_2 }}">{{ block.settings.phone_2 }}</a>
+                  {%- if block.settings.phone_2_note != blank %} <span class="gk-contact__lane-note">{{ block.settings.phone_2_note }}</span>{% endif -%}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.email != blank -%}
+                <p class="gk-contact__lane-line">
+                  <a href="mailto:{{ block.settings.email }}">{{ block.settings.email }}</a>
+                </p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="gk-contact__inner">
+    {%- if has_lanes -%}
+      {%- if section.settings.form_heading != blank or section.settings.form_intro != blank -%}
+        <div class="gk-contact__form-header">
+          {%- if section.settings.form_heading != blank -%}
+            <h2 class="gk-contact__form-heading">{{ section.settings.form_heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.form_intro != blank -%}
+            <p class="gk-contact__form-intro">{{ section.settings.form_intro }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
 
     <div class="gk-contact__form">
       {%- form 'contact', id: 'ContactForm' -%}
@@ -201,6 +386,13 @@
           <div class="gk-contact__field">
             <label for="ContactForm-phone">{{ section.settings.phone_label }}</label>
             <input type="tel" id="ContactForm-phone" name="contact[{{ 'templates.contact.form.phone' | t }}]" value="{% if form.phone %}{{ form.phone }}{% endif %}" placeholder="{{ section.settings.phone_placeholder }}" autocomplete="tel">
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_subject -%}
+          <div class="gk-contact__field">
+            <label for="ContactForm-subject">{{ section.settings.subject_label }}</label>
+            <input type="text" id="ContactForm-subject" name="contact[Subject]" placeholder="{{ section.settings.subject_placeholder }}">
           </div>
         {%- endif -%}
 
@@ -275,6 +467,23 @@
       "default": "For booking, press, lessons, or general inquiries."
     },
     {
+      "type": "header",
+      "content": "Catch-All Form"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form Heading",
+      "default": "Something Else?",
+      "info": "Shown above the form when contact lanes are present."
+    },
+    {
+      "type": "textarea",
+      "id": "form_intro",
+      "label": "Form Intro",
+      "default": "For anything that doesn't fit the categories above, send a message here."
+    },
+    {
       "type": "text",
       "id": "name_label",
       "label": "Name Field Label",
@@ -315,6 +524,24 @@
       "id": "phone_placeholder",
       "label": "Phone Placeholder",
       "default": "Your phone number"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subject",
+      "label": "Show Subject Field",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "subject_label",
+      "label": "Subject Field Label",
+      "default": "Subject"
+    },
+    {
+      "type": "text",
+      "id": "subject_placeholder",
+      "label": "Subject Placeholder",
+      "default": "What is this about?"
     },
     {
       "type": "text",
@@ -363,6 +590,16 @@
     },
     {
       "type": "range",
+      "id": "lanes_width",
+      "label": "Lanes Max Width",
+      "min": 700,
+      "max": 1400,
+      "step": 50,
+      "default": 1100,
+      "unit": "px"
+    },
+    {
+      "type": "range",
       "id": "form_width",
       "label": "Form Max Width",
       "min": 500,
@@ -393,6 +630,66 @@
     }
   ],
   "blocks": [
+    {
+      "type": "lane",
+      "name": "Contact Lane",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Lane Heading",
+          "default": "General Inquiries"
+        },
+        {
+          "type": "textarea",
+          "id": "who",
+          "label": "Name / Company",
+          "info": "Each line renders on its own row."
+        },
+        {
+          "type": "textarea",
+          "id": "address",
+          "label": "Address (optional)"
+        },
+        {
+          "type": "text",
+          "id": "phone_1",
+          "label": "Phone (as displayed)"
+        },
+        {
+          "type": "text",
+          "id": "phone_1_note",
+          "label": "Phone Note",
+          "info": "Small label after the number, e.g. (phone)"
+        },
+        {
+          "type": "text",
+          "id": "phone_1_tel",
+          "label": "Phone Dial Number (optional)",
+          "info": "Digits used for the tap-to-call link, e.g. +492419529939. Falls back to the displayed number."
+        },
+        {
+          "type": "text",
+          "id": "phone_2",
+          "label": "Second Phone (as displayed)"
+        },
+        {
+          "type": "text",
+          "id": "phone_2_note",
+          "label": "Second Phone Note"
+        },
+        {
+          "type": "text",
+          "id": "phone_2_tel",
+          "label": "Second Phone Dial Number (optional)"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email"
+        }
+      ]
+    },
     {
       "type": "info_item",
       "name": "Contact Info",
