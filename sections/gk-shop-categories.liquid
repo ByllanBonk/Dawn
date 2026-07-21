@@ -32,17 +32,6 @@
     </header>
 
     {%- comment -%}
-      Featured "Right Now" row. Curated from a collection in section settings,
-      renders between the hero and the category grid, hides itself when the
-      collection is empty or unset (see snippets/gk-featured-row.liquid).
-    {%- endcomment -%}
-    {% render 'gk-featured-row',
-      featured_collection: section.settings.featured_collection,
-      kicker: section.settings.featured_kicker,
-      style: section.settings.featured_style
-    %}
-
-    {%- comment -%}
       Count UNIQUE category blocks (by title, falling back to collection handle)
       so the row divider lands correctly and a duplicate tile can never inflate
       the layout into an orphan wrap.
@@ -338,6 +327,19 @@
         {% endfor %}
       </nav>
     {% endif %}
+
+    {%- comment -%}
+      Featured "Right Now" row. Curated from a collection in section settings,
+      renders below the category grid and chips so shoppers see the
+      categories first. Hides itself when the collection is empty or unset,
+      and never renders on collection pages since that template instance has
+      no featured collection configured (see snippets/gk-featured-row.liquid).
+    {%- endcomment -%}
+    {% render 'gk-featured-row',
+      featured_collection: section.settings.featured_collection,
+      kicker: section.settings.featured_kicker,
+      style: section.settings.featured_style
+    %}
   </div>
 
   {% style %}
@@ -899,7 +901,7 @@
       "type": "collection",
       "id": "featured_collection",
       "label": "Featured collection",
-      "info": "Shows the first 4 products (in collection order) directly below the header. Leave empty to hide the row."
+      "info": "Shows the first 4 products (in collection order) below the category grid. Leave empty to hide the row."
     },
     {
       "type": "text",

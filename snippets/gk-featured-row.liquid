@@ -1,6 +1,6 @@
 {% comment %}
   GK Featured Row ("Right Now" merch push)
-  - Rendered by gk-shop-categories between the hero and the category grid.
+  - Rendered by gk-shop-categories below the category grid and chips.
   - Pulls up to 4 products from a merchant-curated collection (admin sort
     order controls what shows), so campaign swaps never need a deploy.
   - Price logic mirrors snippets/price.liquid (compare-at strikethrough,
@@ -128,7 +128,7 @@
        Inherits the section accent via --gk-accent from .gk-shop
        ========================================================= */
     .gk-feat {
-      margin-bottom: clamp(30px, 4vw, 52px);
+      margin-top: clamp(30px, 4vw, 52px);
     }
 
     .gk-feat__kicker {
@@ -324,7 +324,7 @@
        featured row plus the category grid stay near the fold.
        ========================================================= */
     .gk-feat--compact {
-      margin-bottom: clamp(20px, 2.5vw, 32px);
+      margin-top: clamp(20px, 2.5vw, 32px);
     }
 
     .gk-feat--compact .gk-feat__kicker {
@@ -459,7 +459,7 @@
   {% endstyle %}
 {%- elsif request.design_mode -%}
   {%- comment -%} Theme editor only: help the merchant wire the row up. Storefront renders nothing. {%- endcomment -%}
-  <div class="gk-feat" style="margin-bottom: 32px; border: 1px dashed rgba(200,96,26,0.5); border-radius: 12px; padding: 18px;">
+  <div class="gk-feat" style="margin-top: 32px; border: 1px dashed rgba(200,96,26,0.5); border-radius: 12px; padding: 18px;">
     <div style="letter-spacing:0.18em; text-transform:uppercase; font-size:12px; font-weight:800; color:#C8601A; margin-bottom:8px;">
       Featured row (hidden on storefront)
     </div>
