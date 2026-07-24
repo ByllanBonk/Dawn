@@ -276,11 +276,11 @@
     outline-offset: 2px;
   }
 
-  /* ---- Tile grid ---- */
+  /* ---- Tile row (compact icon row, footer-social weight) ---- */
   .gk-sf-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   /* display:grid would otherwise beat the UA [hidden] rule */
@@ -292,16 +292,15 @@
     --ry: 0deg;
     --ty: 0px;
     --sc: 1;
-    display: flex;
-    flex-direction: column;
+    position: relative;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    aspect-ratio: 1 / 1;
-    padding: 14px;
+    width: 48px;
+    height: 48px;
     background: #16120e;
     border: 1px solid rgba(216, 200, 184, 0.14);
-    border-radius: 12px;
+    border-radius: 10px;
     text-decoration: none;
     transform: perspective(800px) translate3d(0, var(--ty), 0) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--sc));
     transition:
@@ -319,14 +318,14 @@
 
   .gk-sf-tile:hover,
   .gk-sf-tile:focus-visible {
-    --ty: -7px;
+    --ty: -3px;
     will-change: transform;
     border-color: #c8601a;
     background: #1a140f;
     box-shadow:
-      0 24px 44px -16px rgba(200, 96, 26, 0.3),
-      0 16px 36px -12px rgba(0, 0, 0, 0.65),
-      0 0 20px -8px rgba(200, 96, 26, 0.4);
+      0 12px 22px -10px rgba(200, 96, 26, 0.3),
+      0 8px 18px -8px rgba(0, 0, 0, 0.65),
+      0 0 14px -6px rgba(200, 96, 26, 0.4);
   }
 
   .gk-sf-tile:focus-visible {
@@ -344,8 +343,8 @@
 
   .gk-sf-tile__icon svg,
   .gk-sf-tile__icon img {
-    width: 38px;
-    height: 38px;
+    width: 20px;
+    height: 20px;
     display: block;
   }
 
@@ -356,19 +355,42 @@
     filter: drop-shadow(0 0 9px rgba(200, 96, 26, 0.45));
   }
 
+  /* Platform name as a hover/focus tooltip (CSS-only; inert on touch) */
   .gk-sf-tile__name {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
     font-family: 'DM Sans', var(--gk-font-body, sans-serif);
     font-size: 11px;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.14em;
     text-align: center;
-    color: rgba(237, 230, 222, 0.55);
-    transition: color 0.25s ease-out;
+    white-space: nowrap;
+    color: #fff;
+    background: #1a140f;
+    border: 1px solid rgba(200, 96, 26, 0.55);
+    border-radius: 6px;
+    padding: 5px 10px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+    transition: opacity 0.15s ease-out;
+  }
+
+  .gk-sf-tile__name::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: rgba(200, 96, 26, 0.55);
   }
 
   .gk-sf-tile:hover .gk-sf-tile__name,
-  .gk-sf-tile:focus-visible .gk-sf-tile__name { color: #fff; }
+  .gk-sf-tile:focus-visible .gk-sf-tile__name { opacity: 1; }
 
   .gk-sf-divider {
     height: 1px;
@@ -394,13 +416,8 @@
     }
   }
 
-  @media (max-width: 749px) {
-    .gk-sf-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
-  }
-
   @media (max-width: 420px) {
-    /* Stay 2-up on small phones; tiles shrink rather than stacking. */
-    .gk-sf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .gk-sf-grid { gap: 8px; }
     .gk-sf-group__head { justify-content: flex-start; }
   }
 

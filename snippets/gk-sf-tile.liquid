@@ -45,6 +45,7 @@
   {% else %}
     role="link" aria-disabled="true"
   {% endif %}
+  aria-label="{{ block.settings.platform_name | escape }}"
   style="--i: {{ index | default: 0 }};"
   {{ block.shopify_attributes }}
 >
@@ -61,5 +62,5 @@
       {%- render 'gk-sf-icon', icon: icon_key -%}
     {%- endif -%}
   </span>
-  <span class="gk-sf-tile__name">{{ block.settings.platform_name | escape }}</span>
+  <span class="gk-sf-tile__name" aria-hidden="true">{{ block.settings.platform_name | escape }}</span>
 </a>
