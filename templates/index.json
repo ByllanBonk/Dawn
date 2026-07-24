@@ -22,6 +22,7 @@
         "rel_heading": "NEW ALBUM: [Title], Out Now",
         "rel_subheading": "The new record from Greg Koch. Get your copy today.",
         "rel_button_label": "Get the Album",
+        "rel_button_link": "",
         "image": "shopify://shop_images/new_hero.png",
         "image_position": "center center",
         "overlay_opacity": 40,
@@ -34,23 +35,6 @@
         "content_width": 900,
         "heading_size": 7,
         "enable_intro": true
-      }
-    },
-    "gk_youtube_feed": {
-      "type": "gk-youtube-feed",
-      "settings": {
-        "channel_id": "UCn1ehSV6VYJc8fMwfeo8yZw",
-        "channel_url": "https://www.youtube.com/c/GregKochMusic",
-        "eyebrow": "Fresh Gristle",
-        "heading": "Latest Videos",
-        "subtext": "The newest uploads from Greg's YouTube channel, updated automatically.",
-        "watch_label": "Watch on YouTube",
-        "embed_title": "Latest videos from Greg Koch on YouTube",
-        "embed_width": 900,
-        "bg_color": "#0d0d0d",
-        "accent": "#e8690a",
-        "padding_top": 64,
-        "padding_bottom": 64
       }
     },
     "gk_tour_dates_home_dLWg9B": {
@@ -72,6 +56,23 @@
         "view_all_url": "",
         "bg_color": "#0d0d0d",
         "accent_color": "#e8690a",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "gk_youtube_feed": {
+      "type": "gk-youtube-feed",
+      "settings": {
+        "channel_id": "UCn1ehSV6VYJc8fMwfeo8yZw",
+        "channel_url": "https://www.youtube.com/c/GregKochMusic",
+        "eyebrow": "Fresh Gristle",
+        "heading": "Latest Videos",
+        "subtext": "The newest uploads from Greg's YouTube channel, updated automatically.",
+        "watch_label": "Watch on YouTube",
+        "embed_title": "Latest videos from Greg Koch on YouTube",
+        "embed_width": 900,
+        "bg_color": "#0d0d0d",
+        "accent": "#e8690a",
         "padding_top": 64,
         "padding_bottom": 64
       }
@@ -445,12 +446,12 @@
   },
   "order": [
     "gk_hero",
-    "gk_youtube_feed",
     "gk_tour_dates_home_dLWg9B",
     "collection_list_iMMYRG",
     "gk_stream_follow_GVbNme",
     "video",
     "multicolumn",
+    "gk_youtube_feed",
     "gk_spotify_embed_k4K4EF",
     "gk_sponsors_RgU39c"
   ]
