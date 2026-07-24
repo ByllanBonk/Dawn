@@ -39,6 +39,15 @@
     if ratio == 0 or ratio == null
       assign ratio = 1
     endif
+
+    # Album formats have square cover art; force a 1:1 frame and show the
+    # full image uncropped regardless of the section's image ratio setting.
+    assign card_product_type = card_product.type | downcase | strip
+    assign is_square_art = false
+    if card_product_type == 'cd' or card_product_type == 'vinyl'
+      assign is_square_art = true
+      assign ratio = 1
+    endif
   -%}
   <div class="card-wrapper product-card-wrapper underline-links-hover">
     <div
@@ -58,7 +67,7 @@
         style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
       >
         {%- if card_product.featured_media -%}
-          <div class="card__media{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}">
+          <div class="card__media{% if is_square_art %} card__media--contain{% endif %}{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}">
             <div class="media media--transparent media--hover-effect">
               {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
               <img
