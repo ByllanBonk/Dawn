@@ -296,6 +296,11 @@
   width: 100%;
 }
 
+/* Square-art products (CDs, vinyl): show the full cover uncropped */
+.card__media--contain .media img {
+  object-fit: contain;
+}
+
 .card__inner:not(.ratio) > .card__content {
   height: 100%;
 }
