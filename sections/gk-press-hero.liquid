@@ -177,6 +177,33 @@
     flex-shrink: 0;
   }
 
+  /* ── Press/promo contact line (sits directly under the press kit button) ── */
+  .gk-press-hero__contact-line {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #A6A6A6;
+    margin: 16px auto 0;
+  }
+
+  .gk-press-hero__contact-link {
+    color: #E8690A;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(232, 105, 10, 0.35);
+    padding-bottom: 1px;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .gk-press-hero__contact-link:hover {
+    color: #FF7E1F;
+    border-bottom-color: #E8690A;
+  }
+
+  .gk-press-hero__contact-link:focus-visible {
+    outline: 2px solid rgba(232, 105, 10, 0.75);
+    outline-offset: 3px;
+  }
+
   /* ── Featured In ── */
   .gk-press-hero__featured-in {
     margin-top: 72px;
@@ -347,6 +374,10 @@
           </a>
         </div>
       {%- endif -%}
+
+      <p class="gk-press-hero__contact-line">
+        For press or promotional inquiries, <a class="gk-press-hero__contact-link" href="{{ pages['contact'].url | default: '/pages/contact' }}">contact us</a>
+      </p>
 
       {%- if section.settings.show_featured_in -%}
         {%- assign has_pubs = false -%}
