@@ -282,6 +282,31 @@
   outline-offset: 3px;
 }
 
+/* ── Booking inquiries line (sits below the widget + show-more button) ── */
+.gk-bit-page__booking {
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--gkbp-muted);
+  text-align: center;
+  margin: 28px 0 0;
+}
+.gk-bit-page__booking-link {
+  color: var(--gkbp-accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(232,105,10,0.35);
+  padding-bottom: 1px;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+.gk-bit-page__booking-link:hover {
+  color: #FF7E1F;
+  border-bottom-color: var(--gkbp-accent);
+}
+.gk-bit-page__booking-link:focus-visible {
+  outline: 2px solid rgba(232,105,10,0.75);
+  outline-offset: 3px;
+}
+
 /* ── Fallback message (shown only if BIT fails to load after timeout) ── */
 .gk-bit-page .gk-bit-fallback {
   display: none;
@@ -357,6 +382,10 @@
       ></a>
       <div class="gk-bit-fallback">Check back soon for upcoming dates.</div>
     </div>
+
+    <p class="gk-bit-page__booking">
+      For booking inquiries, <a class="gk-bit-page__booking-link" href="{{ pages['contact'].url | default: '/pages/contact' }}">contact us</a>
+    </p>
 
   </div>
 </section>
